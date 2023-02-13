@@ -6,7 +6,7 @@
 # ______________________________________________________________________________
 #
 # Executable name, extension is added depending on target platform.
-NAME=game
+NAME=romphonix
 
 # Files to compile. You can add multiple files by separating by spaces.
 SRC="src/*.c"
