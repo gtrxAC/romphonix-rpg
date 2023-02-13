@@ -34,13 +34,13 @@ case "$TARGET" in
 		CC="$ARCH-w64-mingw32-gcc"
 		EXT=".exe"
 		PLATFORM="PLATFORM_DESKTOP"
-		TARGET_FLAGS="-lopengl32 -lgdi32 -lwinmm -static -Wl,--subsystem,windows"
+		TARGET_FLAGS="-lopengl32 -lgdi32 -lwinmm -static -Wl,--subsystem,windows -lfluidsynth.dll -o windows/romphonix.exe"
 		;;
 
 	"Linux")
 		CC="gcc"
 		PLATFORM="PLATFORM_DESKTOP"
-		TARGET_FLAGS="-lGL -lm -lpthread -ldl -lrt -lX11"
+		TARGET_FLAGS="-lGL -lm -lpthread -ldl -lrt -lX11 -lfluidsynth -o romphonix"
 		;;
 
 	"Web")
@@ -48,7 +48,7 @@ case "$TARGET" in
 		EXT=".html"
 		PLATFORM="PLATFORM_WEB"
 		TARGET_FLAGS="-s ASYNCIFY -s USE_GLFW=3 -s TOTAL_MEMORY=67108864 \
-		-s FORCE_FILESYSTEM=1 --shell-file src/shell.html --preload-file assets"
+		-s FORCE_FILESYSTEM=1 --shell-file src/shell.html --preload-file assets -o romphonix.html"
 		source emsdk/emsdk_env.sh
 		;;
 
@@ -61,7 +61,7 @@ esac
 # Don't run the project if build fails
 set -e
 
-$CC $SRC -Iinclude -Llib/$TARGET -o $NAME$EXT \
+$CC $SRC -Iinclude -Llib/$TARGET \
 	-lraylib -D$PLATFORM $FLAGS $TARGET_FLAGS
 
 # itch.io expects html5 games to be named index.html, js/data/wasm filenames can

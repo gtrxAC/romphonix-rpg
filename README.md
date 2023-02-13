@@ -10,8 +10,8 @@ A phone collecting RPG! (in development)
 2. Follow the below instructions for the platform you want to build for.
 
 ### Desktop
-1. Run `./setup.sh` to set up the project.
-2. Run `./build.sh` to compile the project.
+2. Run `./setup.sh` to set up the project.
+3. Run `./build.sh` to compile the project.
 
 ### Web
 1. Run `TARGET=Web ./setup.sh` to set up the project. You will need about 1 GB of free space.

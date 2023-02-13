@@ -5,10 +5,10 @@ android/ndk
 android/sdk
 
 include/raylib.h
-lib
+lib/*/*raylib*
 raylib
 
-game
+romphonix
 *.exe
 *.apk
 *.keystore

@@ -4,43 +4,20 @@
 
 // _____________________________________________________________________________
 //
-//  Loads textures and any graphics/audio related stuff.
-// _____________________________________________________________________________
-//
-void initGame(Game *g) {
-    // Create the window
-    InitWindow(960, 720, "ROMphonix RPG");
-    g->rt = LoadRenderTexture(320, 240);
-}
-
-// _____________________________________________________________________________
-//
-//  Unloads any assets that init() has loaded, in reverse order.
-// _____________________________________________________________________________
-//
-void closeGame(Game *g, int status) {
-    UnloadRenderTexture(g->rt);
-    CloseWindow();
-
-    free(g);
-    exit(status);
-}
-
-// _____________________________________________________________________________
-//
 //  Calls initialization tasks and runs the main loop.
 // _____________________________________________________________________________
 //
 int main() {
     // Create game state structure
     Game *g = malloc(sizeof(Game));
-    if (!g) {
-        tinyfd_messageBox("Error", "Failed to allocate game state", "ok", "error", 0);
-        closeGame(g, 1);
-    }
+    if (!g) error(g, "Failed to allocate game state");
 
     // Initialize the game - this loads the window and assets.
     initGame(g);
+
+    // Set up the game variables.
+    SetTargetFPS(60);
+    g->state = ST_TITLE;
 
     // _________________________________________________________________________
     //
@@ -50,13 +27,14 @@ int main() {
     while (!WindowShouldClose()) {
         // Update game state
         switch (g->state) {
-            
+            case ST_TITLE: updateTitle(g); break;
         }
 
         // Draw game into a render texture so we can scale it
         BeginTextureMode(g->rt);
+        ClearBackground(BLACK);
         switch (g->state) {
-
+            case ST_TITLE: drawTitle(g); break;
         }
         EndTextureMode();
 
