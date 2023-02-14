@@ -1,5 +1,20 @@
-#define STBDS_IMPLEMENTATION
-#define TSF_IMPLEMENTATION
+// _____________________________________________________________________________
+//
+//  ROMphonix RPG - a phone collecting RPG
+//  Based on gtrxAC's raylib RPG demo
+//
+//  This is the main source code file, which only contains the main function.
+//  It creates the game state "g" which is passed as a pointer to every other
+//  function in the game.
+//
+//  The main function handles calling other functions that alter the game state
+//  or draw parts of the game.
+//
+//  Most of the important includes and definitions, including the state
+//  structure, are in common.h.
+// _____________________________________________________________________________
+//
+#define STB_DS_IMPLEMENTATION
 #include "common.h"
 
 // _____________________________________________________________________________
@@ -18,6 +33,7 @@ int main() {
     // Set up the game variables.
     SetTargetFPS(60);
     g->state = ST_TITLE;
+    setSong(g, "assets/sounds/music/LG tune.mid");
 
     // _________________________________________________________________________
     //
@@ -28,6 +44,9 @@ int main() {
         // Update game state
         switch (g->state) {
             case ST_TITLE: updateTitle(g); break;
+            case ST_MAINMENU: updateScript(g); break;
+            case ST_SCRIPT: updateScript(g); break;
+            // case ST_WORLD: updateWorld(g); break;
         }
 
         // Draw game into a render texture so we can scale it
@@ -35,6 +54,9 @@ int main() {
         ClearBackground(BLACK);
         switch (g->state) {
             case ST_TITLE: drawTitle(g); break;
+            case ST_MAINMENU: drawScript(g); break;
+            case ST_SCRIPT: drawScript(g); // fall through
+            // case ST_WORLD: drawWorld(g); break;
         }
         EndTextureMode();
 
@@ -49,6 +71,8 @@ int main() {
             (Vector2){0, 0}, 0.0f, WHITE
         );
         EndDrawing();
+
+        g->frameCount++;
     }
 
     // Unload assets and resources when the close button was pressed

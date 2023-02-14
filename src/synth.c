@@ -10,6 +10,9 @@ void initSynth(Game *g) {
     g->syn.settings = new_fluid_settings();
     if (!g->syn.settings) error(g, "Failed to create FluidSynth settings");
 
+    // enable seamless looping
+    fluid_settings_setint(g->syn.settings, "player.reset-synth", 0);
+
     g->syn.synth = new_fluid_synth(g->syn.settings);
     if (!g->syn.synth)error(g, "Failed to create FluidSynth synth");
 

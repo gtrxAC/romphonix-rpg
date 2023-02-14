@@ -3,6 +3,7 @@
 // _____________________________________________________________________________
 //
 //  Loads textures and any graphics/audio related stuff.
+//  Note: raylib is used for SFX and fluidsynth for music
 // _____________________________________________________________________________
 //
 void initGame(Game *g) {
@@ -10,8 +11,24 @@ void initGame(Game *g) {
     InitWindow(960, 720, "ROMphonix RPG");
     g->rt = LoadRenderTexture(320, 240);
 
+    InitAudioDevice();
     initSynth(g);
-    setSong(g, "assets/sounds/music/LG tune.mid");
+
+    g->fonts.dialogue = LoadFont("assets/fonts/dialogue.png");
+    g->fonts.large = LoadFont("assets/fonts/large.png");
+
+    // Textures are loaded with the LOAD_TEXTURE macro, defined here.
+    // They load from the assets/graphics folder, with file extension PNG which
+    // does not need to be specified when using the macro.
+
+    // The loaded textures are then used with the TEX macro.
+    // For example, a texture loaded with LOAD_TEXTURE("title") is used in
+    // raylib functions with TEX(title) - notice lack of quotation marks.
+    g->textures = NULL;
+    #define LOAD_TEXTURE(n) shput((g->textures), n, LoadTexture("assets/graphics/" n ".png"))
+    LOAD_TEXTURE("title");
+    LOAD_TEXTURE("indicator");
+    LOAD_TEXTURE("textbox");
 }
 
 // _____________________________________________________________________________
@@ -20,7 +37,13 @@ void initGame(Game *g) {
 // _____________________________________________________________________________
 //
 void closeGame(Game *g, int status) {
+    for (int i = 0; i < shlen(g->textures); i++) {
+        UnloadTexture(g->textures[i].value);
+    }
+    shfree(g->textures);
+
     closeSynth(g);
+    CloseAudioDevice();
 
     UnloadRenderTexture(g->rt);
     CloseWindow();

@@ -1,7 +1,0 @@
-#ifndef STATE_H
-#define STATE_H
-
-void updateState(Game *g);
-void drawState(Game *g);
-
-#endif
