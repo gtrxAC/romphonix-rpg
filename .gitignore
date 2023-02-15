@@ -18,3 +18,8 @@ index.html
 *.wasm
 *.js
 *.data
+
+# Sub-projects
+mapeditor/include/raylib.h
+mapeditor/lib
+rpxmap

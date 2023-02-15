@@ -8,6 +8,7 @@
 #  - Windows (w64devkit)     ./build.sh
 #  - Windows (cross compile) TARGET=Windows_NT ./build.sh
 #  - Web                     TARGET=Web ./build.sh
+#  - Android                 TARGET=Android ./build.sh
 #
 #  - Debug                   DEBUG=1 ./build.sh
 #  - Build and run           ./build.sh -r
@@ -34,13 +35,13 @@ case "$TARGET" in
 		CC="$ARCH-w64-mingw32-gcc"
 		EXT=".exe"
 		PLATFORM="PLATFORM_DESKTOP"
-		TARGET_FLAGS="-lopengl32 -lgdi32 -lwinmm -static -Wl,--subsystem,windows -lfluidsynth.dll -o windows/romphonix.exe"
+		TARGET_FLAGS="-lopengl32 -lgdi32 -lwinmm -static -Wl,--subsystem,windows"
 		;;
 
 	"Linux")
 		CC="gcc"
 		PLATFORM="PLATFORM_DESKTOP"
-		TARGET_FLAGS="-lGL -lm -lpthread -ldl -lrt -lX11 -lfluidsynth -o romphonix"
+		TARGET_FLAGS="-lGL -lm -lpthread -ldl -lrt -lX11"
 		;;
 
 	"Web")
@@ -48,7 +49,7 @@ case "$TARGET" in
 		EXT=".html"
 		PLATFORM="PLATFORM_WEB"
 		TARGET_FLAGS="-s ASYNCIFY -s USE_GLFW=3 -s TOTAL_MEMORY=67108864 \
-		-s FORCE_FILESYSTEM=1 --shell-file src/shell.html --preload-file assets -o romphonix.html"
+		-s FORCE_FILESYSTEM=1 --shell-file src/shell.html --preload-file resources"
 		source emsdk/emsdk_env.sh
 		;;
 
@@ -61,7 +62,7 @@ esac
 # Don't run the project if build fails
 set -e
 
-$CC $SRC -Iinclude -Llib/$TARGET \
+$CC $SRC -Iinclude -Llib/$TARGET -o $NAME$EXT \
 	-lraylib -D$PLATFORM $FLAGS $TARGET_FLAGS
 
 # itch.io expects html5 games to be named index.html, js/data/wasm filenames can
@@ -80,8 +81,3 @@ if [[ "$1" = "-r" ]]; then
 		"Web") emrun index.html;;
 	esac
 fi
-
-# Build map editor
-cd mapeditor
-./build.sh
-cd ..
