@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stddef.h> // needed for tinyFD on windows
 
 #include "raylib.h"
 #include "stb_ds.h"

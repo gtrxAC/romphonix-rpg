@@ -1,3 +1,5 @@
+#include <stddef.h>
+
 #include "raylib.h"
 #include "tinyfiledialogs.h"
 
@@ -48,6 +50,19 @@ int main() {
         if (GetMouseWheelMove() > 0) {
             camera.zoom += 0.2f;
             if (camera.zoom > 10.0f) camera.zoom = 10.0f;
+        }
+
+        // key bindings
+        if (IsKeyPressed(KEY_N)) {
+            int width = atoi(tinyfd_inputBox("Width", "Map width?", ""));
+            int height = atoi(tinyfd_inputBox("Height", "Map height?", ""));
+            map = malloc(2 + width*height*4)
+            map[0] = width;
+            map[1] = height;
+        }
+
+        if (IsKeyPressed(KEY_O)) {
+            
         }
 
         // Draw
