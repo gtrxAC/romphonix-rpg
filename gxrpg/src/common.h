@@ -72,7 +72,7 @@ struct Game {
 
 	// nextmap/x/y are applied after map transition ends
 	int curmap, nextmap;
-	int playerx, playery, nextx, nexty;
+	int playerX, playerY, nextx, nexty;
 	int playeranim;
 	Direction playerdir;
 

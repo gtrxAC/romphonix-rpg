@@ -3,8 +3,8 @@
 
 #include "common.h"
 
-void draw_world_rt(Game *game);
-void update_world(Game *game);
-void draw_world(Game *game);
+void drawWorldRT(Game *game);
+void updateWorld(Game *game);
+void drawWorld(Game *game);
 
 #endif // world.h

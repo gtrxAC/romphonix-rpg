@@ -39,7 +39,7 @@ void changemap(Game *game, int map, int x, int y) {
 void update_script(Game *game) {
 	if (!game->worlddrawn) {
 		game->worlddrawn = true;
-		draw_world_rt(game);
+		drawWorldRT(game);
 	}
 
 	switch (game->scripttype) {

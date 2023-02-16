@@ -3,56 +3,52 @@
 #include "menu.h"
 #include "controls.h"
 
-bool canmove(Game *game, int dx, int dy) {
-	Map *curmap = &game->maps[game->curmap];
-
+bool canMove(Game *g, int dX, int dY) {
 	// Check if we're out of map bounds
-	if (game->playerx + dx < 0 || game->playery + dy < 0) return false;
-	if (game->playerx + dx >= curmap->width) return false;
-	if (game->playery + dy >= curmap->height) return false;
+	if (g->playerX + dX < 0 || g->playerY + dY < 0) return false;
+	if (g->playerX + dX >= MAP_WIDTH) return false;
+	if (g->playerY + dY >= MAP_HEIGHT) return false;
 
 	// Check if we're colliding with a solid tile
-	if (curmap->collisions[(game->playery + dy)*curmap->width + game->playerx + dx]) return false;
+	if (g->mapMeta.collisions[(g->playerY + dY)*g->map.width + g->playerX + dX]) return false;
 
 	// Check if we're colliding with any scripts that have collide=true
-	for (int i = 0; i < MAX_SCRIPTS && curmap->scripts[i].type != SA_NULLTERM; i++) {
-		Script script = curmap->scripts[i];
+	for (int i = 0; i < MAX_SCRIPTS && g->map.scripts[i].type != SA_NULLTERM; i++) {
+		Script script = g->mapMeta.scripts[i];
 		if (!script.collide) continue;
-		if (script.x == game->playerx + dx && script.y == game->playery + dy) return false;
+		if (script.x == g->playerX + dX && script.y == g->playerY + dY) return false;
 	}
 
 	return true;
 }
 
-void draw_world_rt(Game *game) {
-	Map *curmap = &game->maps[game->curmap];
+void drawWorldRT(Game *g) {
+	UnloadRenderTexture(g->world);
+	g->world = LoadRenderTexture(g->mapMeta.width*16, g->mapMeta.height*16);
 
-	UnloadRenderTexture(game->world);
-	game->world = LoadRenderTexture(curmap->width*TILE_WIDTH, curmap->height*TILE_HEIGHT);
-
-	BeginTextureMode(game->world);
-	for (int y = 0; y < curmap->height; y++) {
-		for (int x = 0; x < curmap->width; x++) {
+	BeginTextureMode(g->world);
+	for (int y = 0; y < g->mapMeta.height; y++) {
+		for (int x = 0; x < g->mapMeta.width; x++) {
 			DrawTextureRec(
-				game->textures.tileset,
+				g->textures.tileset,
 				(Rectangle) {
-					curmap->tiles[y*curmap->width + x] % TILESET_WIDTH * TILE_WIDTH,
-					curmap->tiles[y*curmap->width + x] / TILESET_WIDTH * TILE_HEIGHT,
-					TILE_WIDTH, TILE_HEIGHT
+					g->map.tiles[y*g->map.width + x] % TILESET_WIDTH * 16,
+					g->map.tiles[y*g->map.width + x] / TILESET_WIDTH * 16,
+					16, 16
 				},
-				(Vector2) {x*TILE_WIDTH, y*TILE_HEIGHT}, WHITE
+				(Vector2) {x*16, y*16}, WHITE
 			);
 		}
 	}
 	EndTextureMode();
 }
 
-void update_world(Game *game) {
+void updateWorld(Game *game) {
 	Map *curmap = &game->maps[game->curmap];
 
 	if (!game->worlddrawn) {
 		game->worlddrawn = true;
-		draw_world_rt(game);
+		drawWorldRT(game);
 	}
 
 	if (game->playeranim > 0) {
@@ -62,15 +58,15 @@ void update_world(Game *game) {
 			game->playeranim = 0;
 			
 			switch (game->playerdir) {
-				case DIR_UP: game->playery--; break;
-				case DIR_DOWN: game->playery++; break;
-				case DIR_LEFT: game->playerx--; break;
-				case DIR_RIGHT: game->playerx++; break;
+				case DIR_UP: game->playerY--; break;
+				case DIR_DOWN: game->playerY++; break;
+				case DIR_LEFT: game->playerX--; break;
+				case DIR_RIGHT: game->playerX++; break;
 			}
 
-			for (int i = 0; i < MAX_SCRIPTS && curmap->scripts[i].type != SA_NULLTERM; i++) {
-				Script script = curmap->scripts[i];
-				if (script.x == game->playerx && script.y == game->playery && script.type == SA_TILE) {
+			for (int i = 0; i < MAX_SCRIPTS && g->map.scripts[i].type != SA_NULLTERM; i++) {
+				Script script = g->map.scripts[i];
+				if (script.x == game->playerX && script.y == game->playerY && script.type == SA_TILE) {
 					script.func(game);
 				}
 			}
@@ -78,27 +74,27 @@ void update_world(Game *game) {
 	} else {
 		if (K_UP()) {
 			game->playerdir = DIR_UP;
-			if (canmove(game, 0, -1)) game->playeranim = TILE_HEIGHT;
+			if (canMove(game, 0, -1)) game->playeranim = 16;
 		}
 
 		else if (K_DOWN()) {
 			game->playerdir = DIR_DOWN;
-			if (canmove(game, 0, 1)) game->playeranim = TILE_HEIGHT;
+			if (canMove(game, 0, 1)) game->playeranim = 16;
 		}
 
 		else if (K_LEFT()) {
 			game->playerdir = DIR_LEFT;
-			if (canmove(game, -1, 0)) game->playeranim = TILE_WIDTH;
+			if (canMove(game, -1, 0)) game->playeranim = 16;
 		}
 
 		else if (K_RIGHT()) {
 			game->playerdir = DIR_RIGHT;
-			if (canmove(game, 1, 0)) game->playeranim = TILE_WIDTH;
+			if (canMove(game, 1, 0)) game->playeranim = 16;
 		}
 
 		if (K_A_PRESS()) {
-			int x = game->playerx;
-			int y = game->playery;
+			int x = game->playerX;
+			int y = game->playerY;
 			
 			switch (game->playerdir) {
 				case DIR_UP: y--; break;
@@ -107,8 +103,8 @@ void update_world(Game *game) {
 				case DIR_RIGHT: x++; break;
 			}
 
-			for (int i = 0; i < MAX_SCRIPTS && curmap->scripts[i].type != SA_NULLTERM; i++) {
-				Script script = curmap->scripts[i];
+			for (int i = 0; i < MAX_SCRIPTS && g->map.scripts[i].type != SA_NULLTERM; i++) {
+				Script script = g->map.scripts[i];
 				if (script.x == x && script.y == y && script.type == SA_INTERACT) {
 					script.func(game);
 				}
@@ -119,9 +115,9 @@ void update_world(Game *game) {
 	}
 }
 
-void draw_world(Game *game) {
-	int playerdestx = game->playerx*TILE_WIDTH;
-	int playerdesty = game->playery*TILE_HEIGHT;
+void drawWorld(Game *game) {
+	int playerdestx = game->playerX*16;
+	int playerdesty = game->playerY*16;
 
 	if (game->playeranim) {
 		switch (game->playerdir) {
@@ -134,11 +130,11 @@ void draw_world(Game *game) {
 
 	DrawTexturePro(
 		game->world.texture,
-		(Rectangle) {0, 0, game->maps[game->curmap].width*TILE_WIDTH, -game->maps[game->curmap].height*TILE_HEIGHT},
+		(Rectangle) {0, 0, game->maps[game->curmap].width*16, -game->maps[game->curmap].height*16},
 		(Rectangle) {
-			WIDTH/2 - TILE_WIDTH/2 - playerdestx,
-			HEIGHT/2 - TILE_HEIGHT/2 - playerdesty,
-			game->maps[game->curmap].width*TILE_WIDTH, game->maps[game->curmap].height*TILE_HEIGHT
+			WIDTH/2 - 16/2 - playerdestx,
+			HEIGHT/2 - 16/2 - playerdesty,
+			game->maps[game->curmap].width*16, game->maps[game->curmap].height*16
 		},
 		(Vector2) {0, 0}, 0.0f, WHITE
 	);
@@ -146,9 +142,9 @@ void draw_world(Game *game) {
 	DrawTextureRec(
 		game->textures.player,
 		(Rectangle) {
-			TILE_WIDTH * game->playerdir,
-			(game->playeranim && game->playeranim < TILE_WIDTH/2) ? TILE_HEIGHT : 0,
-			TILE_WIDTH, TILE_HEIGHT
-		}, (Vector2) {WIDTH/2 - TILE_WIDTH/2, HEIGHT/2 - TILE_HEIGHT/2}, WHITE
+			16 * game->playerdir,
+			(game->playeranim && game->playeranim < 16/2) ? 16 : 0,
+			16, 16
+		}, (Vector2) {WIDTH/2 - 16/2, HEIGHT/2 - 16/2}, WHITE
 	);
 }

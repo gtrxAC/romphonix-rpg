@@ -29,6 +29,9 @@ void initGame(Game *g) {
     LOAD_TEXTURE("title");
     LOAD_TEXTURE("indicator");
     LOAD_TEXTURE("textbox");
+    LOAD_TEXTURE("player");
+
+    loadMapIndex(g);
 }
 
 // _____________________________________________________________________________
@@ -37,10 +40,16 @@ void initGame(Game *g) {
 // _____________________________________________________________________________
 //
 void closeGame(Game *g, int status) {
+    free(g->map);
+    arrfree(g->maps);
+
     for (int i = 0; i < shlen(g->textures); i++) {
         UnloadTexture(g->textures[i].value);
     }
     shfree(g->textures);
+
+    UnloadFont(g->fonts.dialogue);
+    UnloadFont(g->fonts.large);
 
     closeSynth(g);
     CloseAudioDevice();

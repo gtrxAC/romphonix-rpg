@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
 		// Update
 		switch (game.state) {
 			case ST_TITLE: update_title(&game); break;
-			case ST_WORLD: update_world(&game); break;
+			case ST_WORLD: updateWorld(&game); break;
 			case ST_MAINMENU: case ST_SCRIPT: update_script(&game); break;
 			case ST_TRANSITION: update_transition(&game); break;
 		}
@@ -75,10 +75,10 @@ int main(int argc, char **argv) {
 		ClearBackground(BLACK);
 		switch (game.state) {
 			case ST_TITLE: draw_title(&game); break;
-			case ST_SCRIPT: draw_world(&game); // fall through
+			case ST_SCRIPT: drawWorld(&game); // fall through
 			case ST_MAINMENU: draw_script(&game); break;
-			case ST_WORLD: draw_world(&game); break;
-			case ST_TRANSITION: draw_world(&game); draw_transition(&game); break;
+			case ST_WORLD: drawWorld(&game); break;
+			case ST_TRANSITION: drawWorld(&game); draw_transition(&game); break;
 		}
 		draw_controls(&game);
 		EndTextureMode();

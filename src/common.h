@@ -44,11 +44,27 @@ typedef struct Game Game;
 // Gets a texture
 #define TEX(t) (shget(g->textures, #t))
 
+#define MAP_WIDTH (g->map[0])
+#define MAP_HEIGHT (g->map[1])
+
+// Gets a byte of a map tile (val takes a MapByte defined below)
+#define MAP(x, y, val) (g->map[2 + 7*((y)*MAP_WIDTH + (x)) + (val)])
+
 // _____________________________________________________________________________
 //
 //  Enumerations and Structures
 // _____________________________________________________________________________
 //
+enum MapByte {
+    MAP_BG_X,
+    MAP_BG_Y,
+    MAP_FG_X,
+    MAP_FG_Y,
+    MAP_COLLISION,
+    MAP_STEP_SCRIPT,
+    MAP_INTERACT_SCRIPT
+};
+
 typedef enum State {
     ST_TITLE,
     ST_MAINMENU,  // same as script but map and player aren't shown in the background
@@ -80,12 +96,14 @@ typedef enum ScriptType {
 } ScriptType;
 
 // Other map attributes like width, height, and data are in the game state,
-// loaded when the map is actually in use
+// loaded when the map is actually in use.
+// Amount of step and interact scripts can be increased up to 256, but this
+// means more memory is used by each map.
 typedef struct Map {
     const char *name;
     const char *fileName;
-    void (*stepScripts[256])(Game *);
-    void (*interactScripts[256])(Game *);
+    void (*stepScripts[64])(Game *);
+    void (*interactScripts[64])(Game *);
 } Map;
 
 // _____________________________________________________________________________
@@ -94,7 +112,6 @@ typedef struct Map {
 // _____________________________________________________________________________
 //
 typedef struct Game {
-    
     // Internal counter that ticks every frame and can be reset by certain actions.
     unsigned int frameCount;
 
@@ -108,6 +125,11 @@ typedef struct Game {
 
     Synth syn;
     bool audioStarted;
+
+    // Map stuff
+    Map *maps;  // metadata for all maps
+    Map mapMeta;  // metadata for loaded map
+    char *map;  // actual data (one map fully loaded at a time)
     
     // Player location
     // nextMap/X/Y are the location where the player moves after a map change transition
