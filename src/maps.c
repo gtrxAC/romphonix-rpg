@@ -9,7 +9,7 @@
 #include "common.h"
 
 // Include your map header files here
-#include "assets/maps/demo.h"
+#include "../assets/maps/demo.h"
 
 // And add them to the index here
 void loadMapIndex(Game *g) {

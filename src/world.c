@@ -38,108 +38,95 @@ void drawWorldRT(Game *g) {
 }
 
 void updateWorld(Game *g) {
-	Map *curmap = &g->maps[g->curmap];
-
-	if (!g->worlddrawn) {
-		g->worlddrawn = true;
+	if (!g->worldDrawn) {
+		g->worldDrawn = true;
 		drawWorldRT(g);
 	}
 
-	if (g->playeranim > 0) {
-		g->playeranim -= K_B() ? RUN_SPEED : WALK_SPEED;
+	if (g->playerAnim > 0) {
+		g->playerAnim -= K_B() ? 4 : 2;
 
-		if (g->playeranim < 1) {
-			g->playeranim = 0;
+		if (g->playerAnim < 1) {
+			g->playerAnim = 0;
 			
-			switch (g->playerdir) {
+			switch (g->playerDir) {
 				case DIR_UP: g->playerY--; break;
 				case DIR_DOWN: g->playerY++; break;
 				case DIR_LEFT: g->playerX--; break;
 				case DIR_RIGHT: g->playerX++; break;
 			}
-
-			for (int i = 0; i < MAX_SCRIPTS && g->map.scripts[i].type != SA_NULLTERM; i++) {
-				Script script = g->map.scripts[i];
-				if (script.x == g->playerX && script.y == g->playerY && script.type == SA_TILE) {
-					script.func(g);
-				}
+			
+			if (MAP(g->playerX, g->playerY, MAP_STEP_SCRIPT)) {
+				g->mapMeta.stepScripts[MAP(g->playerX, g->playerY, MAP_STEP_SCRIPT)](g);
 			}
 		}
 	} else {
 		if (K_UP()) {
-			g->playerdir = DIR_UP;
-			if (canMove(g, 0, -1)) g->playeranim = 16;
+			g->playerDir = DIR_UP;
+			if (canMove(g, 0, -1)) g->playerAnim = 16;
 		}
-
 		else if (K_DOWN()) {
-			g->playerdir = DIR_DOWN;
-			if (canMove(g, 0, 1)) g->playeranim = 16;
+			g->playerDir = DIR_DOWN;
+			if (canMove(g, 0, 1)) g->playerAnim = 16;
 		}
-
 		else if (K_LEFT()) {
-			g->playerdir = DIR_LEFT;
-			if (canMove(g, -1, 0)) g->playeranim = 16;
+			g->playerDir = DIR_LEFT;
+			if (canMove(g, -1, 0)) g->playerAnim = 16;
 		}
-
 		else if (K_RIGHT()) {
-			g->playerdir = DIR_RIGHT;
-			if (canMove(g, 1, 0)) g->playeranim = 16;
+			g->playerDir = DIR_RIGHT;
+			if (canMove(g, 1, 0)) g->playerAnim = 16;
 		}
 
+		// Handle interact scripts
 		if (K_A_PRESS()) {
 			int x = g->playerX;
 			int y = g->playerY;
 			
-			switch (g->playerdir) {
+			switch (g->playerDir) {
 				case DIR_UP: y--; break;
 				case DIR_DOWN: y++; break;
 				case DIR_LEFT: x--; break;
 				case DIR_RIGHT: x++; break;
 			}
 
-			for (int i = 0; i < MAX_SCRIPTS && g->map.scripts[i].type != SA_NULLTERM; i++) {
-				Script script = g->map.scripts[i];
-				if (script.x == x && script.y == y && script.type == SA_INTERACT) {
-					script.func(g);
-				}
+			if (MAP(x, y, MAP_INTERACT_SCRIPT)) {
+				g->mapMeta.interactScripts[MAP(x, y, MAP_INTERACT_SCRIPT)](g);
 			}
 		}
 
-		else if (K_MENU_PRESS()) ingamemenu(g);
+		// else if (K_MENU_PRESS()) scrInGameMenu(g);
 	}
 }
 
 // This draws the render texture pre-rendered with drawWorldRT, as well as any sprites
-void drawWorld(Game *game) {
-	int playerdestx = game->playerX*16;
-	int playerdesty = game->playerY*16;
+void drawWorld(Game *g) {
+	int playerDestX = g->playerX*16;
+	int playerDestY = g->playerY*16;
 
-	if (game->playeranim) {
-		switch (game->playerdir) {
-			case DIR_UP: playerdesty -= 12 - game->playeranim; break;
-			case DIR_DOWN: playerdesty += 12 - game->playeranim; break;
-			case DIR_LEFT: playerdestx -= 12 - game->playeranim; break;
-			case DIR_RIGHT: playerdestx += 12 - game->playeranim; break;
+	if (g->playerAnim) {
+		switch (g->playerDir) {
+			case DIR_UP: playerDestY -= 16 - g->playerAnim; break;
+			case DIR_DOWN: playerDestY += 16 - g->playerAnim; break;
+			case DIR_LEFT: playerDestX -= 16 - g->playerAnim; break;
+			case DIR_RIGHT: playerDestX += 16 - g->playerAnim; break;
 		}
 	}
 
 	DrawTexturePro(
-		game->world.texture,
-		(Rectangle) {0, 0, game->maps[game->curmap].width*16, -game->maps[game->curmap].height*16},
+		g->world.texture,
+		(Rectangle) {0, 0, MAP_WIDTH*16, -MAP_HEIGHT*16},
 		(Rectangle) {
-			WIDTH/2 - 16/2 - playerdestx,
-			HEIGHT/2 - 16/2 - playerdesty,
-			game->maps[game->curmap].width*16, game->maps[game->curmap].height*16
+			152 - playerDestX, 112 - playerDestY,
+			MAP_WIDTH*16, MAP_HEIGHT*16
 		},
 		(Vector2) {0, 0}, 0.0f, WHITE
 	);
 
+	// (g->playerAnim && g->playerAnim < 16/2) ? 16 : 0,
 	DrawTextureRec(
-		game->textures.player,
-		(Rectangle) {
-			16 * game->playerdir,
-			(game->playeranim && game->playeranim < 16/2) ? 16 : 0,
-			16, 16
-		}, (Vector2) {WIDTH/2 - 16/2, HEIGHT/2 - 16/2}, WHITE
+		TEX("player"),
+		(Rectangle) {16*g->playerDir, g->playerAnim%4, 16, 16},
+		(Vector2) {152, 112}, WHITE
 	);
 }

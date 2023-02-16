@@ -75,7 +75,7 @@ $CC $SRC -Iinclude -Llib/$TARGET \
 #
 if [[ "$1" = "-r" ]]; then
 	case "$TARGET" in
-		"Windows_NT") ([[ $(uname) = "Linux" ]] && wine $NAME$EXT) || $NAME$EXT;;
+		"Windows_NT") ([[ $(uname) = "Linux" ]] && wine windows/$NAME$EXT) || windows/$NAME$EXT;;
 		"Linux") ./$NAME;;
 		"Web") emrun index.html;;
 	esac

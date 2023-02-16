@@ -46,7 +46,7 @@ int main() {
             case ST_TITLE: updateTitle(g); break;
             case ST_MAINMENU: updateScript(g); break;
             case ST_SCRIPT: updateScript(g); break;
-            // case ST_WORLD: updateWorld(g); break;
+            case ST_WORLD: updateWorld(g); break;
         }
 
         // Draw game into a render texture so we can scale it
@@ -55,8 +55,8 @@ int main() {
         switch (g->state) {
             case ST_TITLE: drawTitle(g); break;
             case ST_MAINMENU: drawScript(g); break;
-            case ST_SCRIPT: drawScript(g); // fall through
-            // case ST_WORLD: drawWorld(g); break;
+            case ST_SCRIPT: drawWorld(g); drawScript(g); break;
+            case ST_WORLD: drawWorld(g); break;
         }
         EndTextureMode();
 

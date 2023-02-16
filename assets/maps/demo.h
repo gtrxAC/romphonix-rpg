@@ -7,7 +7,8 @@
 #ifndef DEMO_H
 #define DEMO_H
 
-#include "common.h"
+#include "../src/common.h"
+
 // _____________________________________________________________________________
 //
 //  Scripts
@@ -53,13 +54,16 @@ Map mapDemo = {
     // These can be edited in the map editor by pressing 4 or 5.
     // The first one in this list is executed for any tile that has a value of 1
     {
-
+        scrDemoDoor,
+        scrDemoGrass
     },
 
     // Same but for interact scripts (executed when player interacts with the tile)
     {
-
+        scrDemoSign,
+        scrDemoMailbox,
+        scrDemoClock
     }
-}
+};
 
 #endif
