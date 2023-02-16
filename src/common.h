@@ -11,6 +11,8 @@
 #include "tinyfiledialogs.h"
 #include "fluidsynth.h"
 
+typedef struct Game Game;
+
 // _____________________________________________________________________________
 //
 //  Controller macros
@@ -56,12 +58,6 @@ typedef enum State {
     ST_BATTLE
 } State;
 
-typedef enum ScriptType {
-    SC_TEXTBOX,
-    SC_MENU,
-    SC_MENU_ANIM  // menu but currently animating the movement of the cursor, blocks input
-} ScriptType;
-
 typedef enum Direction {
 	DIR_UP,
 	DIR_DOWN,
@@ -77,14 +73,26 @@ typedef struct Synth {
     int sfont_id;
 } Synth;
 
+typedef enum ScriptType {
+    SC_TEXTBOX,
+    SC_MENU,
+    SC_MENU_ANIM  // menu but currently animating the movement of the cursor, blocks input
+} ScriptType;
+
+// Other map attributes like width, height, and data are in the game state,
+// loaded when the map is actually in use
+typedef struct Map {
+    const char *name;
+    const char *fileName;
+    void (*stepScripts[256])(Game *);
+    void (*interactScripts[256])(Game *);
+} Map;
+
 // _____________________________________________________________________________
 //
 //  Game state structure
 // _____________________________________________________________________________
 //
-// Game struct refers to itself so we need to create a forward declaration
-typedef struct Game Game;
-
 typedef struct Game {
     
     // Internal counter that ticks every frame and can be reset by certain actions.

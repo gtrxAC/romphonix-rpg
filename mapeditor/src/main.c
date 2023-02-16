@@ -20,20 +20,22 @@ enum {
     MODE_BG,
     MODE_FG,
     MODE_COLLISION,
-    MODE_SCRIPT
+    MODE_STEP_SCRIPT,
+    MODE_INTERACT_SCRIPT
 } mode = MODE_BG;
 
 #define MAP_WIDTH map[0]
 #define MAP_HEIGHT map[1]
-#define TILE_LENGTH 6
+#define TILE_LENGTH 7
 
 #define MAP(x, y, val) map[2 + TILE_LENGTH*((y)*MAP_WIDTH + (x)) + (val)]
 
-const char *modes[4] = {
-    "[1: BG]  2: FG   3: collision   4: script",
-    " 1: BG  [2: FG]  3: collision   4: script",
-    " 1: BG   2: FG  [3: collision]  4: script",
-    " 1: BG   2: FG   3: collision  [4: script]"
+const char *modes[5] = {
+    "[1: BG]  2: FG   3: collisions   4: stepScripts   5: interactScripts",
+    " 1: BG  [2: FG]  3: collisions   4: stepScripts   5: interactScripts",
+    " 1: BG   2: FG  [3: collisions]  4: stepScripts   5: interactScripts",
+    " 1: BG   2: FG   3: collisions  [4: stepScripts]  5: interactScripts",
+    " 1: BG   2: FG   3: collisions   4: stepScripts  [5: interactScripts]"
 };
 
 void newMap() {
@@ -106,14 +108,25 @@ int main() {
                         MAP((int) pos.x, (int) pos.y, 4) = !MAP((int) pos.x, (int) pos.y, 4);
                         break;
 
-                    case MODE_SCRIPT:
+                    case MODE_STEP_SCRIPT:
                         if (MAP((int) pos.x, (int) pos.y, 5)) {
                             MAP((int) pos.x, (int) pos.y, 5) = 0;
                         }
                         else {
-                            char *input = tinyfd_inputBox("Script", "What script ID should this tile have?", " ");
+                            char *input = tinyfd_inputBox("Step script", "What script ID should this tile have?", " ");
                             if (!input) break;
                             MAP((int) pos.x, (int) pos.y, 5) = atoi(input);
+                        }
+                        break;
+
+                    case MODE_INTERACT_SCRIPT:
+                        if (MAP((int) pos.x, (int) pos.y, 6)) {
+                            MAP((int) pos.x, (int) pos.y, 6) = 0;
+                        }
+                        else {
+                            char *input = tinyfd_inputBox("Interact script", "What script ID should this tile have?", " ");
+                            if (!input) break;
+                            MAP((int) pos.x, (int) pos.y, 6) = atoi(input);
                         }
                         break;
                 }
@@ -173,6 +186,7 @@ int main() {
                         MAP(x, y, 3) = 0;
                         MAP(x, y, 4) = 0;
                         MAP(x, y, 5) = 0;
+                        MAP(x, y, 6) = 0;
                     }
                 }
             }
@@ -181,7 +195,8 @@ int main() {
         if (IsKeyPressed(KEY_ONE)) mode = MODE_BG;
         if (IsKeyPressed(KEY_TWO)) mode = MODE_FG;
         if (IsKeyPressed(KEY_THREE)) mode = MODE_COLLISION;
-        if (IsKeyPressed(KEY_FOUR)) mode = MODE_SCRIPT;
+        if (IsKeyPressed(KEY_FOUR)) mode = MODE_STEP_SCRIPT;
+        if (IsKeyPressed(KEY_FIVE)) mode = MODE_INTERACT_SCRIPT;
 
         // Draw
         BeginDrawing();
@@ -226,18 +241,33 @@ int main() {
                             if (MAP(x, y, 4)) DrawRectangle(x*16, y*16, 16, 16, ColorAlpha(RED, 0.5f));
                             break;
 
-                        case MODE_SCRIPT:
+                        case MODE_STEP_SCRIPT:
                             DrawTextureRec(
                                 tileset, (Rectangle) {MAP(x, y, 0)*16, MAP(x, y, 1)*16, 16, 16},
-                                (Vector2) {x*16, y*16}, WHITE
+                                (Vector2) {x*16, y*16}, ColorAlpha(WHITE, 0.5f)
                             );
                             DrawTextureRec(
                                 tileset, (Rectangle) {MAP(x, y, 2)*16, MAP(x, y, 3)*16, 16, 16},
-                                (Vector2) {x*16, y*16}, WHITE
+                                (Vector2) {x*16, y*16}, ColorAlpha(WHITE, 0.5f)
                             );
                             if (MAP(x, y, 5)) {
                                 DrawRectangle(x*16, y*16, 16, 16, ColorAlpha(YELLOW, 0.5f));
                                 DrawText(TextFormat("%d", MAP(x, y, 5)), x*16, y*16, 10, BLACK);
+                            }
+                            break;
+
+                        case MODE_INTERACT_SCRIPT:
+                            DrawTextureRec(
+                                tileset, (Rectangle) {MAP(x, y, 0)*16, MAP(x, y, 1)*16, 16, 16},
+                                (Vector2) {x*16, y*16}, ColorAlpha(WHITE, 0.5f)
+                            );
+                            DrawTextureRec(
+                                tileset, (Rectangle) {MAP(x, y, 2)*16, MAP(x, y, 3)*16, 16, 16},
+                                (Vector2) {x*16, y*16}, ColorAlpha(WHITE, 0.5f)
+                            );
+                            if (MAP(x, y, 6)) {
+                                DrawRectangle(x*16, y*16, 16, 16, ColorAlpha(SKYBLUE, 0.5f));
+                                DrawText(TextFormat("%d", MAP(x, y, 6)), x*16, y*16, 10, BLACK);
                             }
                             break;
                     }
