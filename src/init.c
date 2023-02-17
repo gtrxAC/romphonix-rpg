@@ -30,8 +30,10 @@ void initGame(Game *g) {
     LOAD_TEXTURE("indicator");
     LOAD_TEXTURE("textbox");
     LOAD_TEXTURE("player");
+    LOAD_TEXTURE("tiles_overworld");
 
     loadMapIndex(g);
+    loadMap(g, 0);
 }
 
 // _____________________________________________________________________________

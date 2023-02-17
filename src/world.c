@@ -24,12 +24,12 @@ void drawWorldRT(Game *g) {
 		for (int x = 0; x < MAP_WIDTH; x++) {
 			DrawTextureRec(
 				TEX(tiles_overworld),
-				(Rectangle) {MAP(x, y, MAP_BG_X), MAP(x, y, MAP_BG_Y), 16, 16},
+				(Rectangle) {MAP(x, y, MAP_BG_X)*16, MAP(x, y, MAP_BG_Y)*16, 16, 16},
 				(Vector2) {x*16, y*16}, WHITE
 			);
 			DrawTextureRec(
 				TEX(tiles_overworld),
-				(Rectangle) {MAP(x, y, MAP_FG_X), MAP(x, y, MAP_FG_Y), 16, 16},
+				(Rectangle) {MAP(x, y, MAP_FG_X)*16, MAP(x, y, MAP_FG_Y)*16, 16, 16},
 				(Vector2) {x*16, y*16}, WHITE
 			);
 		}

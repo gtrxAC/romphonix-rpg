@@ -17,23 +17,27 @@ void scrMainMenuDemo();
 void scrMainMenu(Game *g) {
     setSong(g, "assets/sounds/music/bid_right_now_p.mid");
 
-	const char *choices[] = {"Change Song", "Change song 2", "Textbox demo"};
-	menu(g, 3, choices);
+	const char *choices[] = {"Start Game", "Change Song", "Change song 2", "Textbox demo"};
+	menu(g, 4, choices);
 	g->nextFunc = scrMainMenuCheck;
 }
 
 void scrMainMenuCheck(Game *g) {
     switch (g->menuChoice) {
         case 0:
+            g->state = ST_WORLD;
+            break;
+
+        case 1:
             // note: meme song, will not be included in final game
             setSong(g, "assets/sounds/music/abangchung.mid");
             break;
 
-        case 1:
+        case 2:
             setSong(g, "assets/sounds/music/bid_right_now_p.mid");
             break;
 
-        case 2:
+        case 3:
 	        g->nextFunc = scrMainMenuDemo;
             break;
     }
