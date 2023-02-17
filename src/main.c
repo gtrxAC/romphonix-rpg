@@ -26,6 +26,7 @@ int main() {
     // Create game state structure
     Game *g = malloc(sizeof(Game));
     if (!g) error(g, "Failed to allocate game state");
+    memset(g, 0, sizeof(Game));
 
     // Initialize the game - this loads the window and assets.
     initGame(g);
