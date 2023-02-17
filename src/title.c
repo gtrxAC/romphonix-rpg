@@ -26,7 +26,7 @@ void updateTitle(Game *g) {
 void drawTitle(Game *g) {
     DrawTexture(TEX(title), 0, 0, WHITE);
     if (g->frameCount % 60 < 30) {
-        int length = MeasureTextEx(g->fonts.dialogue, "Press Any Key", 14, 1).x;
+        int length = MeasureTextEx(g->fonts.dialogue, "Press Any Key", 13, 0).x;
         drawText(g, "Press Any Key", 160 - length/2, 180, WHITE);
     }
 }

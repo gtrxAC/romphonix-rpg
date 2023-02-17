@@ -137,6 +137,9 @@ typedef struct Game {
 	int playerAnim;
 	Direction playerDir;
 
+    // Text scrolling animation
+    int textScroll[2];
+
     // _________________________________________________________________________
     //
     //  Assets

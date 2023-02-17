@@ -14,7 +14,7 @@ void drawBox(Game *g, int x, int y, int width, int height) {
 }
 
 void drawText(Game *g, const char *text, int x, int y, Color color) {
-    DrawTextEx(g->fonts.dialogue, text, (Vector2) {x, y}, 14, 1, color);
+    DrawTextEx(g->fonts.dialogue, text, (Vector2) {x, y}, 13, 0, color);
 }
 
 void drawTextL(Game *g, const char *text, int x, int y, Color color) {
