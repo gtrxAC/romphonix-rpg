@@ -79,30 +79,22 @@ void updateScript(Game *g) {
 	switch (g->scriptType) {
 		case SC_MENU:
 			if (K_UP_PRESS() && g->menuChoice) {
-				g->menuAnim = 0;
+				g->menuChoice--;
+				g->menuAnim = 16;
 				g->menuAnimDir = DIR_UP;
-				g->scriptType = SC_MENU_ANIM;
 			}
 			else if (K_DOWN_PRESS() && g->menuChoice < g->numMenuChoices - 1) {
-				g->menuAnim = 0;
+				g->menuChoice++;
+				g->menuAnim = 16;
 				g->menuAnimDir = DIR_DOWN;
-				g->scriptType = SC_MENU_ANIM;
 			}
+			if (g->menuAnim > 0) g->menuAnim -= 2;
 			// fall through ("A" button to confirm choice)
 
 		case SC_TEXTBOX:
 			if (K_A_PRESS()) {
 				if (g->nextFunc) g->nextFunc(g);
 				else g->state = ST_WORLD;
-			}
-			break;
-
-		case SC_MENU_ANIM:
-			g->menuAnim += 2;
-			if (g->menuAnim > 14) {
-				if (g->menuAnimDir == DIR_UP) g->menuChoice--;
-				else g->menuChoice++;
-				g->scriptType = SC_MENU;
 			}
 			break;
 	}
@@ -126,22 +118,21 @@ void drawScript(Game *g) {
 			DrawTextEx(
 				g->fonts.dialogue, g->textbox[0],
 				(Vector2) {18, 232 - 14*lineCount},
-				14, 1, WHITE
+				13, 0, WHITE
 			);
 			if (lineCount == 2) DrawTextEx(
 				g->fonts.dialogue, g->textbox[1],
 				(Vector2) {18, 218},
-				14, 1, WHITE
+				13, 0, WHITE
 			);
 			break;
 		}
 
-		case SC_MENU:
-		case SC_MENU_ANIM: {
+		case SC_MENU: {
 			// Get length of the longest menu choice
 			int longest = 0;
 			for (int i = 0; i < g->numMenuChoices; i++) {
-				Vector2 length = MeasureTextEx(g->fonts.dialogue, g->menuChoices[i], 14, 1);
+				Vector2 length = MeasureTextEx(g->fonts.dialogue, g->menuChoices[i], 13, 0);
 				if (length.x > longest) longest = length.x;
 			}
 
@@ -151,19 +142,19 @@ void drawScript(Game *g) {
 				DrawTextEx(
 					g->fonts.dialogue, g->menuChoices[i],
 					(Vector2) {22, 8 + 14*i},
-					14, 1, WHITE
+					13, 0, WHITE
 				);
 			}
 
 			int selectorY = 8 + 14*g->menuChoice;
 
-			if (g->scriptType == SC_MENU_ANIM) {
-				if (g->menuAnimDir == DIR_UP) selectorY -= g->menuAnim;
-				else selectorY += g->menuAnim;
-			}
+			if (g->menuAnimDir == DIR_UP) selectorY += g->menuAnim;
+			else selectorY -= g->menuAnim;
 			DrawTexture(TEX(indicator), 8, selectorY, WHITE);
 		}
 	}
+
+	DrawText(TextFormat("anim %d, animdir %d", g->menuAnim, g->menuAnimDir), 0, 200, 10, WHITE);
 }
 
 void scrNoScript(Game *g) {

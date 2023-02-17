@@ -44,7 +44,7 @@ void updateWorld(Game *g) {
 	}
 
 	if (g->playerAnim > 0) {
-		g->playerAnim -= K_B() ? 4 : 2;
+		g->playerAnim -= K_B() ? 2 : 1;
 
 		if (g->playerAnim < 1) {
 			g->playerAnim = 0;
@@ -57,7 +57,12 @@ void updateWorld(Game *g) {
 			}
 			
 			if (MAP(g->playerX, g->playerY, MAP_STEP_SCRIPT)) {
-				g->mapMeta.stepScripts[MAP(g->playerX, g->playerY, MAP_STEP_SCRIPT)](g);
+				g->state = ST_SCRIPT;
+				if (g->mapMeta.stepScripts[MAP(g->playerX, g->playerY, MAP_STEP_SCRIPT)]) {
+					g->mapMeta.stepScripts[MAP(g->playerX, g->playerY, MAP_STEP_SCRIPT)](g);
+				} else {
+					scrNoScript(g);
+				}
 			}
 		}
 	} else {
@@ -134,5 +139,11 @@ void drawWorld(Game *g) {
 		(Vector2) {152, 112}, WHITE
 	);
 
-	DrawText(TextFormat("x %d, y %d, dir %d, anim %d", g->playerX, g->playerY, g->playerDir, g->playerAnim), 0, 0, 10, WHITE);
+	DrawText(
+		TextFormat(
+			"x %d, y %d, dir %d, anim %d, fps %d",
+			g->playerX, g->playerY, g->playerDir, g->playerAnim, GetFPS()
+		),
+		0, 0, 10, WHITE
+	);
 }

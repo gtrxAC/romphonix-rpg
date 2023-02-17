@@ -91,8 +91,7 @@ typedef struct Synth {
 
 typedef enum ScriptType {
     SC_TEXTBOX,
-    SC_MENU,
-    SC_MENU_ANIM  // menu but currently animating the movement of the cursor, blocks input
+    SC_MENU
 } ScriptType;
 
 // Other map attributes like width, height, and data are in the game state,
