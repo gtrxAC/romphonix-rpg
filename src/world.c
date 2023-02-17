@@ -91,7 +91,12 @@ void updateWorld(Game *g) {
 			}
 
 			if (MAP(x, y, MAP_INTERACT_SCRIPT)) {
-				g->mapMeta.interactScripts[MAP(x, y, MAP_INTERACT_SCRIPT)](g);
+				g->state = ST_SCRIPT;
+				if (g->mapMeta.interactScripts[MAP(x, y, MAP_INTERACT_SCRIPT) - 1]) {
+					g->mapMeta.interactScripts[MAP(x, y, MAP_INTERACT_SCRIPT) - 1](g);
+				} else {
+					scrNoScript(g);
+				}
 			}
 		}
 
@@ -123,7 +128,6 @@ void drawWorld(Game *g) {
 		(Vector2) {0, 0}, 0.0f, WHITE
 	);
 
-	// (g->playerAnim && g->playerAnim < 16/2) ? 16 : 0,
 	DrawTextureRec(
 		TEX(player),
 		(Rectangle) {((16 - g->playerAnim)/4)*16, 16*g->playerDir, 16, 16},

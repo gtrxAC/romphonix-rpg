@@ -15,6 +15,8 @@
 //  Put your script functions here, prefix them with with scr and the map name
 // _____________________________________________________________________________
 //
+// If scripts are referenced using g->nextFunc, they have to be declared first
+
 // Step scripts
 void scrDemoDoor(Game *g) {
 
@@ -25,15 +27,18 @@ void scrDemoGrass(Game *g) {
 
 // Interact scripts
 void scrDemoSign(Game *g) {
-    
+    textbox(g, "This is a sign!", "");
+    g->nextFunc = endScript;
 }
 
 void scrDemoMailbox(Game *g) {
-    
+    textbox(g, "You have no mail.", "");
+    g->nextFunc = endScript;
 }
 
 void scrDemoClock(Game *g) {
-    
+    textbox(g, "The time is... I don't know, I don't care", "enough to check.");
+    g->nextFunc = endScript;
 }
 
 

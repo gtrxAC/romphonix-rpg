@@ -175,4 +175,6 @@ typedef struct Game {
 	unsigned int textboxTime;
 } Game;
 
+#include "script.h"
+
 #endif

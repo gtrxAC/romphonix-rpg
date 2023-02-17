@@ -7,10 +7,12 @@
 //
 //  "script" is also a game state, much like "title" or "battle", it is used
 //  when textboxes or menus are shown.
+//
+//  Note that when beginning a script, the game state should be set to
+//  ST_SCRIPT or another script-like state for a specific menu (e.g. main menu).
 // _____________________________________________________________________________
 //
 #include "common.h"
-// #include "world.h"
 
 // _____________________________________________________________________________
 //
@@ -18,7 +20,7 @@
 // _____________________________________________________________________________
 //
 void textbox(Game *g, const char *line1, const char *line2) {
-	g->state = ST_SCRIPT;
+	// g->state = ST_SCRIPT;
 	g->scriptType = SC_TEXTBOX;
 	g->textbox[0] = line1;
 	g->textbox[1] = line2;
@@ -31,7 +33,7 @@ void textbox(Game *g, const char *line1, const char *line2) {
 // _____________________________________________________________________________
 //
 void menu(Game *g, int numChoices, const char **choices) {
-	g->state = ST_SCRIPT;
+	// g->state = ST_SCRIPT;
 	g->scriptType = SC_MENU;
 	g->menuChoice = 0;
 	g->numMenuChoices = numChoices;
@@ -74,11 +76,6 @@ void changeMap(Game *g, int map, int x, int y) {
 // _____________________________________________________________________________
 //
 void updateScript(Game *g) {
-	if (!g->worldDrawn) {
-		g->worldDrawn = true;
-		// drawWorldRT(g);
-	}
-
 	switch (g->scriptType) {
 		case SC_MENU:
 			if (K_UP_PRESS() && g->menuChoice) {
@@ -167,4 +164,9 @@ void drawScript(Game *g) {
 			DrawTexture(TEX(indicator), 8, selectorY, WHITE);
 		}
 	}
+}
+
+void scrNoScript(Game *g) {
+	textbox(g, "No function assigned to this script index!", "");
+	g->nextFunc = endScript;
 }
