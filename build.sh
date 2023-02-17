@@ -34,7 +34,7 @@ case "$TARGET" in
 		CC="$ARCH-w64-mingw32-gcc"
 		EXT=".exe"
 		PLATFORM="PLATFORM_DESKTOP"
-		TARGET_FLAGS="-lopengl32 -lgdi32 -lwinmm -static -Wl,--subsystem,windows -lfluidsynth.dll -o windows/romphonix.exe"
+		TARGET_FLAGS="-lopengl32 -lgdi32 -lwinmm -static -Wl,--subsystem,windows -lfluidsynth.dll -lcomdlg32 -lole32 -o windows/romphonix.exe"
 		;;
 
 	"Linux")

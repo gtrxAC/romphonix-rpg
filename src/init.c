@@ -34,6 +34,7 @@ void initGame(Game *g) {
 
     loadMapIndex(g);
     loadMap(g, 0);
+    drawWorldRT(g);
 }
 
 // _____________________________________________________________________________

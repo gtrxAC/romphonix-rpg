@@ -125,8 +125,10 @@ void drawWorld(Game *g) {
 
 	// (g->playerAnim && g->playerAnim < 16/2) ? 16 : 0,
 	DrawTextureRec(
-		TEX("player"),
-		(Rectangle) {16*g->playerDir, g->playerAnim%4, 16, 16},
+		TEX(player),
+		(Rectangle) {((16 - g->playerAnim)/4)*16, 16*g->playerDir, 16, 16},
 		(Vector2) {152, 112}, WHITE
 	);
+
+	DrawText(TextFormat("x %d, y %d, dir %d, anim %d", g->playerX, g->playerY, g->playerDir, g->playerAnim), 0, 0, 10, WHITE);
 }
