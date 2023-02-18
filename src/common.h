@@ -50,6 +50,10 @@ typedef struct Game Game;
 // Gets a byte of a map tile (val takes a MapByte defined below)
 #define MAP(x, y, val) (g->map[2 + 7*((y)*MAP_WIDTH + (x)) + (val)])
 
+// Math stuff
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+
 // _____________________________________________________________________________
 //
 //  Enumerations and Structures
@@ -137,9 +141,6 @@ typedef struct Game {
 	int playerAnim;
 	Direction playerDir;
 
-    // Text scrolling animation
-    int textScroll[2];
-
     // _________________________________________________________________________
     //
     //  Assets
@@ -174,6 +175,7 @@ typedef struct Game {
 	Direction menuAnimDir;
 
     const char *textbox[2];
+    char textboxDraw[2][64];
 	unsigned int textboxTime;
 } Game;
 

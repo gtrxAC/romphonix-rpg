@@ -24,7 +24,7 @@ void textbox(Game *g, const char *line1, const char *line2) {
 	g->scriptType = SC_TEXTBOX;
 	g->textbox[0] = line1;
 	g->textbox[1] = line2;
-	g->textboxTime = g->frameCount;
+	g->textboxTime = 0;
 }
 
 // _____________________________________________________________________________
@@ -115,16 +115,32 @@ void drawScript(Game *g) {
 
             drawBox(g, 10, 224 - 14*lineCount, 300, 16 + 14*lineCount);
 
+			// The text uses a typewriter animation - so at the beginning only
+			// part of the text is drawn, we use separate text buffers and a
+			// timer to manage this.
+			int line1Len = MIN(g->textboxTime, 63);
+			int line2Len = MIN(g->textboxTime - strlen(g->textbox[0]), 63);
+			if (line2Len == 63 && line1Len < 63) line2Len = 0;  // quick and hacky bugfix
+			
+			strncpy(g->textboxDraw[0], g->textbox[0], line1Len);
+			strncpy(g->textboxDraw[1], g->textbox[1], line2Len);
+			g->textboxDraw[0][line1Len] = 0;
+			g->textboxDraw[1][line2Len] = 0;
+
+			DrawText(TextFormat("%d, %d", line1Len, line2Len), 0, 160, 10, WHITE);
+
 			DrawTextEx(
-				g->fonts.dialogue, g->textbox[0],
+				g->fonts.dialogue, g->textboxDraw[0],
 				(Vector2) {18, 232 - 14*lineCount},
 				13, 0, WHITE
 			);
 			if (lineCount == 2) DrawTextEx(
-				g->fonts.dialogue, g->textbox[1],
+				g->fonts.dialogue, g->textboxDraw[1],
 				(Vector2) {18, 218},
 				13, 0, WHITE
 			);
+
+			g->textboxTime++;
 			break;
 		}
 
@@ -154,7 +170,13 @@ void drawScript(Game *g) {
 		}
 	}
 
-	DrawText(TextFormat("anim %d, animdir %d", g->menuAnim, g->menuAnimDir), 0, 200, 10, WHITE);
+	DrawText(
+		TextFormat(
+			"anim %d, animdir %d, textboxtime %d",
+			g->menuAnim, g->menuAnimDir, g->textboxTime
+		),
+		0, 180, 10, WHITE
+	);
 }
 
 void scrNoScript(Game *g) {
