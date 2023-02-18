@@ -41,6 +41,9 @@ typedef struct Game Game;
 //  Other helper macros
 // _____________________________________________________________________________
 //
+#define u8 unsigned char
+#define u16 unsigned short
+
 // Gets a texture
 #define TEX(t) (shget(g->textures, #t))
 
@@ -179,6 +182,24 @@ typedef struct Game {
 	unsigned int textboxTime;
 } Game;
 
+// _____________________________________________________________________________
+//
+//  Save data structure
+// _____________________________________________________________________________
+//
+typedef struct SaveData {
+    // Player location
+    int curMap, playerX, playerY, playerDir;
+
+    // Owned phones
+    bool phonesSeen[256];
+    bool phonesCaught[256];
+    Phone party[6];
+    Phone pc[10][5][5];  // these values may be tweaked later, but 5 × 5 is a good grid size
+
+} SaveData;
+
 #include "script.h"
+#include "phones.h"
 
 #endif
