@@ -2,8 +2,8 @@
 // #include "menu.h"
 
 bool canMove(Game *g, int dX, int dY) {
-	int newX = g->playerX + dX;
-	int newY = g->playerY + dY;
+	int newX = g->s.playerX + dX;
+	int newY = g->s.playerY + dY;
 
 	// Check if we're out of map bounds
 	if (newX < 0 || newY < 0) return false;
@@ -49,17 +49,17 @@ void updateWorld(Game *g) {
 		if (g->playerAnim < 1) {
 			g->playerAnim = 0;
 			
-			switch (g->playerDir) {
-				case DIR_UP: g->playerY--; break;
-				case DIR_DOWN: g->playerY++; break;
-				case DIR_LEFT: g->playerX--; break;
-				case DIR_RIGHT: g->playerX++; break;
+			switch (g->s.playerDir) {
+				case DIR_UP: g->s.playerY--; break;
+				case DIR_DOWN: g->s.playerY++; break;
+				case DIR_LEFT: g->s.playerX--; break;
+				case DIR_RIGHT: g->s.playerX++; break;
 			}
 			
-			if (MAP(g->playerX, g->playerY, MAP_STEP_SCRIPT)) {
+			if (MAP(g->s.playerX, g->s.playerY, MAP_STEP_SCRIPT)) {
 				g->state = ST_SCRIPT;
-				if (g->mapMeta.stepScripts[MAP(g->playerX, g->playerY, MAP_STEP_SCRIPT)]) {
-					g->mapMeta.stepScripts[MAP(g->playerX, g->playerY, MAP_STEP_SCRIPT)](g);
+				if (g->mapMeta.stepScripts[MAP(g->s.playerX, g->s.playerY, MAP_STEP_SCRIPT)]) {
+					g->mapMeta.stepScripts[MAP(g->s.playerX, g->s.playerY, MAP_STEP_SCRIPT)](g);
 				} else {
 					scrNoScript(g);
 				}
@@ -67,28 +67,28 @@ void updateWorld(Game *g) {
 		}
 	} else {
 		if (K_UP()) {
-			g->playerDir = DIR_UP;
+			g->s.playerDir = DIR_UP;
 			if (canMove(g, 0, -1)) g->playerAnim = 16;
 		}
 		else if (K_DOWN()) {
-			g->playerDir = DIR_DOWN;
+			g->s.playerDir = DIR_DOWN;
 			if (canMove(g, 0, 1)) g->playerAnim = 16;
 		}
 		else if (K_LEFT()) {
-			g->playerDir = DIR_LEFT;
+			g->s.playerDir = DIR_LEFT;
 			if (canMove(g, -1, 0)) g->playerAnim = 16;
 		}
 		else if (K_RIGHT()) {
-			g->playerDir = DIR_RIGHT;
+			g->s.playerDir = DIR_RIGHT;
 			if (canMove(g, 1, 0)) g->playerAnim = 16;
 		}
 
 		// Handle interact scripts
 		if (K_A_PRESS()) {
-			int x = g->playerX;
-			int y = g->playerY;
+			int x = g->s.playerX;
+			int y = g->s.playerY;
 			
-			switch (g->playerDir) {
+			switch (g->s.playerDir) {
 				case DIR_UP: y--; break;
 				case DIR_DOWN: y++; break;
 				case DIR_LEFT: x--; break;
@@ -111,11 +111,11 @@ void updateWorld(Game *g) {
 
 // This draws the render texture pre-rendered with drawWorldRT, as well as any sprites
 void drawWorld(Game *g) {
-	int playerDestX = g->playerX*16;
-	int playerDestY = g->playerY*16;
+	int playerDestX = g->s.playerX*16;
+	int playerDestY = g->s.playerY*16;
 
 	if (g->playerAnim) {
-		switch (g->playerDir) {
+		switch (g->s.playerDir) {
 			case DIR_UP: playerDestY -= 16 - g->playerAnim; break;
 			case DIR_DOWN: playerDestY += 16 - g->playerAnim; break;
 			case DIR_LEFT: playerDestX -= 16 - g->playerAnim; break;
@@ -135,14 +135,14 @@ void drawWorld(Game *g) {
 
 	DrawTextureRec(
 		TEX(player),
-		(Rectangle) {((16 - g->playerAnim)/4)*16, 16*g->playerDir, 16, 16},
+		(Rectangle) {((16 - g->playerAnim)/4)*16, 16*g->s.playerDir, 16, 16},
 		(Vector2) {152, 112}, WHITE
 	);
 
 	DrawText(
 		TextFormat(
 			"x %d, y %d, dir %d, anim %d, fps %d",
-			g->playerX, g->playerY, g->playerDir, g->playerAnim, GetFPS()
+			g->s.playerX, g->s.playerY, g->s.playerDir, g->playerAnim, GetFPS()
 		),
 		0, 0, 10, WHITE
 	);

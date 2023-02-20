@@ -1,1 +1,1 @@
-.\windows\romphonix.exe
+.\windows\romphonix.exe > romphonix.log

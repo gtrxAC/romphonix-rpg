@@ -16,7 +16,7 @@ typedef struct Game Game;
 // _____________________________________________________________________________
 //
 //  Controller macros
-//  The game controls are based on 7 keys: up/down/left/right, A (select),
+//  The game controls are based on 7 buttons: up/down/left/right, A (select),
 //  B (back) and menu.
 // _____________________________________________________________________________
 //
@@ -25,16 +25,16 @@ typedef struct Game Game;
 #define K_LEFT() (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A))
 #define K_RIGHT() (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D))
 #define K_A() (IsKeyDown(KEY_L) || IsKeyDown(KEY_ENTER))
-#define K_B() IsKeyDown(KEY_K)
-#define K_MENU() IsKeyDown(KEY_ESCAPE)
+#define K_B() (IsKeyDown(KEY_K) || IsKeyDown(KEY_ESCAPE))
+#define K_MENU() IsKeyDown(KEY_SPACE)
 
 #define K_UP_PRESS() (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W))
 #define K_DOWN_PRESS() (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S))
 #define K_LEFT_PRESS() (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A))
 #define K_RIGHT_PRESS() (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D))
 #define K_A_PRESS() (IsKeyPressed(KEY_L) || IsKeyPressed(KEY_ENTER))
-#define K_B_PRESS() IsKeyPressed(KEY_K)
-#define K_MENU_PRESS() IsKeyPressed(KEY_ESCAPE)
+#define K_B_PRESS() (IsKeyPressed(KEY_K) || IsKeyPressed(KEY_ESCAPE))
+#define K_MENU_PRESS() IsKeyPressed(KEY_SPACE)
 
 // _____________________________________________________________________________
 //
@@ -116,6 +116,22 @@ typedef struct Map {
 
 // _____________________________________________________________________________
 //
+//  Save data structure
+// _____________________________________________________________________________
+//
+typedef struct SaveData {
+    // Player location
+    int curMap, playerX, playerY, playerDir;
+
+    // Owned phones
+    bool phonesSeen[256];
+    bool phonesCaught[256];
+    Phone party[6];
+    Phone pc[10][5][5];  // these values may be tweaked later, but 5 × 5 is a good grid size
+} SaveData;
+
+// _____________________________________________________________________________
+//
 //  Game state structure
 // _____________________________________________________________________________
 //
@@ -139,14 +155,15 @@ typedef struct Game {
     Map mapMeta;  // metadata for loaded map
     char *map;  // actual data (one map fully loaded at a time)
     
-    // Player location
+    // Player location (values which aren't written in the save file)
     // nextMap/X/Y are the location where the player moves after a map change transition
-	int curMap, nextMap;
-	int playerX, playerY, nextX, nextY;
+	int nextMap;
+	int nextX, nextY;
 	int playerAnim;
-	Direction playerDir;
 
     PhoneDatabase *phoneDB;
+
+    SaveData s;
 
     // _________________________________________________________________________
     //
@@ -185,23 +202,6 @@ typedef struct Game {
     char textboxDraw[2][64];
 	unsigned int textboxTime;
 } Game;
-
-// _____________________________________________________________________________
-//
-//  Save data structure
-// _____________________________________________________________________________
-//
-typedef struct SaveData {
-    // Player location
-    int curMap, playerX, playerY, playerDir;
-
-    // Owned phones
-    bool phonesSeen[256];
-    bool phonesCaught[256];
-    Phone party[6];
-    Phone pc[10][5][5];  // these values may be tweaked later, but 5 × 5 is a good grid size
-
-} SaveData;
 
 #include "script.h"
 

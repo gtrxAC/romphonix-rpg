@@ -19,6 +19,8 @@ index.html
 *.js
 *.data
 
+*.log
+
 # Sub-projects
 mapeditor/include/raylib.h
 mapeditor/lib
