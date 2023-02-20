@@ -112,6 +112,8 @@ typedef struct Map {
     void (*interactScripts[64])(Game *);
 } Map;
 
+#include "phones.h"
+
 // _____________________________________________________________________________
 //
 //  Game state structure
@@ -143,6 +145,8 @@ typedef struct Game {
 	int playerX, playerY, nextX, nextY;
 	int playerAnim;
 	Direction playerDir;
+
+    PhoneDatabase *phoneDB;
 
     // _________________________________________________________________________
     //
@@ -200,6 +204,5 @@ typedef struct SaveData {
 } SaveData;
 
 #include "script.h"
-#include "phones.h"
 
 #endif

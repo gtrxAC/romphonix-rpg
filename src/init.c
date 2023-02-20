@@ -32,6 +32,10 @@ void initGame(Game *g) {
     LOAD_TEXTURE("player");
     LOAD_TEXTURE("tiles_overworld");
 
+    int unused;
+    g->phoneDB = (PhoneDatabase *) LoadFileData("assets/data/phones.tfs", &unused);
+    printf("PHONERPG: Loaded %d phones\n", g->phoneDB->size);
+
     loadMapIndex(g);
     loadMap(g, 0);
     drawWorldRT(g);
@@ -45,6 +49,8 @@ void initGame(Game *g) {
 void closeGame(Game *g, int status) {
     free(g->map);
     arrfree(g->maps);
+
+    free(g->phoneDB);
 
     for (int i = 0; i < shlen(g->textures); i++) {
         UnloadTexture(g->textures[i].value);

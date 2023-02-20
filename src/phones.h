@@ -32,7 +32,7 @@ typedef struct PhoneSpecs {
     // Make sure none of the descriptions exceed the max length (should be well
     // below that, 100 is a good maximum)
     char brand[16];
-    char model[32];
+    char model[16];
     char description[128];
     
     u16 year;
@@ -41,13 +41,13 @@ typedef struct PhoneSpecs {
     u16 battery;
     u16 attack, defense, weight;
     u8 rarity;  // 0 (common) to 5 (rare)
-    float brokenChance; // 0 to 1
+    u8 brokenChance; // how many phones out of 256 are broken (previously one out of this many phones were broken)
     u8 baseExp;
     Icon icon;
 } PhoneSpecs;
 
 typedef struct Phone {
-    unsigned short id;  // ID of phone from database
+    u16 id;  // ID of phone from database
     char nickname[16];
 
     u16 hp, maxHP, energy;
@@ -57,10 +57,9 @@ typedef struct Phone {
     u8 screenStatus, boardStatus, coverStatus, batteryStatus;
 } Phone;
 
-// _____________________________________________________________________________
-//
-//  Phone database
-// _____________________________________________________________________________
-//
+typedef struct PhoneDatabase {
+    u16 size;
+    Phone phones[];
+} PhoneDatabase;
 
 #endif
