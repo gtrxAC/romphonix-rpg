@@ -128,6 +128,8 @@ typedef struct SaveData {
     bool phonesCaught[256];
     Phone party[6];
     Phone pc[10][5][5];  // these values may be tweaked later, but 5 × 5 is a good grid size
+
+    unsigned int money;
 } SaveData;
 
 // _____________________________________________________________________________
@@ -202,6 +204,10 @@ typedef struct Game {
     const char *textbox[2];
     char textboxDraw[2][64];
 	unsigned int textboxTime;
+
+    // for menus or textboxes that use custom update/draw (usually only draw) functions
+	void (*menuUpdateFunc)(Game *);
+	void (*menuDrawFunc)(Game *);
 } Game;
 
 #include "script.h"

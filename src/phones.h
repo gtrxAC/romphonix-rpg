@@ -59,7 +59,7 @@ typedef struct Phone {
 
 typedef struct PhoneDatabase {
     u16 size;
-    Phone phones[];
+    PhoneSpecs phones[];
 } PhoneDatabase;
 
 #endif

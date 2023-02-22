@@ -4,5 +4,6 @@
 #include "common.h"
 
 void scrInGameMenu(Game *g);
+void scrSaveMenu(Game *g);
 
 #endif

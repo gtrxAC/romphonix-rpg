@@ -83,5 +83,5 @@ fi
 
 # Build map editor
 cd mapeditor
-./build.sh
+# ./build.sh
 cd ..
