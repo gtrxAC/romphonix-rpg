@@ -33,6 +33,7 @@ int main() {
 
     // Set up the game variables.
     SetTargetFPS(60);
+    SetExitKey(0);
     g->state = ST_TITLE;
     setSong(g, "assets/sounds/music/LG tune.mid");
 

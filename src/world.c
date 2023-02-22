@@ -105,7 +105,7 @@ void updateWorld(Game *g) {
 			}
 		}
 
-		// else if (K_MENU_PRESS()) scrInGameMenu(g);
+		else if (K_MENU_PRESS()) scrInGameMenu(g);
 	}
 }
 

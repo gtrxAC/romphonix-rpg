@@ -3,7 +3,7 @@
 //  Main menu logic (made up of script functions)
 // _____________________________________________________________________________
 //
-#include "common.h"
+#include "../common.h"
 
 // Functions have to be declared before referencing them
 
@@ -18,7 +18,7 @@ void scrMainMenu(Game *g) {
     setSong(g, "assets/sounds/music/bid_right_now_p.mid");
 
 	const char *choices[] = {"Start Game", "Change Song", "Change song 2", "Textbox demo"};
-	menu(g, 4, choices);
+	menu(g, 4, choices, false);
 	g->nextFunc = scrMainMenuCheck;
 }
 

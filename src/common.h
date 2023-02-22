@@ -197,6 +197,7 @@ typedef struct Game {
 	int numMenuChoices;
 	int menuAnim;
 	Direction menuAnimDir;
+    bool canSkipMenu;
 
     const char *textbox[2];
     char textboxDraw[2][64];

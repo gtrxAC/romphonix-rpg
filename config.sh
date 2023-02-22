@@ -9,7 +9,7 @@
 NAME=romphonix
 
 # Files to compile. You can add multiple files by separating by spaces.
-SRC="src/*.c"
+SRC="src/*.c src/*/*.c"
 
 # Platform, one of Windows_NT, Linux, Web, Android. Defaults to your OS.
 # This can be set from the command line: TARGET=Android ./build.sh

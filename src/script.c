@@ -30,13 +30,16 @@ void textbox(Game *g, const char *line1, const char *line2) {
 // _____________________________________________________________________________
 //
 //  Shows a menu where the user can select from up to 8 choices.
+//  If canSkip is set to true, the player can close the menu by pressing the B
+//  button (see keybindings in common.h). In this case, menuChoice is set to -1.
 // _____________________________________________________________________________
 //
-void menu(Game *g, int numChoices, const char **choices) {
+void menu(Game *g, int numChoices, const char **choices, bool canSkip) {
 	// g->state = ST_SCRIPT;
 	g->scriptType = SC_MENU;
 	g->menuChoice = 0;
 	g->numMenuChoices = numChoices;
+	g->canSkipMenu = canSkip;
 
 	for (int i = 0; i < numChoices; i++) {
 		g->menuChoices[i] = choices[i];
@@ -89,6 +92,12 @@ void updateScript(Game *g) {
 				g->menuAnimDir = DIR_DOWN;
 			}
 			if (g->menuAnim > 0) g->menuAnim -= 2;
+
+			if (g->canSkipMenu && K_B_PRESS()) {
+				g->menuChoice = -1;
+				if (g->nextFunc) g->nextFunc(g);
+				else g->state = ST_WORLD;
+			}
 			// fall through ("A" button to confirm choice)
 
 		case SC_TEXTBOX:
