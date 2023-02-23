@@ -20,3 +20,11 @@ void drawText(Game *g, const char *text, int x, int y, Color color) {
 void drawTextL(Game *g, const char *text, int x, int y, Color color) {
     DrawTextEx(g->fonts.large, text, (Vector2) {x, y}, 23, 1, color);
 }
+
+int measureText(Game *g, const char *text) {
+    return MeasureTextEx(g->fonts.dialogue, text, 13, 0).x;
+}
+
+int measureTextL(Game *g, const char *text) {
+    return MeasureTextEx(g->fonts.large, text, 23, 1).x;
+}

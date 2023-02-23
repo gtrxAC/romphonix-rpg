@@ -200,6 +200,7 @@ typedef struct Game {
 	int menuAnim;
 	Direction menuAnimDir;
     bool canSkipMenu;
+    int menuScroll;  // scrolling offset for collection menu
 
     const char *textbox[2];
     char textboxDraw[2][64];

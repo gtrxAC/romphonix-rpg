@@ -25,6 +25,8 @@ void textbox(Game *g, const char *line1, const char *line2) {
 	g->textbox[0] = line1;
 	g->textbox[1] = line2;
 	g->textboxTime = 0;
+	g->menuUpdateFunc = NULL;
+	g->menuDrawFunc = NULL;
 }
 
 // _____________________________________________________________________________
@@ -40,6 +42,8 @@ void menu(Game *g, int numChoices, const char **choices, bool canSkip) {
 	g->menuChoice = 0;
 	g->numMenuChoices = numChoices;
 	g->canSkipMenu = canSkip;
+	g->menuUpdateFunc = NULL;
+	g->menuDrawFunc = NULL;
 
 	for (int i = 0; i < numChoices; i++) {
 		g->menuChoices[i] = choices[i];
@@ -79,6 +83,11 @@ void changeMap(Game *g, int map, int x, int y) {
 // _____________________________________________________________________________
 //
 void updateScript(Game *g) {
+	if (g->menuUpdateFunc) {
+		g->menuUpdateFunc(g);
+		return;
+	}
+
 	switch (g->scriptType) {
 		case SC_MENU:
 			if (K_UP_PRESS() && g->menuChoice) {
@@ -116,6 +125,10 @@ void updateScript(Game *g) {
 //
 void drawScript(Game *g) {
 	// note: drawWorld is run before this in the main loop, except in the main menu
+	if (g->menuDrawFunc) {
+		g->menuDrawFunc(g);
+		return;
+	}
 
 	switch (g->scriptType) {
 		case SC_TEXTBOX: {
@@ -157,8 +170,8 @@ void drawScript(Game *g) {
 			// Get length of the longest menu choice
 			int longest = 0;
 			for (int i = 0; i < g->numMenuChoices; i++) {
-				Vector2 length = MeasureTextEx(g->fonts.dialogue, g->menuChoices[i], 13, 0);
-				if (length.x > longest) longest = length.x;
+				int length = measureText(g, g->menuChoices[i]);
+				if (length > longest) longest = length;
 			}
 
             drawBox(g, 0, 0, 30 + longest, 16 + 14*g->numMenuChoices);
