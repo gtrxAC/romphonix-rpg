@@ -24,30 +24,32 @@ def appendStr(string, length):
     out += bytes(string, 'ascii')
     for i in range(length - len(string)): out.append(0)
 
-def append16(value):
+def append32(value):
     global out
     out.append(value & 0xFF)
     out.append((value & 0xFF00) >> 8)
+    out.append((value & 0xFF0000) >> 16)
+    out.append((value & 0xFF000000) >> 24)
 
 with open('phones.json') as file:
     phones = json.loads(file.read())
-    append16(len(phones))
+    append32(len(phones))
     for p in phones:
         appendStr(p['brand'], 16)
         appendStr(p['model'], 16)
         appendStr(p['description'], 128)
 
-        append16(p['year'])
-        out.append(p['fictional'])
+        append32(p['year'])
+        append32(p['fictional'])
 
-        append16(p['battery'])
-        append16(p['attack'])
-        append16(p['defense'])
-        append16(p['weight'])
-        out.append(p['rarity'])
-        out.append(p['brokenChance'])
-        out.append(p['baseExp'])
-        out.append(icons[p['icon']])
+        append32(p['battery'])
+        append32(p['attack'])
+        append32(p['defense'])
+        append32(p['weight'])
+        append32(p['rarity'])
+        append32(p['brokenChance'])
+        append32(p['baseExp'])
+        append32(icons[p['icon']])
         
 with open('phones.tfs', 'wb') as outfile:
     outfile.write(out)

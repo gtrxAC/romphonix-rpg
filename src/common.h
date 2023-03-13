@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stddef.h> // needed for tinyFD on windows
+#include <stdint.h>
 
 #include "raylib.h"
 #include "stb_ds.h"
@@ -41,8 +42,9 @@ typedef struct Game Game;
 //  Other helper macros
 // _____________________________________________________________________________
 //
-#define u8 unsigned char
-#define u16 unsigned short
+#define u8 uint8_t
+#define u16 uint16_t
+#define u32 uint32_t
 
 // Gets a texture
 #define TEX(t) (shget(g->textures, #t))

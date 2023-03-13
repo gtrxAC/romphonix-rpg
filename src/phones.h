@@ -35,14 +35,14 @@ typedef struct PhoneSpecs {
     char model[16];
     char description[128];
     
-    u16 year;
-    bool fictional;
+    u32 year;
+    u32 fictional;
 
-    u16 battery;
-    u16 attack, defense, weight;
-    u8 rarity;  // 0 (common) to 5 (rare)
-    u8 brokenChance; // how many phones out of 256 are broken (previously one out of this many phones were broken)
-    u8 baseExp;
+    u32 battery;
+    u32 attack, defense, weight;
+    u32 rarity;  // 0 (common) to 5 (rare)
+    u32 brokenChance; // how many phones out of 256 are broken (previously one out of this many phones were broken)
+    u32 baseExp;
     Icon icon;
 } PhoneSpecs;
 
@@ -58,7 +58,7 @@ typedef struct Phone {
 } Phone;
 
 typedef struct PhoneDatabase {
-    u16 size;
+    u32 size;
     PhoneSpecs phones[];
 } PhoneDatabase;
 

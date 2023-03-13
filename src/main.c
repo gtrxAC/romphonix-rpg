@@ -69,7 +69,7 @@ int main() {
         DrawTexturePro(
             g->rt.texture,
             (Rectangle){0, 0, 320, -240},
-            (Rectangle){0, 0, 960, 720},
+            (Rectangle){0, 0, GetScreenWidth(), GetScreenHeight()},
             (Vector2){0, 0}, 0.0f, WHITE
         );
         EndDrawing();
