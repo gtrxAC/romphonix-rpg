@@ -69,23 +69,32 @@ void drawCollectionMenu(Game *g) {
     drawText(g, "Collection", 65 - collStrLen/2, 3, WHITE);
 
     // Phone list
-    drawBox(g, 0, 20, 130, 220);
-    for (int i = 0; i < 11 && i < g->phoneDB->size; i++) {
+    drawBox(g, 0, 20, 144, 220);
+    for (int i = g->menuScroll; i < g->menuScroll + 11 && i < g->phoneDB->size; i++) {
         drawText(
             g, TextFormat(
                 "%s %s", g->phoneDB->phones[i].brand, g->phoneDB->phones[i].model
-            ), 5, 23 + i*20, WHITE
+            ), 20, 23 + (i - g->menuScroll)*20, WHITE
         );
     }
+
+    // Phone list menu indicator (arrow)
+    int selectorY = 23 + 20*(g->menuChoice - g->menuScroll);
+
+    if (g->menuAnimDir == DIR_UP) selectorY += g->menuAnim;
+    else selectorY -= g->menuAnim;
+    DrawTexture(TEX(indicator), 6, selectorY, WHITE);
 }
 
 void updateCollectionMenu(Game *g) {
     if (K_B_PRESS()) scrInGameMenu(g);
 
-    if (K_UP_PRESS()) {
-
+    if (K_UP_PRESS() && g->menuChoice > 0) {
+        g->menuChoice--;
+        if (g->menuChoice == g->menuScroll - 1) g->menuScroll--;
     }
-    else if (K_DOWN_PRESS()) {
-
+    else if (K_DOWN_PRESS() && g->menuChoice < g->phoneDB->size) {
+        g->menuChoice++;
+        if (g->menuChoice == g->menuScroll + 11) g->menuScroll++;
     }
 }
