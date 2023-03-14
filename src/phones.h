@@ -33,6 +33,7 @@ typedef struct PhoneSpecs {
     // below that, 100 is a good maximum)
     char brand[16];
     char model[16];
+    char sprite[32];
     char description[128];
     
     u32 year;

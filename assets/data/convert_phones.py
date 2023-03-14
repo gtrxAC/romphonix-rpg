@@ -37,6 +37,7 @@ with open('phones.json') as file:
     for p in phones:
         appendStr(p['brand'], 16)
         appendStr(p['model'], 16)
+        appendStr(p['sprite'], 32)
         appendStr(p['description'], 128)
 
         append32(p['year'])

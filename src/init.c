@@ -32,10 +32,20 @@ void initGame(Game *g) {
     LOAD_TEXTURE("player");
     LOAD_TEXTURE("tiles_overworld");
     LOAD_TEXTURE("menu_icons");
+    LOAD_TEXTURE("rarity");
 
     int unused;
     g->phoneDB = (PhoneDatabase *) LoadFileData("assets/data/phones.tfs", &unused);
     printf("PHONERPG: Loaded %d phones\n", g->phoneDB->size);
+
+    // Load textures (sprites) for each phone
+    for (int i = 0; i < g->phoneDB->size; i++) {
+        PhoneSpecs *phone = &g->phoneDB->phones[i];
+        shput(
+            g->textures, phone->sprite,
+            LoadTexture(TextFormat("assets/graphics/phones/%s.png", phone->sprite))
+        );
+    }
 
     loadMapIndex(g);
     loadMap(g, 0);

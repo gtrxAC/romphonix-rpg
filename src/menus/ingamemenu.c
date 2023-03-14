@@ -60,13 +60,14 @@ void scrCollectionMenu(Game *g) {
     g->state = ST_SCRIPT;
     g->menuUpdateFunc = updateCollectionMenu;
     g->menuDrawFunc = drawCollectionMenu;
+    g->menuScroll = 0;
 }
 
 void drawCollectionMenu(Game *g) {
     // "Collection" title
-    drawBox(g, 0, 0, 130, 20);
+    drawBox(g, 0, 0, 144, 20);
     int collStrLen = measureText(g, "Collection");
-    drawText(g, "Collection", 65 - collStrLen/2, 3, WHITE);
+    drawText(g, "Collection", 72 - collStrLen/2, 3, WHITE);
 
     // Phone list
     drawBox(g, 0, 20, 144, 220);
@@ -84,6 +85,22 @@ void drawCollectionMenu(Game *g) {
     if (g->menuAnimDir == DIR_UP) selectorY += g->menuAnim;
     else selectorY -= g->menuAnim;
     DrawTexture(TEX(indicator), 6, selectorY, WHITE);
+
+    // Phone list scrollbar
+    DrawRectangle(140, 20 + 1.47f*g->menuScroll, 4, 16, ColorAlpha(WHITE, 0.3f));
+
+    // Sprite window
+    PhoneSpecs *selected = &g->phoneDB->phones[g->menuChoice];
+    drawBox(g, 144, 0, 176, 96);
+    DrawTexture(shget(g->textures, g->phoneDB->phones[g->menuChoice].sprite), 200, 16, WHITE);
+ 
+    // Description
+    drawBox(g, 144, 96, 176, 144);
+    drawTextRec(g, selected->description, 148, 100, 168, 144, WHITE);
+
+    drawText(g, TextFormat("Year: %d", selected->year), 252, 220, WHITE);
+    drawText(g, "Rarity:", 148, 220, WHITE);
+    DrawTextureRec(TEX(rarity), (Rectangle) {0, 12*selected->rarity, 64, 12}, (Vector2) {190, 220}, WHITE);
 }
 
 void updateCollectionMenu(Game *g) {
@@ -93,8 +110,20 @@ void updateCollectionMenu(Game *g) {
         g->menuChoice--;
         if (g->menuChoice == g->menuScroll - 1) g->menuScroll--;
     }
-    else if (K_DOWN_PRESS() && g->menuChoice < g->phoneDB->size) {
+    else if (K_DOWN_PRESS() && g->menuChoice < g->phoneDB->size - 1) {
         g->menuChoice++;
         if (g->menuChoice == g->menuScroll + 11) g->menuScroll++;
+    }
+    if (K_LEFT_PRESS()) {
+        for (int i = 0; i < 11 && g->menuChoice > 0; i++) {
+            g->menuChoice--;
+            if (g->menuChoice == g->menuScroll - 1) g->menuScroll--;
+        }
+    }
+    if (K_RIGHT_PRESS()) {
+        for (int i = 0; i < 11 && g->menuChoice < g->phoneDB->size - 1; i++) {
+            g->menuChoice++;
+            if (g->menuChoice == g->menuScroll + 11) g->menuScroll++;
+        }
     }
 }
