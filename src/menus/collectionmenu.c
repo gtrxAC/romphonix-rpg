@@ -13,6 +13,7 @@
 #include "../common.h"
 
 void scrCollectionMenu(Game *g);
+void updateCollectionMenu(Game *g);
 void drawCollectionMenu(Game *g);
 
 // _____________________________________________________________________________

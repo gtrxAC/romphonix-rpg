@@ -33,6 +33,7 @@ void initGame(Game *g) {
     LOAD_TEXTURE("tiles_overworld");
     LOAD_TEXTURE("menu_icons");
     LOAD_TEXTURE("rarity");
+    LOAD_TEXTURE("phone_icons");
 
     int unused;
     g->phoneDB = (PhoneDatabase *) LoadFileData("assets/data/phones.tfs", &unused);

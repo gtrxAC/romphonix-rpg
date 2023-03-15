@@ -8,8 +8,8 @@
 //
 #include "../common.h"
 
+void drawInGameMenu(Game *g);
 void scrInGameMenuCheck(Game *g);
-void updateCollectionMenu(Game *g);
 
 // _____________________________________________________________________________
 //
@@ -64,6 +64,7 @@ void scrInGameMenuCheck(Game *g) {
     switch (g->menuChoice) {
         // case 4: scrSaveMenu(g); break;
         case 0: scrCollectionMenu(g); break;
+        case 1: scrPhonesMenu(g); break;
         default: endScript(g); break;
     }
 }

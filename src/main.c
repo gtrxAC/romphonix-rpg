@@ -43,13 +43,7 @@ int main() {
     // _________________________________________________________________________
     //
     while (!WindowShouldClose()) {
-        int scale = GetScreenWidth() / 320;
-        if (IsKeyPressed(KEY_PAGE_UP) && scale < 6) {
-            SetWindowSize(320*(scale + 1), 240*(scale + 1));
-        }
-        if (IsKeyPressed(KEY_PAGE_DOWN) && scale > 1) {
-            SetWindowSize(320*(scale - 1), 240*(scale - 1));
-        }
+        checkBindings(g);
 
         // Update game state
         switch (g->state) {

@@ -12,6 +12,7 @@
 
 void scrPhonesMenu(Game *g);
 void drawPhonesMenu(Game *g);
+void scrCheckPhonesMenu(Game *g);
 
 // _____________________________________________________________________________
 //
@@ -20,7 +21,7 @@ void drawPhonesMenu(Game *g);
 //
 void scrPhonesMenu(Game *g) {
     g->state = ST_SCRIPT;
-    g->menuUpdateFunc = updatePhonesMenu;
+    // g->menuUpdateFunc = updatePhonesMenu;
     g->menuDrawFunc = drawPhonesMenu;
     g->menuScroll = 0;
 }
@@ -31,6 +32,29 @@ void scrPhonesMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void drawPhonesMenu(Game *g) {
+    for (int i = 0; i < 6; i++) {
+        // Box
+        drawBox(g, 0, i*40, 320, 40);
+
+        // Menu indicator (arrow)
+        if (g->menuChoice == i) {
+            DrawTexture(TEX(indicator), 6, 14 + i*40, WHITE);
+        }
+
+        if (!g->s.party[i].active) continue;
+
+        // Sprite
+        DrawTextureRec(
+            TEX(phone_icons),
+            (Rectangle) {(g->frameCount % 60 < 30) * 32, 0, 32, 32},
+            (Vector2) {g->menuChoice == i ? 28 : 16, 4 + i*40}, WHITE
+        );
+
+        // Text
+        Phone *ph = &g->s.party[i];
+        PhoneSpecs *spec = &g->phoneDB->phones[ph->id];
+        drawText(g, TextFormat("%s %s", spec->brand, spec->model), 64, 4 + i*40, WHITE);
+    }
 }
 
 // _____________________________________________________________________________
@@ -38,5 +62,5 @@ void drawPhonesMenu(Game *g) {
 //  Phones menu - check user input function
 // _____________________________________________________________________________
 //
-void updatePhonesMenu(Game *g) {
+void scrCheckPhonesMenu(Game *g) {
 }

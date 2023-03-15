@@ -48,8 +48,9 @@ typedef struct PhoneSpecs {
 } PhoneSpecs;
 
 typedef struct Phone {
+    bool active;  // is this phone slot in use?
     u16 id;  // ID of phone from database
-    char nickname[16];
+    // char nickname[16];
 
     u16 hp, maxHP, energy;
     u8 level, exp, maxExp, baseExp;
