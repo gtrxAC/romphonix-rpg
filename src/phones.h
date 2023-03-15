@@ -28,6 +28,13 @@ typedef enum Icon {
     IC_SX1  // Siemens
 } Icon;
 
+typedef enum Condition {
+    COND_BROKEN,
+    COND_BAD,
+    COND_OK,
+    COND_GOOD
+} Condition;
+
 typedef struct PhoneSpecs {
     // Make sure none of the descriptions exceed the max length (should be well
     // below that, 100 is a good maximum)
@@ -56,7 +63,7 @@ typedef struct Phone {
     u8 level, exp, maxExp, baseExp;
     u16 attack, defense, weight;
     u16 skills[4];
-    u8 screenStatus, boardStatus, coverStatus, batteryStatus;
+    Condition screenStatus, boardStatus, coverStatus, batteryStatus;
 } Phone;
 
 typedef struct PhoneDatabase {

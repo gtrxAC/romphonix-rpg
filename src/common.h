@@ -55,6 +55,10 @@ typedef struct Game Game;
 // Gets a byte of a map tile (val takes a MapByte defined below)
 #define MAP(x, y, val) (g->map[2 + 7*((y)*MAP_WIDTH + (x)) + (val)])
 
+// Gets specs for a phone by ID (phone data base constant data, not the phones
+// that the player owns, so this doesnt include learned moves, remaining HP, etc)
+#define SPECS(id) (g->phoneDB->phones[id])
+
 // Math stuff
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))

@@ -41,10 +41,10 @@ void initGame(Game *g) {
 
     // Load textures (sprites) for each phone
     for (int i = 0; i < g->phoneDB->size; i++) {
-        PhoneSpecs *phone = &g->phoneDB->phones[i];
+        PhoneSpecs *ph = &SPECS(i);
         shput(
-            g->textures, phone->sprite,
-            LoadTexture(TextFormat("assets/graphics/phones/%s.png", phone->sprite))
+            g->textures, ph->sprite,
+            LoadTexture(TextFormat("assets/graphics/phones/%s.png", ph->sprite))
         );
     }
 

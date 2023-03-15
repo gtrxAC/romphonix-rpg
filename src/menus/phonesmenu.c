@@ -33,6 +33,9 @@ void scrPhonesMenu(Game *g) {
 //
 void drawPhonesMenu(Game *g) {
     for (int i = 0; i < 6; i++) {
+        Phone *ph = &g->s.party[i];
+        PhoneSpecs *spec = &SPECS(ph->id);
+
         // Box
         drawBox(g, 0, i*40, 320, 40);
 
@@ -46,14 +49,17 @@ void drawPhonesMenu(Game *g) {
         // Sprite
         DrawTextureRec(
             TEX(phone_icons),
-            (Rectangle) {(g->frameCount % 60 < 30) * 32, 0, 32, 32},
-            (Vector2) {g->menuChoice == i ? 28 : 16, 4 + i*40}, WHITE
+            (Rectangle) {(g->frameCount % 40 < 20) * 32, 32*spec->icon, 32, 32},
+            (Vector2) {g->menuChoice == i ? 24 : 16, 4 + i*40}, WHITE
         );
 
         // Text
-        Phone *ph = &g->s.party[i];
-        PhoneSpecs *spec = &g->phoneDB->phones[ph->id];
-        drawText(g, TextFormat("%s %s", spec->brand, spec->model), 64, 4 + i*40, WHITE);
+        drawText(g, TextFormat("%s %s", spec->brand, spec->model), 64, 5 + i*40, WHITE);
+
+        // Health bar
+        DrawRectangle(64, i*40 + 21, 102, 12, BLACK);
+        DrawRectangle(66, i*40 + 23, ((float) ph->hp / ph->maxHP) * 100, 8, BLUE);
+        drawText(g, TextFormat("%d/%d", ph->hp, ph->maxHP), 178, i*40+23, WHITE);
     }
 }
 

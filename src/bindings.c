@@ -32,6 +32,30 @@ void checkBindings(Game *g) {
             if (!g->s.party[i].active) {
                 g->s.party[i].active = true;
                 g->s.party[i].id = id;
+
+                g->s.party[i].hp = 50;
+                g->s.party[i].maxHP = 100; // still not sure about this
+                g->s.party[i].attack = SPECS(id).attack;
+                g->s.party[i].defense = SPECS(id).defense;
+                g->s.party[i].weight = SPECS(id).weight;
+                
+                g->s.party[i].level = 40;
+                g->s.party[i].baseExp = SPECS(id).baseExp;
+
+                g->s.party[i].screenStatus = GetRandomValue(1, 3);
+                g->s.party[i].boardStatus = GetRandomValue(1, 3);
+                g->s.party[i].coverStatus = GetRandomValue(1, 3);
+                g->s.party[i].batteryStatus = GetRandomValue(1, 3);
+
+                if (GetRandomValue(1, 256) < SPECS(id).brokenChance) {
+                    switch (GetRandomValue(0, 3)) {
+                        case 0: g->s.party[i].screenStatus = COND_BROKEN; break;
+                        case 1: g->s.party[i].boardStatus = COND_BROKEN; break;
+                        case 2: g->s.party[i].coverStatus = COND_BROKEN; break;
+                        case 3: g->s.party[i].batteryStatus = COND_BROKEN; break;
+                    }
+                }
+
                 got = true;
                 return;
             }

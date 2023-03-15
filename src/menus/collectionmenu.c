@@ -74,7 +74,7 @@ void drawCollectionMenu(Game *g) {
     for (int i = g->menuScroll; i < g->menuScroll + 11 && i < g->phoneDB->size; i++) {
         drawText(
             g, TextFormat(
-                "%s %s", g->phoneDB->phones[i].brand, g->phoneDB->phones[i].model
+                "%s %s", SPECS(i).brand, SPECS(i).model
             ), 20, 23 + (i - g->menuScroll)*20, WHITE
         );
     }
@@ -90,9 +90,9 @@ void drawCollectionMenu(Game *g) {
     DrawRectangle(140, 20 + 1.47f*g->menuScroll, 4, 16, ColorAlpha(WHITE, 0.3f));
 
     // Sprite window
-    PhoneSpecs *selected = &g->phoneDB->phones[g->menuChoice];
+    PhoneSpecs *selected = &SPECS(g->menuChoice);
     drawBox(g, 144, 0, 176, 96);
-    DrawTexture(shget(g->textures, g->phoneDB->phones[g->menuChoice].sprite), 200, 16, WHITE);
+    DrawTexture(shget(g->textures, SPECS(g->menuChoice).sprite), 200, 16, WHITE);
  
     // Description
     drawBox(g, 144, 96, 176, 144);
