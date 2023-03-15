@@ -54,7 +54,9 @@ void drawPhonesMenu(Game *g) {
         );
 
         // Text
+        // Note: '$' character in the digits font (drawTextD) says 'Lv.'
         drawText(g, TextFormat("%s %s", spec->brand, spec->model), 64, 5 + i*40, WHITE);
+        drawTextD(g, TextFormat("$ %d", ph->level), 285, 5 + i*40, WHITE);
 
         // Health bar
         DrawRectangle(64, i*40 + 21, 102, 12, BLACK);

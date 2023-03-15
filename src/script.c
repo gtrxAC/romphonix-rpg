@@ -149,8 +149,6 @@ void drawScript(Game *g) {
 			g->textboxDraw[0][line1Len] = 0;
 			g->textboxDraw[1][line2Len] = 0;
 
-			DrawText(TextFormat("%d, %d", line1Len, line2Len), 0, 160, 10, WHITE);
-
 			DrawTextEx(
 				g->fonts.dialogue, g->textboxDraw[0],
 				(Vector2) {18, 232 - 14*lineCount},
@@ -191,14 +189,6 @@ void drawScript(Game *g) {
 			DrawTexture(TEX(indicator), 8, selectorY, WHITE);
 		}
 	}
-
-	DrawText(
-		TextFormat(
-			"anim %d, animdir %d, textboxtime %d",
-			g->menuAnim, g->menuAnimDir, g->textboxTime
-		),
-		0, 180, 10, WHITE
-	);
 }
 
 void scrNoScript(Game *g) {

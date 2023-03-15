@@ -138,12 +138,4 @@ void drawWorld(Game *g) {
 		(Rectangle) {((16 - g->playerAnim)/4)*16, 16*g->s.playerDir, 16, 16},
 		(Vector2) {152, 112}, WHITE
 	);
-
-	DrawText(
-		TextFormat(
-			"x %d, y %d, dir %d, anim %d, fps %d",
-			g->s.playerX, g->s.playerY, g->s.playerDir, g->playerAnim, GetFPS()
-		),
-		0, 0, 10, WHITE
-	);
 }
