@@ -21,6 +21,16 @@ void drawTextL(Game *g, const char *text, int x, int y, Color color) {
     DrawTextEx(g->fonts.large, text, (Vector2) {x, y}, 23, 1, color);
 }
 
+void drawTextD(Game *g, const char *text, int x, int y, Color color) {
+    // Draw an outline around the text
+    for (int dx = -1; dx <= 1; dx++) {
+        for (int dy = -1; dy <= 1; dy++) {
+            DrawTextEx(g->fonts.digits, text, (Vector2) {x + dx, y + dy}, 13, 0, BLACK);
+        }
+    }
+    DrawTextEx(g->fonts.digits, text, (Vector2) {x, y}, 13, 0, color);
+}
+
 int measureText(Game *g, const char *text) {
     return MeasureTextEx(g->fonts.dialogue, text, 13, 0).x;
 }

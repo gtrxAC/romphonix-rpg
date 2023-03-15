@@ -42,7 +42,27 @@ int main() {
     //  Main loop
     // _________________________________________________________________________
     //
-    while (!WindowShouldClose()) {
+    bool shouldClose = false;
+    while (!shouldClose) {
+        if (WindowShouldClose()) {
+            if (g->state == ST_TITLE || g->state == ST_MAINMENU) {
+                shouldClose = true;
+            }
+            else {
+                switch (tinyfd_messageBox("Close", "Do you want to save your progress?", "yesnocancel", "question", 0)) {
+                    case 1: // yes
+                        save(g);
+                        // fall through
+
+                    case 2: // no
+                        shouldClose = true;
+                        break;
+
+                    // case 0 is cancel, we do nothing
+                }
+            }
+        }
+
         checkBindings(g);
 
         // Update game state

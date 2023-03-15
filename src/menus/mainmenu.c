@@ -10,40 +10,42 @@
 // Note: there is a compiler flag to allow *calling* a function before declaring
 // it, but this doesn't apply to *referencing* it (like in the g->nextFunc = )
 void scrMainMenuCheck();
-void scrMainMenuDemo();
 
 // _____________________________________________________________________________
 //
 void scrMainMenu(Game *g) {
     setSong(g, "assets/sounds/music/bid_right_now_p.mid");
 
-	const char *choices[] = {"Start Game", "Change Song", "Change song 2", "Textbox demo"};
-	menu(g, 4, choices, false);
+    if (FileExists("save.tfs")) {
+        const char *choices[] = {"Load Game", "New Game", "Options"};
+	    menu(g, 3, choices, false);
+    }
+    else {
+        const char *choices[] = {"New Game", "Options"};
+	    menu(g, 2, choices, false);
+    }
+
 	g->nextFunc = scrMainMenuCheck;
 }
 
 void scrMainMenuCheck(Game *g) {
-    switch (g->menuChoice) {
+    int choice = g->menuChoice;
+    if (g->numMenuChoices == 2) choice++;
+
+    switch (choice) {
         case 0:
+            load(g);
             g->state = ST_WORLD;
             break;
 
         case 1:
-            // note: meme song, will not be included in final game
-            setSong(g, "assets/sounds/music/abangchung.mid");
+            // TODO: introduction thing
+            g->state = ST_WORLD;
             break;
 
         case 2:
-            setSong(g, "assets/sounds/music/bid_right_now_p.mid");
-            break;
-
-        case 3:
-	        g->nextFunc = scrMainMenuDemo;
+            // TODO: settings thing
+            setSong(g, "assets/sounds/music/abangchung.mid");
             break;
     }
-}
-
-void scrMainMenuDemo(Game *g) {
-    textbox(g, "This is an example of text boxes", "Lorem ipsum dolor sit amet...");
-	g->nextFunc = scrMainMenu;
 }

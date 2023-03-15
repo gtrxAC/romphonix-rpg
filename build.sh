@@ -81,6 +81,11 @@ if [[ "$1" = "-r" ]]; then
 	esac
 fi
 
+# Convert phone list
+cd assets/data
+python convert_phones.py
+cd ../..
+
 # Build map editor
 cd mapeditor
 # ./build.sh

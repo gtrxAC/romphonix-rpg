@@ -186,6 +186,7 @@ typedef struct Game {
     struct {
         Font dialogue;
         Font large;
+        Font digits;
     } fonts;
 
     // _________________________________________________________________________

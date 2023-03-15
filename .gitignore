@@ -20,6 +20,8 @@ index.html
 *.data
 
 *.log
+save.tfs
+phones.tfs
 
 # Sub-projects
 mapeditor/include/raylib.h

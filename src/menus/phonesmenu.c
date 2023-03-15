@@ -59,7 +59,7 @@ void drawPhonesMenu(Game *g) {
         // Health bar
         DrawRectangle(64, i*40 + 21, 102, 12, BLACK);
         DrawRectangle(66, i*40 + 23, ((float) ph->hp / ph->maxHP) * 100, 8, BLUE);
-        drawText(g, TextFormat("%d/%d", ph->hp, ph->maxHP), 178, i*40+23, WHITE);
+        drawTextD(g, TextFormat("%d/%d", ph->hp, ph->maxHP), 172, i*40 + 20, WHITE);
     }
 }
 

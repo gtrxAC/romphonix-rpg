@@ -18,5 +18,5 @@ void load(Game *g) {
 // _____________________________________________________________________________
 //
 void save(Game *g) {
-    WriteFileData("save.tfs", &g->s, sizeof(SaveData));
+    SaveFileData("save.tfs", &g->s, sizeof(SaveData));
 }

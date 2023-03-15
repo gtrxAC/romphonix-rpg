@@ -1,6 +1,8 @@
 # ROMphonix RPG
 A phone collecting RPG! (in development)
 
+[Codebase structure](STRUCTURE.md)
+
 ## Download
 * [GitHub (need account)](https://github.com/gtrxAC/romphonix-rpg-new/releases)
 * [nightly.link (no account)](https://nightly.link/gtrxAC/romphonix-rpg-new/workflows/main/main)
