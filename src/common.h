@@ -156,7 +156,7 @@ typedef struct SaveData {
 // _____________________________________________________________________________
 //
 // Shorthand to access the current menu (top of the stack)
-#define CURMENU (arrlast(g->menus))
+#define MENU (arrlast(g->menus))
 
 typedef struct Menu {
     // menuchoice can be read by a script function to see which option the user selected
@@ -207,6 +207,7 @@ typedef struct Game {
     PhoneDatabase *phoneDB;
 
     SaveData s;
+    Menu *menus; // stb_ds dynamic array (menu stack)
 
     // _________________________________________________________________________
     //
