@@ -24,10 +24,9 @@ void scrInGameMenu(Game *g) {
         "Phones",
         "Items",
         "Player",
-        "Save",
         "Options",
     };
-    menu(g, 6, choices, true);
+    menu(g, 5, choices, true);
     g->nextFunc = scrInGameMenuCheck;
     g->menuDrawFunc = drawInGameMenu; 
 }
@@ -38,9 +37,9 @@ void scrInGameMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void drawInGameMenu(Game *g) {
-    drawBox(g, 0, 0, 120, 35 + 33*g->numMenuChoices);
+    drawBox(g, 0, 0, 130, 35 + 33*g->numMenuChoices);
 
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 5; i++) {
         DrawTextureRec(
             TEX(menu_icons), (Rectangle) {i*32, 0, 32, 32},
             (Vector2) {5, 5 + 33*i},
@@ -52,7 +51,7 @@ void drawInGameMenu(Game *g) {
         drawText(g, g->menuChoices[i], 42, 16 + 33*i, WHITE);
     }
 
-    drawText(g, TextFormat("Money: $%d", g->s.money), 42, 210, WHITE);
+    drawText(g, TextFormat("Money: $%d", g->s.money), 42, 178, WHITE);
 }
 
 // _____________________________________________________________________________
