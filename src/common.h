@@ -63,6 +63,10 @@ typedef struct Game Game;
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
+// Menu choice stack actions
+#define PUSH_MENUCHOICE() (arrpush(g->menuChoiceStack, g->menuChoice))
+#define POP_MENUCHOICE() (g->menuChoice = arrpop(g->menuChoiceStack))
+
 // _____________________________________________________________________________
 //
 //  Enumerations and Structures
@@ -83,6 +87,7 @@ typedef enum State {
     ST_MAINMENU,  // same as script but map and player aren't shown in the background
     ST_WORLD,
     ST_SCRIPT,
+    ST_MENU,
     ST_TRANSITION,  // transition from one map to another
     ST_BATTLE
 } State;
@@ -125,6 +130,11 @@ typedef struct Map {
 //  Save data structure
 // _____________________________________________________________________________
 //
+typedef struct Item {
+    int id;
+    u16 count;
+} Item;
+
 typedef struct SaveData {
     // Player location
     int curMap, playerX, playerY, playerDir;
@@ -135,8 +145,33 @@ typedef struct SaveData {
     Phone party[6];
     Phone pc[10][5][5];  // these values may be tweaked later, but 5 × 5 is a good grid size
 
+    Item bag[3][20];
+
     unsigned int money;
 } SaveData;
+
+// _____________________________________________________________________________
+//
+//  Menu structure
+// _____________________________________________________________________________
+//
+// Shorthand to access the current menu (top of the stack)
+#define CURMENU (arrlast(g->menus))
+
+typedef struct Menu {
+    // menuchoice can be read by a script function to see which option the user selected
+	const char *menuChoices[8];
+	int menuChoice;
+	int numMenuChoices;
+	int menuAnim;
+	Direction menuAnimDir;
+    bool canSkipMenu;
+    int menuScroll;  // scrolling offset for collection menu
+    
+    // for menus or textboxes that use custom update/draw (usually only draw) functions
+	void (*menuUpdateFunc)(Game *);
+	void (*menuDrawFunc)(Game *);
+} Menu;
 
 // _____________________________________________________________________________
 //
@@ -200,22 +235,9 @@ typedef struct Game {
 	// to chain multiple actions and textboxes together
 	void (*nextFunc)(Game *);
 
-    // menuchoice can be read by a script function to see which option the user selected
-	const char *menuChoices[8];
-	int menuChoice;
-	int numMenuChoices;
-	int menuAnim;
-	Direction menuAnimDir;
-    bool canSkipMenu;
-    int menuScroll;  // scrolling offset for collection menu
-
     const char *textbox[2];
     char textboxDraw[2][64];
 	unsigned int textboxTime;
-
-    // for menus or textboxes that use custom update/draw (usually only draw) functions
-	void (*menuUpdateFunc)(Game *);
-	void (*menuDrawFunc)(Game *);
 } Game;
 
 #include "script.h"
