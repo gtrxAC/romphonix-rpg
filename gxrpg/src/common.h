@@ -43,8 +43,8 @@ struct Game {
 	enum {
 		ST_TITLE,
 		ST_MAINMENU,   // same as script but map and player aren't shown in the background
-		ST_WORLD,
-		ST_SCRIPT,
+		ST_INGAME,
+		ST_TEXTBOX,
 		ST_TRANSITION  // transition from one map to another
 	} state;
 

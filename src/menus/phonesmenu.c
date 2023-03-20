@@ -20,10 +20,11 @@ void scrCheckPhonesMenu(Game *g);
 // _____________________________________________________________________________
 //
 void scrPhonesMenu(Game *g) {
-    g->state = ST_SCRIPT;
+    // g->state = ST_TEXTBOX;
     // g->menuUpdateFunc = updatePhonesMenu;
-    g->menuDrawFunc = drawPhonesMenu;
-    g->menuScroll = 0;
+    pushMenu(g, 6, NULL, true);
+    MENU.drawFunc = drawPhonesMenu;
+    MENU.menuScroll = 0;
 }
 
 // _____________________________________________________________________________
@@ -40,7 +41,7 @@ void drawPhonesMenu(Game *g) {
         drawBox(g, 0, i*40, 320, 40);
 
         // Menu indicator (arrow)
-        if (g->menuChoice == i) {
+        if (MENU.choice == i) {
             DrawTexture(TEX(indicator), 6, 14 + i*40, WHITE);
         }
 
@@ -50,7 +51,7 @@ void drawPhonesMenu(Game *g) {
         DrawTextureRec(
             TEX(phone_icons),
             (Rectangle) {(g->frameCount % 40 < 20) * 32, 32*spec->icon, 32, 32},
-            (Vector2) {g->menuChoice == i ? 24 : 16, 4 + i*40}, WHITE
+            (Vector2) {MENU.choice == i ? 24 : 16, 4 + i*40}, WHITE
         );
 
         // Text

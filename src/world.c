@@ -57,7 +57,7 @@ void updateWorld(Game *g) {
 			}
 			
 			if (MAP(g->s.playerX, g->s.playerY, MAP_STEP_SCRIPT)) {
-				g->state = ST_SCRIPT;
+				g->state = ST_TEXTBOX;
 				if (g->mapMeta.stepScripts[MAP(g->s.playerX, g->s.playerY, MAP_STEP_SCRIPT)]) {
 					g->mapMeta.stepScripts[MAP(g->s.playerX, g->s.playerY, MAP_STEP_SCRIPT)](g);
 				} else {
@@ -96,7 +96,7 @@ void updateWorld(Game *g) {
 			}
 
 			if (MAP(x, y, MAP_INTERACT_SCRIPT)) {
-				g->state = ST_SCRIPT;
+				g->state = ST_TEXTBOX;
 				if (g->mapMeta.interactScripts[MAP(x, y, MAP_INTERACT_SCRIPT) - 1]) {
 					g->mapMeta.interactScripts[MAP(x, y, MAP_INTERACT_SCRIPT) - 1](g);
 				} else {

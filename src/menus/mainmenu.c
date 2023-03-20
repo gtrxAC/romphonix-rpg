@@ -18,29 +18,29 @@ void scrMainMenu(Game *g) {
 
     if (FileExists("save.tfs")) {
         const char *choices[] = {"Load Game", "New Game", "Options"};
-	    menu(g, 3, choices, false);
+	    pushMenu(g, 3, choices, false);
     }
     else {
         const char *choices[] = {"New Game", "Options"};
-	    menu(g, 2, choices, false);
+	    pushMenu(g, 2, choices, false);
     }
 
 	g->nextFunc = scrMainMenuCheck;
 }
 
 void scrMainMenuCheck(Game *g) {
-    int choice = g->menuChoice;
-    if (g->numMenuChoices == 2) choice++;
+    int choice = MENU.choice;
+    if (arrlen(MENU.choices) == 2) choice++;
 
     switch (choice) {
         case 0:
             load(g);
-            g->state = ST_WORLD;
+            g->state = ST_INGAME;
             break;
 
         case 1:
             // TODO: introduction thing
-            g->state = ST_WORLD;
+            g->state = ST_INGAME;
             break;
 
         case 2:

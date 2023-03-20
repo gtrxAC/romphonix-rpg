@@ -1,3 +1,8 @@
+// _____________________________________________________________________________
+//
+//  util.c - common drawing utilities for ROMphonix RPG / raylib
+// _____________________________________________________________________________
+//
 #include "common.h"
 
 void drawBox(Game *g, int x, int y, int width, int height) {

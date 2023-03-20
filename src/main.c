@@ -68,10 +68,12 @@ int main() {
         // Update game state
         switch (g->state) {
             case ST_TITLE: updateTitle(g); break;
-            case ST_MAINMENU: updateScript(g); break;
-            case ST_SCRIPT: updateScript(g); break;
-            case ST_WORLD: updateWorld(g); break;
+            case ST_MAINMENU: /*updateScript(g);*/ break;
+            // case ST_TEXTBOX: updateWorld(g); /*updateScript(g);*/ break;
+            case ST_INGAME: updateWorld(g); break;
         }
+        // Update menu/script system
+        if (arrlen(g->menus)) MENU.updateFunc(g);
 
         // Draw game into a render texture so we can scale it
         BeginTextureMode(g->rt);
@@ -79,9 +81,11 @@ int main() {
         switch (g->state) {
             case ST_TITLE: drawTitle(g); break;
             case ST_MAINMENU: drawScript(g); break;
-            case ST_SCRIPT: drawWorld(g); drawScript(g); break;
-            case ST_WORLD: drawWorld(g); break;
+            // case ST_TEXTBOX: drawWorld(g); /*drawScript(g);*/ break;
+            case ST_INGAME: drawWorld(g); break;
         }
+        // Draw menus
+        for (int i = 0; i < arrlen(g->menus); i++) MENU.drawFunc(g);
         EndTextureMode();
 
         // Draw render texture on screen

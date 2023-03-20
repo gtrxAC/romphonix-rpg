@@ -9,7 +9,7 @@
 
 void update_transition(Game *game) {
 	if (game->framecount > TRANSITION_TIME*2) {
-		game->state = ST_WORLD;
+		game->state = ST_INGAME;
 	} else if (game->framecount > TRANSITION_TIME) {
 		game->curmap = game->nextmap;
 		game->playerx = game->nextx;

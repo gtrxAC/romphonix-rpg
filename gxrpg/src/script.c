@@ -3,7 +3,7 @@
 #include "controls.h"
 
 void textbox(Game *game, const char *line1, const char *line2) {
-	game->state = ST_SCRIPT;
+	game->state = ST_TEXTBOX;
 	game->scripttype = SC_TEXTBOX;
 	game->textbox[0] = line1;
 	game->textbox[1] = line2;
@@ -11,7 +11,7 @@ void textbox(Game *game, const char *line1, const char *line2) {
 }
 
 void menu(Game *game, int numchoices, const char **choices) {
-	game->state = ST_SCRIPT;
+	game->state = ST_TEXTBOX;
 	game->scripttype = SC_MENU;
 	game->menuchoice = 0;
 	game->nummenuchoices = numchoices;
@@ -22,7 +22,7 @@ void menu(Game *game, int numchoices, const char **choices) {
 }
 
 void endscript(Game *game) {
-	game->state = ST_WORLD;
+	game->state = ST_INGAME;
 }
 
 void changemap(Game *game, int map, int x, int y) {
@@ -59,7 +59,7 @@ void update_script(Game *game) {
 		case SC_TEXTBOX:
 			if (K_A_PRESS()) {
 				if (game->nextfunc) game->nextfunc(game);
-				else game->state = ST_WORLD;
+				else game->state = ST_INGAME;
 			}
 			break;
 

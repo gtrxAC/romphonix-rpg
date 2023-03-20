@@ -85,9 +85,9 @@ enum MapByte {
 typedef enum State {
     ST_TITLE,
     ST_MAINMENU,  // same as script but map and player aren't shown in the background
-    ST_WORLD,
-    ST_SCRIPT,
-    ST_MENU,
+    ST_INGAME,
+    // ST_TEXTBOX,
+    // ST_MENU,
     ST_TRANSITION,  // transition from one map to another
     ST_BATTLE
 } State;
@@ -159,18 +159,21 @@ typedef struct SaveData {
 #define MENU (arrlast(g->menus))
 
 typedef struct Menu {
-    // menuchoice can be read by a script function to see which option the user selected
-	const char *menuChoices[8];
-	int menuChoice;
-	int numMenuChoices;
+	const char **choices;  // stb_ds dynamic array
+	int choice;
 	int menuAnim;
 	Direction menuAnimDir;
-    bool canSkipMenu;
+    bool canSkip;
     int menuScroll;  // scrolling offset for collection menu
     
-    // for menus or textboxes that use custom update/draw (usually only draw) functions
-	void (*menuUpdateFunc)(Game *);
-	void (*menuDrawFunc)(Game *);
+    // For menus or textboxes that use custom update/draw/check functions.
+    // - Update functions check the user's input and act accordingly
+    // - Draw functions draw the menu.
+    // - Check functions are activated when the user confirms a choice, it
+    //   checks the user's choice and acts accordingly.
+	void (*updateFunc)(Game *);
+	void (*drawFunc)(Game *);
+	void (*checkFunc)(Game *);
 } Menu;
 
 // _____________________________________________________________________________

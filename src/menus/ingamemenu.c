@@ -3,7 +3,7 @@
 //  In-game menu
 //  Init/draw/check functions for the in-game menu (accessible by pressing space
 //  while in the overworld). State update is handled by the standard menu
-//  scripting system, no custom function is needed.
+//  system, no custom function is needed.
 // _____________________________________________________________________________
 //
 #include "../common.h"
@@ -17,8 +17,6 @@ void scrInGameMenuCheck(Game *g);
 // _____________________________________________________________________________
 //
 void scrInGameMenu(Game *g) {
-    g->state = ST_SCRIPT;
-
     const char *choices[] = {
         "Collection",
         "Phones",
@@ -26,9 +24,9 @@ void scrInGameMenu(Game *g) {
         "Player",
         "Options",
     };
-    menu(g, 5, choices, true);
-    g->nextFunc = scrInGameMenuCheck;
-    g->menuDrawFunc = drawInGameMenu; 
+    pushMenu(g, 5, choices, true);
+    MENU.checkFunc = scrInGameMenuCheck;
+    MENU.drawFunc = drawInGameMenu; 
 }
 
 // _____________________________________________________________________________
@@ -37,18 +35,18 @@ void scrInGameMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void drawInGameMenu(Game *g) {
-    drawBox(g, 0, 0, 130, 35 + 33*g->numMenuChoices);
+    drawBox(g, 0, 0, 130, 35 + 33*arrlen(MENU.choices));
 
     for (int i = 0; i < 5; i++) {
         DrawTextureRec(
             TEX(menu_icons), (Rectangle) {i*32, 0, 32, 32},
             (Vector2) {5, 5 + 33*i},
-            (i == g->menuChoice ? WHITE : ColorAlpha(WHITE, 0.5f))
+            (i == MENU.choice ? WHITE : ColorAlpha(WHITE, 0.5f))
         );
     }
 
-    for (int i = 0; i < g->numMenuChoices && g->menuChoices[i]; i++) {
-        drawText(g, g->menuChoices[i], 42, 16 + 33*i, WHITE);
+    for (int i = 0; i < arrlen(MENU.choices) && MENU.choices[i]; i++) {
+        drawText(g, MENU.choices[i], 42, 16 + 33*i, WHITE);
     }
 
     drawText(g, TextFormat("Money: $%d", g->s.money), 42, 178, WHITE);
@@ -60,15 +58,15 @@ void drawInGameMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void scrInGameMenuCheck(Game *g) {
-    switch (g->menuChoice) {
+    switch (MENU.choice) {
         case 0: scrCollectionMenu(g); break;
         case 1: scrPhonesMenu(g); break;
-        default: endScript(g); break;
+        default: popMenu(g); break;
     }
 }
 
 // void scrSaveMenu(Game *g) {
-//     g->state = ST_SCRIPT;
+//     g->state = ST_TEXTBOX;
     
 // }
 
