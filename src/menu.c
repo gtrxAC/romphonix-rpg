@@ -1,5 +1,36 @@
 #include "common.h"
 
+void updateMenu(Game *g);
+void drawMenu(Game *g);
+
+// _____________________________________________________________________________
+//
+//  Shows a menu where the user can select from a list of choices.
+//  The menu is pushed to the top of a menu stack, where previous menus are
+//  stored and can be returned back to.
+//
+//  If canSkip is set to true, the player can close the menu by pressing the B
+//  button (see keybindings in common.h). In this case, menuChoice is set to -1.
+//  canSkip only applies if updateMenu is used as the update function.
+// _____________________________________________________________________________
+//
+void pushMenu(Game *g, int numChoices, const char **choices, bool canSkip) {
+	arrput(g->menus, (Menu) {0});
+	MENU.canSkip = canSkip;
+	MENU.updateFunc = updateMenu;
+	MENU.drawFunc = drawMenu;
+
+	for (int i = 0; i < numChoices; i++) {
+		arrput(MENU.choices, choices[i]);
+	}
+}
+
+// _____________________________________________________________________________
+//
+//  Update menu
+//  Default behavior which can be overridden by setting MENU.updateFunc
+// _____________________________________________________________________________
+//
 void updateMenu(Game *g) {
     if (MENU.drawFunc) {
         MENU.drawFunc(g);
@@ -29,6 +60,12 @@ void updateMenu(Game *g) {
     }
 }
 
+// _____________________________________________________________________________
+//
+//  Draw menu
+//  Default behavior which can be overridden by setting MENU.updateFunc
+// _____________________________________________________________________________
+//
 void drawMenu(Game *g) {
     if (MENU.drawFunc) {
         MENU.drawFunc(g);

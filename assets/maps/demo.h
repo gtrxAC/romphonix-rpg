@@ -27,18 +27,18 @@ void scrDemoGrass(Game *g) {
 
 // Interact scripts
 void scrDemoSign(Game *g) {
-    textbox(g, "This is a sign!", "");
-    g->nextFunc = endScript;
+    pushTextbox(g, "This is a sign!", "");
+    g->nextFunc = popMenu;
 }
 
 void scrDemoMailbox(Game *g) {
-    textbox(g, "You have no mail.", "");
-    g->nextFunc = endScript;
+    pushTextbox(g, "You have no mail.", "");
+    g->nextFunc = popMenu;
 }
 
 void scrDemoClock(Game *g) {
-    textbox(g, "The time is... I don't know, I don't care", "enough to check.");
-    g->nextFunc = endScript;
+    pushTextbox(g, "The time is... I don't know, I don't care", "enough to check.");
+    g->nextFunc = popMenu;
 }
 
 

@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-void textbox(Game *game, const char *line1, const char *line2);
+void pushTextbox(Game *game, const char *line1, const char *line2);
 void menu(Game *game, int numchoices, const char **choices);
 void endscript(Game *game);
 void changemap(Game *game, int map, int x, int y);

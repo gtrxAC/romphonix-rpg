@@ -2,7 +2,7 @@
 #include "world.h"
 #include "controls.h"
 
-void textbox(Game *game, const char *line1, const char *line2) {
+void pushTextbox(Game *game, const char *line1, const char *line2) {
 	game->state = ST_TEXTBOX;
 	game->scripttype = SC_TEXTBOX;
 	game->textbox[0] = line1;

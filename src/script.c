@@ -2,14 +2,7 @@
 //
 //  Functionality related to the scripting system.
 //
-//  The scripting system consists of a few functions that allow creating
-//  high-level game logic directly from the C language.
-//
-//  "script" is also a game state, much like "title" or "battle", it is used
-//  when textboxes or menus are shown.
-//
-//  Note that when beginning a script, the game state should be set to
-//  ST_TEXTBOX or another script-like state for a specific menu (e.g. main menu).
+//  See also: menu.c
 // _____________________________________________________________________________
 //
 #include "common.h"
@@ -22,46 +15,18 @@ void drawTextbox(Game *g);
 //  Shows a text box with two lines.
 // _____________________________________________________________________________
 //
-void textbox(Game *g, const char *line1, const char *line2) {
-	// g->state = ST_TEXTBOX;
-	// g->scriptType = SC_TEXTBOX;
-	g->textbox[0] = line1;
-	g->textbox[1] = line2;
-	g->textboxTime = 0;
+void pushTextbox(Game *g, const char *line1, const char *line2) {
+	arrput(g->menus, (Menu) {0});
 	MENU.updateFunc = updateTextbox;
 	MENU.drawFunc = drawTextbox;
+
+	arrput(MENU.choices, line1);
+	arrput(MENU.choices, line2);
 }
 
 // _____________________________________________________________________________
 //
-//  Shows a menu where the user can select from a list of choices.
-//  The menu is pushed to the top of a menu stack, where previous menus are
-//  stored and can be returned back to.
-//
-//  If canSkip is set to true, the player can close the menu by pressing the B
-//  button (see keybindings in common.h). In this case, menuChoice is set to -1.
-//  canSkip only applies if updateMenu is used as the update function.
-// _____________________________________________________________________________
-//
-void pushMenu(Game *g, int numChoices, const char **choices, bool canSkip) {
-	// g->state = ST_TEXTBOX;
-	// g->state = ST_MENU;
-	arrput(g->menus, (Menu) {0});
-	MENU.choice = 0;
-	MENU.canSkip = canSkip;
-	MENU.updateFunc = updateMenu();
-	MENU.drawFunc = drawMenu();
-
-	for (int i = 0; i < numChoices; i++) {
-		arrput(MENU.choices, choices[i]);
-	}
-}
-
-void pushTextbox(Game *g, )
-
-// _____________________________________________________________________________
-//
-//  Removes the last menu from the menu stack.
+//  Removes the last menu or text box from the menu stack.
 // _____________________________________________________________________________
 //
 void popMenu(Game *g) {
@@ -146,6 +111,6 @@ void drawTextbox(Game *g) {
 }
 
 void scrNoScript(Game *g) {
-	textbox(g, "No function assigned to this script index!", "");
-	g->nextFunc = endScript;
+	pushTextbox(g, "No function assigned to this script index!", "");
+	g->nextFunc = popMenu;
 }

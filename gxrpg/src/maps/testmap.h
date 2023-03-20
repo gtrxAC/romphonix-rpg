@@ -17,13 +17,13 @@ void testscript6(Game *game) {
 }
 
 void testscript5(Game *game) {
-	textbox(game, "Even more options!", "");
+	pushTextbox(game, "Even more options!", "");
 	game->nextfunc = testscript6;
 }
 
 void testscript3(Game *game) {
 	sprintf(testscriptbuf, "You chose option %d", game->menuchoice + 1);
-	textbox(game, testscriptbuf, "");
+	pushTextbox(game, testscriptbuf, "");
 	game->nextfunc = endscript;
 }
 
@@ -34,12 +34,12 @@ void testscript2(Game *game) {
 }
 
 void testscript1(Game *game) {
-	textbox(game, "Here is another one!", "We even have menus!");
+	pushTextbox(game, "Here is another one!", "We even have menus!");
 	game->nextfunc = testscript2;
 }
 
 void testscript(Game *game) {
-	textbox(game, "This is an example", "textbox");
+	pushTextbox(game, "This is an example", "textbox");
 	game->nextfunc = testscript1;
 }
 

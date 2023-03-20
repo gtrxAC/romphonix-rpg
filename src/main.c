@@ -80,7 +80,7 @@ int main() {
         ClearBackground(BLACK);
         switch (g->state) {
             case ST_TITLE: drawTitle(g); break;
-            case ST_MAINMENU: drawScript(g); break;
+            case ST_MAINMENU: /*drawScript(g);*/ break;
             // case ST_TEXTBOX: drawWorld(g); /*drawScript(g);*/ break;
             case ST_INGAME: drawWorld(g); break;
         }

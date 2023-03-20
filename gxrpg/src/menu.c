@@ -40,13 +40,13 @@ void mainmenu2(Game *game) {
 	switch (game->menuchoice) {
 		case LOAD:
 			if (!FileExists("storage.data")) {
-				textbox(game, "Save file not found.", "");
+				pushTextbox(game, "Save file not found.", "");
 				game->state = ST_MAINMENU;
 				game->nextfunc = mainmenu;
 				break;
 			}
 			if (!load(game)) {
-				textbox(game, "Invalid save file.", "");
+				pushTextbox(game, "Invalid save file.", "");
 				game->state = ST_MAINMENU;
 				game->nextfunc = mainmenu;
 				break;
@@ -76,8 +76,8 @@ void ingamemenu2(Game *game) {
 
 	switch (game->menuchoice) {
 		case SAVE:
-			if (save(game)) textbox(game, "Saved!", "");
-			else textbox(game, "Failed to save.", "");
+			if (save(game)) pushTextbox(game, "Saved!", "");
+			else pushTextbox(game, "Failed to save.", "");
 			game->nextfunc = endscript;
 			break;
 
