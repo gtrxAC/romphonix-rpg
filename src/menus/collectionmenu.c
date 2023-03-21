@@ -23,6 +23,7 @@ void drawCollectionMenu(Game *g);
 //
 void scrCollectionMenu(Game *g) {
     pushMenu(g, 0, NULL, true);
+    SetWindowTitle("ok");
     MENU.updateFunc = updateCollectionMenu;
     MENU.drawFunc = drawCollectionMenu;
 }
@@ -33,7 +34,7 @@ void scrCollectionMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void updateCollectionMenu(Game *g) {
-    if (K_B_PRESS()) scrInGameMenu(g);
+    if (K_B_PRESS()) popMenu(g);
 
     if (K_UP_PRESS() && MENU.choice > 0) {
         MENU.choice--;

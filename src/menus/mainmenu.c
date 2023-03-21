@@ -8,8 +8,8 @@
 // Functions have to be declared before referencing them
 
 // Note: there is a compiler flag to allow *calling* a function before declaring
-// it, but this doesn't apply to *referencing* it (like in the g->nextFunc = )
-void scrMainMenuCheck();
+// it, but this doesn't apply to *referencing* it (like in the MENU.nextFunc = )
+void scrMainMenuCheck(Game *g);
 
 // _____________________________________________________________________________
 //
@@ -25,7 +25,7 @@ void scrMainMenu(Game *g) {
 	    pushMenu(g, 2, choices, false);
     }
 
-	g->nextFunc = scrMainMenuCheck;
+	MENU.nextFunc = scrMainMenuCheck;
 }
 
 void scrMainMenuCheck(Game *g) {
@@ -36,11 +36,13 @@ void scrMainMenuCheck(Game *g) {
         case 0:
             load(g);
             g->state = ST_INGAME;
+            popMenu(g);
             break;
 
         case 1:
             // TODO: introduction thing
             g->state = ST_INGAME;
+            popMenu(g);
             break;
 
         case 2:

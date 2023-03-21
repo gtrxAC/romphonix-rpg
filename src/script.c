@@ -68,7 +68,7 @@ void changeMap(Game *g, int map, int x, int y) {
 //
 void updateTextbox(Game *g) {
 	if (K_A_PRESS()) {
-		if (g->nextFunc) g->nextFunc(g);
+		if (MENU.nextFunc) MENU.nextFunc(g);
 		else g->state = ST_INGAME;
 	}
 }
@@ -112,5 +112,5 @@ void drawTextbox(Game *g) {
 
 void scrNoScript(Game *g) {
 	pushTextbox(g, "No function assigned to this script index!", "");
-	g->nextFunc = popMenu;
+	MENU.nextFunc = popMenu;
 }

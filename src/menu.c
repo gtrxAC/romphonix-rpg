@@ -20,9 +20,13 @@ void pushMenu(Game *g, int numChoices, const char **choices, bool canSkip) {
 	MENU.updateFunc = updateMenu;
 	MENU.drawFunc = drawMenu;
 
-	for (int i = 0; i < numChoices; i++) {
-		arrput(MENU.choices, choices[i]);
-	}
+    if (choices != NULL) {
+        for (int i = 0; i < numChoices; i++) {
+            arrput(MENU.choices, choices[i]);
+        }
+    }
+
+    MENU.nextFunc = NULL;
 }
 
 // _____________________________________________________________________________
@@ -32,11 +36,6 @@ void pushMenu(Game *g, int numChoices, const char **choices, bool canSkip) {
 // _____________________________________________________________________________
 //
 void updateMenu(Game *g) {
-    if (MENU.drawFunc) {
-        MENU.drawFunc(g);
-        return;
-    }
-
     if (K_UP_PRESS() && MENU.choice) {
         MENU.choice--;
         MENU.menuAnim = 16;
@@ -51,12 +50,10 @@ void updateMenu(Game *g) {
 
     if (MENU.canSkip && K_B_PRESS()) {
         MENU.choice = -1;
-        if (g->nextFunc) g->nextFunc(g);
-        else g->state = ST_INGAME;
+        if (MENU.nextFunc) MENU.nextFunc(g);
     }
     if (K_A_PRESS()) {
-        if (g->nextFunc) g->nextFunc(g);
-        else g->state = ST_INGAME;
+        if (MENU.nextFunc) MENU.nextFunc(g);
     }
 }
 
@@ -67,11 +64,6 @@ void updateMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void drawMenu(Game *g) {
-    if (MENU.drawFunc) {
-        MENU.drawFunc(g);
-        return;
-    }
-
     // Get length of the longest menu choice
     int longest = 0;
     for (int i = 0; i < arrlen(MENU.choices); i++) {

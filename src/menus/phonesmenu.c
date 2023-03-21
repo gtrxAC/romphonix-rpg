@@ -20,11 +20,12 @@ void scrCheckPhonesMenu(Game *g);
 // _____________________________________________________________________________
 //
 void scrPhonesMenu(Game *g) {
-    // g->state = ST_TEXTBOX;
-    // g->menuUpdateFunc = updatePhonesMenu;
     pushMenu(g, 6, NULL, true);
     MENU.drawFunc = drawPhonesMenu;
-    MENU.menuScroll = 0;
+    MENU.nextFunc = scrCheckPhonesMenu;
+
+    // For this menu, we create 6 "dummy" values to let the user scroll freely.
+    for (int i = 0; i < 6; i++) arrput(MENU.choices, "");
 }
 
 // _____________________________________________________________________________
@@ -72,4 +73,5 @@ void drawPhonesMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void scrCheckPhonesMenu(Game *g) {
+    if (MENU.choice == -1) popMenu(g);
 }

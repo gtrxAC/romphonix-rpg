@@ -169,11 +169,9 @@ typedef struct Menu {
     // For menus or textboxes that use custom update/draw/check functions.
     // - Update functions check the user's input and act accordingly
     // - Draw functions draw the menu.
-    // - Check functions are activated when the user confirms a choice, it
-    //   checks the user's choice and acts accordingly.
 	void (*updateFunc)(Game *);
 	void (*drawFunc)(Game *);
-	void (*checkFunc)(Game *);
+	void (*nextFunc)(Game *);
 } Menu;
 
 // _____________________________________________________________________________
