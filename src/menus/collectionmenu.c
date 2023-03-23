@@ -23,7 +23,6 @@ void drawCollectionMenu(Game *g);
 //
 void scrCollectionMenu(Game *g) {
     pushMenu(g, 0, NULL, true);
-    SetWindowTitle("ok");
     MENU.updateFunc = updateCollectionMenu;
     MENU.drawFunc = drawCollectionMenu;
 }

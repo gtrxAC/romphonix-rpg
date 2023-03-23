@@ -84,7 +84,6 @@ int main() {
         }
         // Draw menus
         for (int i = 0; i < arrlen(g->menus); i++) MENU.drawFunc(g);
-        DrawText(TextFormat("menudepth %d", arrlen(g->menus)), 0, 0, 10, WHITE);
         EndTextureMode();
 
         // Draw render texture on screen

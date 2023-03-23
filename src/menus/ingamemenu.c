@@ -61,6 +61,7 @@ void scrInGameMenuCheck(Game *g) {
     switch (MENU.choice) {
         case 0: scrCollectionMenu(g); break;
         case 1: scrPhonesMenu(g); break;
+        case 2: scrItemsMenu(g); break;
         default: popMenu(g); break;
     }
 }
