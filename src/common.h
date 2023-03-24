@@ -172,6 +172,11 @@ typedef struct Menu {
 	void (*updateFunc)(Game *);
 	void (*drawFunc)(Game *);
 	void (*nextFunc)(Game *);
+    
+    // Only used for textboxes
+    const char *textbox[2];
+    char textboxDraw[2][64];
+	unsigned int textboxTime;
 } Menu;
 
 // _____________________________________________________________________________
@@ -231,15 +236,7 @@ typedef struct Game {
     //  Scripting related variables
     // _________________________________________________________________________
     //
-    ScriptType scriptType;
-
-	// Next script function in queue to execute, can be set by script functions
-	// to chain multiple actions and textboxes together
-	void (*nextFunc)(Game *);
-
-    const char *textbox[2];
-    char textboxDraw[2][64];
-	unsigned int textboxTime;
+    // ScriptType scriptType;
 } Game;
 
 #include "script.h"

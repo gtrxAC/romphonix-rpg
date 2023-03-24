@@ -20,8 +20,10 @@ void pushTextbox(Game *g, const char *line1, const char *line2) {
 	MENU.updateFunc = updateTextbox;
 	MENU.drawFunc = drawTextbox;
 
-	arrput(MENU.choices, line1);
-	arrput(MENU.choices, line2);
+	// arrput(MENU.choices, line1);
+	// arrput(MENU.choices, line2);
+	MENU.textbox[0] = line1;
+	MENU.textbox[1] = line2;
 }
 
 // _____________________________________________________________________________
@@ -80,34 +82,34 @@ void updateTextbox(Game *g) {
 //
 void drawTextbox(Game *g) {
 	int lineCount = 1;
-	if (strlen(g->textbox[1])) lineCount++;
+	if (strlen(MENU.textbox[1])) lineCount++;
 
 	drawBox(g, 10, 224 - 14*lineCount, 300, 16 + 14*lineCount);
 
 	// The text uses a typewriter animation - so at the beginning only
 	// part of the text is drawn, we use separate text buffers and a
 	// timer to manage this.
-	int line1Len = MIN(g->textboxTime, 63);
-	int line2Len = MIN(g->textboxTime - strlen(g->textbox[0]), 63);
+	int line1Len = MIN(MENU.textboxTime, 63);
+	int line2Len = MIN(MENU.textboxTime - strlen(MENU.textbox[0]), 63);
 	if (line2Len == 63 && line1Len < 63) line2Len = 0;  // quick and hacky bugfix
 	
-	strncpy(g->textboxDraw[0], g->textbox[0], line1Len);
-	strncpy(g->textboxDraw[1], g->textbox[1], line2Len);
-	g->textboxDraw[0][line1Len] = 0;
-	g->textboxDraw[1][line2Len] = 0;
+	strncpy(MENU.textboxDraw[0], MENU.textbox[0], line1Len);
+	strncpy(MENU.textboxDraw[1], MENU.textbox[1], line2Len);
+	MENU.textboxDraw[0][line1Len] = 0;
+	MENU.textboxDraw[1][line2Len] = 0;
 
 	DrawTextEx(
-		g->fonts.dialogue, g->textboxDraw[0],
+		g->fonts.dialogue, MENU.textboxDraw[0],
 		(Vector2) {18, 232 - 14*lineCount},
 		13, 0, WHITE
 	);
 	if (lineCount == 2) DrawTextEx(
-		g->fonts.dialogue, g->textboxDraw[1],
+		g->fonts.dialogue, MENU.textboxDraw[1],
 		(Vector2) {18, 218},
 		13, 0, WHITE
 	);
 
-	g->textboxTime++;
+	MENU.textboxTime++;
 }
 
 void scrNoScript(Game *g) {

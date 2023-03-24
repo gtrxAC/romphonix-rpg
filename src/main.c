@@ -35,7 +35,7 @@ int main() {
     SetTargetFPS(60);
     SetExitKey(0);
     g->state = ST_TITLE;
-    setSong(g, "assets/sounds/music/LG tune.mid");
+    setSong(g, "assets/sounds/music/abangchung.mid");
 
     // _________________________________________________________________________
     //
