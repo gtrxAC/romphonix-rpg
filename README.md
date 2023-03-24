@@ -4,8 +4,8 @@ A phone collecting RPG! (in development)
 [Codebase structure](STRUCTURE.md)
 
 ## Download
-* [GitHub (need account)](https://github.com/gtrxAC/romphonix-rpg-new/releases)
-* [nightly.link (no account)](https://nightly.link/gtrxAC/romphonix-rpg-new/workflows/main/main)
+* [GitHub (need account)](https://github.com/gtrxAC/romphonix-rpg/releases)
+* [nightly.link (no account)](https://nightly.link/gtrxAC/romphonix-rpg/workflows/main/main)
 
 ## Building
 1. If you're on Windows, download [w64devkit](https://github.com/skeeto/w64devkit/releases). Make sure you get a release zip, not the source code. Extract the archive somewhere and run `w64devkit.exe`. On Linux, just open a terminal.
