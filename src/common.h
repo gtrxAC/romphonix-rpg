@@ -130,10 +130,8 @@ typedef struct Map {
 //  Save data structure
 // _____________________________________________________________________________
 //
-typedef struct Item {
-    int id;
-    u16 count;
-} Item;
+#include "items.h"
+#include "skills.h"
 
 typedef struct SaveData {
     // Player location

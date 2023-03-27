@@ -10,14 +10,15 @@ void initSynth(Game *g) {
     g->syn.settings = new_fluid_settings();
     if (!g->syn.settings) error(g, "Failed to create FluidSynth settings");
 
-    // enable seamless looping
+    // Enable seamless looping. This is disabled when changing the song, and then
+    // enabled back, so the previous song's notes won't get "stuck".
     fluid_settings_setint(g->syn.settings, "player.reset-synth", 0);
 
     g->syn.synth = new_fluid_synth(g->syn.settings);
     if (!g->syn.synth)error(g, "Failed to create FluidSynth synth");
 
     g->syn.sfont_id = fluid_synth_sfload(g->syn.synth, "assets/sounds/soundfont.sf2", 1);
-    if (g->syn.sfont_id == FLUID_FAILED) error(g, "Failed to load soundfont");
+    if (g->syn.sfont_id == FLUID_FAILED) error(g, "Failed to load soundfont. Make sure you are running romphonix.bat, not the exe in the windows folder.");
 
     g->syn.driver = new_fluid_audio_driver(g->syn.settings, g->syn.synth);
     if (!g->syn.driver) error(g, "Failed to create FluidSynth audio driver");
@@ -44,6 +45,7 @@ void closeSynth(Game *g) {
 void setSong(Game *g, const char *path) {
     // Remove old player (unless there's a better way to clear the "playlist"?)
     if (g->syn.player) {
+        fluid_settings_setint(g->syn.settings, "player.reset-synth", 1);
         fluid_player_stop(g->syn.player);
         delete_fluid_player(g->syn.player);
     }
@@ -53,4 +55,5 @@ void setSong(Game *g, const char *path) {
     fluid_player_add(g->syn.player, path);
     fluid_player_set_loop(g->syn.player, -1);
     fluid_player_play(g->syn.player);
+    fluid_settings_setint(g->syn.settings, "player.reset-synth", 0);
 }

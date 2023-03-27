@@ -1,0 +1,56 @@
+[
+	{
+		"name": "",
+		"description": "Return to the field.",
+		"effect": "heal",
+		"effectParameter": 30
+	},
+	{
+		"name": "Spare Battery",
+		"description": "Restores 30% battery to one phone.",
+		"effect": "heal",
+		"effectParameter": 30
+	},
+	{
+		"name": "Extended Battery",
+		"description": "Restores 50% battery to one phone.",
+		"effect": "heal",
+		"effectParameter": 50
+	},
+	{
+		"name": "Super Battery",
+		"description": "Restores 70% battery to one phone.",
+		"effect": "heal",
+		"effectParameter": 70
+	},
+	{
+		"name": "Power Bank",
+		"description": "Revives a dead phone with 50% battery.",
+		"effect": "revive",
+		"effectParameter": 50
+	},
+	{
+		"name": "Upgrade",
+		"description": "Upgrades one stat for one phone.",
+		"effect": "upgrade",
+		"effectParameter": 1
+	},
+	{
+		"name": "Screwdriver",
+		"description": "Can be used to repair phones a little.",
+		"effect": "repair",
+		"effectParameter": 1
+	},
+	{
+		"name": "Automatic Screwdriver",
+		"description": "Can be used to repair phones a good amount.",
+		"effect": "repair",
+		"effectParameter": 2
+	},
+	{
+		"name": "Repair Kit",
+		"description": "Can be used to combine the parts from two phones.",
+		"effect": "combine",
+		"effectParameter": 1
+	}
+]

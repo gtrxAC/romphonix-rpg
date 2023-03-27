@@ -1,0 +1,46 @@
+[
+	{
+		"name": "Siphon",
+		"description": "Drains the battery of the opposing phone.",
+		"skillType": "battery",
+		"effect": "drain",
+		"effectParameter": 30,
+		"secondaryEffect": "none",
+		"secondaryEffectParameter": 0,
+		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+		"animation": "spr_default_anim"
+	},
+	{
+		"name": "Mosaic",
+		"description": "Attack with a chance of confusion.",
+		"skillType": "screen",
+		"effect": "damage",
+		"effectParameter": 30,
+		"secondaryEffect": "confuse",
+		"secondaryEffectParameter": 30,
+		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+		"animation": "spr_default_anim"
+	},
+	{
+		"name": "Power Save",
+		"description": "Increase defence for five turns.",
+		"skillType": "battery",
+		"effect": "def_up",
+		"effectParameter": 5,
+		"secondaryEffect": "none",
+		"secondaryEffectParameter": 0,
+		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+		"animation": "spr_default_anim"
+	},
+	{
+		"name": "Optimise",
+		"description": "Increase attack for five turns.",
+		"skillType": "battery",
+		"effect": "atk_up",
+		"effectParameter": 5,
+		"secondaryEffect": "none",
+		"secondaryEffectParameter": 0,
+		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+		"animation": "spr_default_anim"
+	}
+]

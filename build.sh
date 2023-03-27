@@ -81,9 +81,9 @@ if [[ "$1" = "-r" ]]; then
 	esac
 fi
 
-# Convert phone list
+# Convert phone, skill, item lists
 cd assets/data
-python convert_phones.py
+python json2tfs.py
 cd ../..
 
 # Build map editor

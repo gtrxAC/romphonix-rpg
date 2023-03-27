@@ -21,7 +21,7 @@ index.html
 
 *.log
 save.tfs
-phones.tfs
+assets/data/*.tfs
 
 # Sub-projects
 mapeditor/include/raylib.h

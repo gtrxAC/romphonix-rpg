@@ -64,7 +64,7 @@ void drawItemsMenu(Game *g) {
     drawBox(g, 0, 20, 160, 110);
     
     // Item description window (bottom left)
-    drawBox(g, 0, 20, 160, 110);
+    drawBox(g, 0, 130, 160, 110);
 
     // Item list (right)
     drawBox(g, 160, 0, 160, 240);
