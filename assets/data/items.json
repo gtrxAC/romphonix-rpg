@@ -3,54 +3,72 @@
 		"name": "",
 		"description": "Return to the field.",
 		"effect": "heal",
-		"effectParameter": 30
+		"effectParameter": 30,
+		"sprite": "return",
+		"pocket": 0
 	},
 	{
 		"name": "Spare Battery",
 		"description": "Restores 30% battery to one phone.",
 		"effect": "heal",
-		"effectParameter": 30
+		"effectParameter": 30,
+		"sprite": "Spare_Battery",
+		"pocket": 0
 	},
 	{
 		"name": "Extended Battery",
 		"description": "Restores 50% battery to one phone.",
 		"effect": "heal",
-		"effectParameter": 50
+		"effectParameter": 50,
+		"sprite": "Extended_Battery",
+		"pocket": 0
 	},
 	{
 		"name": "Super Battery",
 		"description": "Restores 70% battery to one phone.",
 		"effect": "heal",
-		"effectParameter": 70
+		"effectParameter": 70,
+		"sprite": "Super_Battery",
+		"pocket": 0
 	},
 	{
 		"name": "Power Bank",
 		"description": "Revives a dead phone with 50% battery.",
 		"effect": "revive",
-		"effectParameter": 50
+		"effectParameter": 50,
+		"sprite": "Power_Bank",
+		"pocket": 0
 	},
 	{
 		"name": "Upgrade",
 		"description": "Upgrades one stat for one phone.",
 		"effect": "upgrade",
-		"effectParameter": 1
+		"effectParameter": 1,
+		"sprite": "Upgrade",
+		"pocket": 0
 	},
 	{
 		"name": "Screwdriver",
 		"description": "Can be used to repair phones a little.",
 		"effect": "repair",
-		"effectParameter": 1
+		"effectParameter": 1,
+		"sprite": "Screwdriver",
+		"pocket": 0
 	},
 	{
 		"name": "Automatic Screwdriver",
 		"description": "Can be used to repair phones a good amount.",
 		"effect": "repair",
-		"effectParameter": 2
+		"effectParameter": 2,
+		"sprite": "Automatic_Screwdriver",
+		"pocket": 0
 	},
 	{
 		"name": "Repair Kit",
 		"description": "Can be used to combine the parts from two phones.",
 		"effect": "combine",
-		"effectParameter": 1
+		"effectParameter": 1,
+		"sprite": "Repair_Kit",
+		"pocket": 0
 	}
 ]

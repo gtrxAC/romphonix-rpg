@@ -65,6 +65,7 @@ with open('phones.tfs', 'wb') as outfile:
 # ______________________________________________________________________________
 #
 #  Convert skills
+#  Should match the structure in src/skills.h (SkillSpecs)
 # ______________________________________________________________________________
 #
 out = bytearray()
@@ -127,6 +128,8 @@ with open('items.json') as file:
         appendStr(i['description'], 128)
         append32(itemEffects[i['effect']])
         append32(i['effectParameter'])
+        appendStr(i['sprite'], 32)
+        append32(i['pocket'])
         
 with open('items.tfs', 'wb') as outfile:
     outfile.write(out)

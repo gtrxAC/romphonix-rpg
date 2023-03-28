@@ -35,4 +35,9 @@ typedef struct SkillSpecs {
     char animation[64];
 } SkillSpecs;
 
+typedef struct SkillDatabase {
+    u32 size;
+    SkillSpecs skills[];
+} SkillDatabase;
+
 #endif

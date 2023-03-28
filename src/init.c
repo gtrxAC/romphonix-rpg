@@ -41,12 +41,27 @@ void initGame(Game *g) {
     g->phoneDB = (PhoneDatabase *) LoadFileData("assets/data/phones.tfs", &unused);
     printf("PHONERPG: Loaded %d phones\n", g->phoneDB->size);
 
+    g->itemDB = (ItemDatabase *) LoadFileData("assets/data/items.tfs", &unused);
+    printf("PHONERPG: Loaded %d items\n", g->itemDB->size);
+
+    g->skillDB = (SkillDatabase *) LoadFileData("assets/data/skills.tfs", &unused);
+    printf("PHONERPG: Loaded %d skills\n", g->skillDB->size);
+
     // Load textures (sprites) for each phone
     for (int i = 0; i < g->phoneDB->size; i++) {
         PhoneSpecs *ph = &SPECS(i);
         shput(
             g->textures, ph->sprite,
             LoadTexture(TextFormat("assets/graphics/phones/%s.png", ph->sprite))
+        );
+    }
+
+    // Load sprites for each item
+    for (int i = 0; i < g->itemDB->size; i++) {
+        ItemSpecs *item = &ISPECS(i);
+        shput(
+            g->textures, item->sprite,
+            LoadTexture(TextFormat("assets/graphics/items/%s.png", item->sprite))
         );
     }
 

@@ -59,6 +59,10 @@ typedef struct Game Game;
 // that the player owns, so this doesnt include learned moves, remaining HP, etc)
 #define SPECS(id) (g->phoneDB->phones[id])
 
+// Gets specs for an item or skill (database constant data)
+#define ISPECS(id) (g->itemDB->items[id])
+#define SSPECS(id) (g->skillDB->skills[id])
+
 // Math stuff
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
@@ -213,6 +217,8 @@ typedef struct Game {
 	int playerAnim;
 
     PhoneDatabase *phoneDB;
+    ItemDatabase *itemDB;
+    SkillDatabase *skillDB;
 
     SaveData s;
     Item *bag[3];  // 3 stb_ds dyn arrays

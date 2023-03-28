@@ -14,7 +14,7 @@ void load(Game *g) {
     // Load bag contents (static array -> dynamic array)
     for (int b = 0; b < 3; b++) {
         for (int i = 0; i < 20; i++) {
-            if (g->bag[b][i].count > 0) arrpush(g->bag[b], g->bag[b][i]);
+            if (g->s.bag[b][i].count > 0) arrpush(g->bag[b], g->s.bag[b][i]);
         }
     }
 }

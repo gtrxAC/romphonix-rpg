@@ -63,4 +63,28 @@ void checkBindings(Game *g) {
 
         if (!got) tinyfd_messageBox("Error", "Your party is full!", "ok", "error", 0);
     }
+
+    // I: give item
+    if (IsKeyPressed(KEY_I)) {
+        char *input = tinyfd_inputBox("Give item", "What item ID do you want to get? (check assets/data/items.json, the first one is number 0, second is 1, and so on)", " ");
+        if (!input) return;
+        int id = atoi(input);
+        ItemSpecs *item = &ISPECS(id);
+
+        #define POCKET (g->bag[item->pocket])
+
+        // Search if there is already a stack with this item
+        for (int i = 0; i < arrlen(POCKET); i++) {
+            if (POCKET[i].id == id) {
+                POCKET[i].count += 100;
+                return;   
+            }
+        }
+
+        if (arrlen(POCKET) < 20) {
+            arrput(POCKET, ((Item) {id, 100}));
+        } else {
+            tinyfd_messageBox("Error", "The bag pocket is full!", "ok", "error", 0);
+        }
+    }
 }

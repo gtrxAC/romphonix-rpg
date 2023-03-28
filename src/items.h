@@ -19,6 +19,8 @@ typedef struct ItemSpecs {
     char description[128];
     ItemEffect effect;
     int effectParameter;
+    char sprite[32];
+    int pocket;  // which bag pocket this item belongs in
 } ItemSpecs;
 
 // Item that the user has in their bag (ID refers to index in the items.tfs file)
@@ -26,5 +28,10 @@ typedef struct Item {
     int id;
     int count;
 } Item;
+
+typedef struct ItemDatabase {
+    u32 size;
+    ItemSpecs items[];
+} ItemDatabase;
 
 #endif
