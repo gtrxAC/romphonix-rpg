@@ -27,3 +27,5 @@ assets/data/*.tfs
 mapeditor/include/raylib.h
 mapeditor/lib
 rpxmap
+
+assets/graphics/phones/fictional
