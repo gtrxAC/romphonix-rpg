@@ -30,6 +30,8 @@ void scrItemsMenu(Game *g) {
 // _____________________________________________________________________________
 //
 //  Items menu - state update function
+//  Works similarly to the collection menu, but has three bag pockets which work
+//  like tabs.
 // _____________________________________________________________________________
 //
 void updateItemsMenu(Game *g) {
@@ -41,11 +43,19 @@ void updateItemsMenu(Game *g) {
     }
     else if (K_DOWN_PRESS() && MENU.choice < g->phoneDB->size - 1) {
         MENU.choice++;
-        if (MENU.choice == MENU.menuScroll + 11) MENU.menuScroll++;
+        if (MENU.choice == MENU.menuScroll + 12) MENU.menuScroll++;
     }
     if (K_LEFT_PRESS()) {
+        MENU.bagChoice--;
+        if (MENU.bagChoice < 0) MENU.bagChoice = 2;
+        MENU.choice = 0;
+        MENU.menuScroll = 0;
     }
     if (K_RIGHT_PRESS()) {
+        MENU.bagChoice++;
+        if (MENU.bagChoice > 2) MENU.bagChoice = 0;
+        MENU.choice = 0;
+        MENU.menuScroll = 0;
     }
 }
 
@@ -62,12 +72,22 @@ void drawItemsMenu(Game *g) {
 
     // Bag sprite window (center left)
     drawBox(g, 0, 20, 160, 110);
+    DrawTextureRec(
+        TEX(bag),
+        (Rectangle) {MENU.bagChoice*96, 0, 96, 96},
+        (Vector2) {32, 27}, WHITE
+    );
     
     // Item description window (bottom left)
     drawBox(g, 0, 130, 160, 110);
 
     // Item list (right)
     drawBox(g, 160, 0, 160, 240);
+    for (int i = MENU.menuScroll; i < MENU.menuScroll + 12 && i < g->bag[MENU.bagChoice]; i++) {
+        drawText(
+            g, g->itemDB->items, 160, 4 + (i - MENU.menuScroll)*20, WHITE
+        );
+    }
 }
 
 // _____________________________________________________________________________

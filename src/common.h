@@ -143,6 +143,7 @@ typedef struct SaveData {
     Phone party[6];
     Phone pc[10][5][5];  // these values may be tweaked later, but 5 × 5 is a good grid size
 
+    // Items are saved into a normal array, but loaded to a stb_ds dyn array
     Item bag[3][20];
 
     unsigned int money;
@@ -175,6 +176,9 @@ typedef struct Menu {
     const char *textbox[2];
     char textboxDraw[2][64];
 	unsigned int textboxTime;
+
+    // Only used for bag (items) menu
+    int bagChoice;
 } Menu;
 
 // _____________________________________________________________________________
@@ -211,6 +215,8 @@ typedef struct Game {
     PhoneDatabase *phoneDB;
 
     SaveData s;
+    Item *bag[3];  // 3 stb_ds dyn arrays
+
     Menu *menus; // stb_ds dynamic array (menu stack)
 
     // _________________________________________________________________________
