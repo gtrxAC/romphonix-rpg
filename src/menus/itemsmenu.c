@@ -9,6 +9,7 @@
 // _____________________________________________________________________________
 //
 #include "../common.h"
+#include "itemactionsmenu.h"
 
 void scrItemsMenu(Game *g);
 void updateItemsMenu(Game *g);
@@ -24,7 +25,6 @@ void scrItemsMenu(Game *g) {
     pushMenu(g, 0, NULL, true);
     MENU.updateFunc = updateItemsMenu;
     MENU.drawFunc = drawItemsMenu;
-    MENU.nextFunc = checkItemsMenu;
 }
 
 // _____________________________________________________________________________
@@ -35,13 +35,15 @@ void scrItemsMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void updateItemsMenu(Game *g) {
+    #define ITEMCOUNT (arrlen(g->bag[MENU.bagChoice]))
+    
     if (K_B_PRESS()) popMenu(g);
 
     if (K_UP_PRESS() && MENU.choice > 0) {
         MENU.choice--;
         if (MENU.choice == MENU.menuScroll - 1) MENU.menuScroll--;
     }
-    else if (K_DOWN_PRESS() && MENU.choice < arrlen(g->bag[MENU.bagChoice]) - 1) {
+    else if (K_DOWN_PRESS() && MENU.choice < ITEMCOUNT - 1) {
         MENU.choice++;
         if (MENU.choice == MENU.menuScroll + 12) MENU.menuScroll++;
     }
@@ -56,6 +58,9 @@ void updateItemsMenu(Game *g) {
         if (MENU.bagChoice > 2) MENU.bagChoice = 0;
         MENU.choice = 0;
         MENU.menuScroll = 0;
+    }
+    if (K_A_PRESS() && ITEMCOUNT) {
+        scrItemActionsMenu(g);
     }
 }
 
@@ -72,14 +77,18 @@ void drawItemsMenu(Game *g) {
     int textWidth = measureText(g, "Items");
     drawText(g, "Items", 80 - textWidth/2, 3, WHITE);
 
-    // Bag sprite window (center left), bag texture and selected item sprite
+    // Bag sprite window (center left), bag texture
     drawBox(g, 0, 20, 160, 110);
     DrawTextureRec(
         TEX(bag),
         (Rectangle) {MENU.bagChoice*96, 0, 96, 96},
         (Vector2) {32, 27}, WHITE
     );
-    DrawTexture(shget(g->textures, ISPECS(CURPOCKET[MENU.choice].id).sprite), 112, 87, WHITE);
+
+    // Selected item sprite (below the bag sprite)
+    if (arrlen(CURPOCKET)) {
+        DrawTexture(shget(g->textures, ISPECS(CURPOCKET[MENU.choice].id).sprite), 112, 87, WHITE);
+    }
     
     // Item description window (bottom left)
     drawBox(g, 0, 130, 160, 110);
@@ -105,17 +114,15 @@ void drawItemsMenu(Game *g) {
     }
 
     // Item list menu indicator/arrow
-    int selectorY = 6 + 20*(MENU.choice - MENU.menuScroll);
+    if (arrlen(CURPOCKET)) {
+        int selectorY = 6 + 20*(MENU.choice - MENU.menuScroll);
 
-    if (MENU.menuAnimDir == DIR_UP) selectorY += MENU.menuAnim;
-    else selectorY -= MENU.menuAnim;
-    DrawTexture(TEX(indicator), 165, selectorY, WHITE);
-}
-
-// _____________________________________________________________________________
-//
-//  Items menu - check user input function
-// _____________________________________________________________________________
-//
-void checkItemsMenu(Game *g) {
+        if (MENU.menuAnimDir == DIR_UP) selectorY += MENU.menuAnim;
+        else selectorY -= MENU.menuAnim;
+        DrawTexture(TEX(indicator), 165, selectorY, WHITE);
+    } else {
+        // Centered "No items" text if pocket is empty
+        int textLen = measureText(g, "You have no items.");
+        drawText(g, "You have no items.", 240 - textLen/2, 114, WHITE);
+    }
 }

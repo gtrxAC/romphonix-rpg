@@ -1,8 +1,8 @@
-#ifndef MAINMENU_H
-#define MAINMENU_H
+// #ifndef MAINMENU_H
+// #define MAINMENU_H
 
-#include "common.h"
+// #include "common.h"
 
-void scrMainMenu(Game *g);
+// void scrMainMenu(Game *g);
 
-#endif
+// #endif

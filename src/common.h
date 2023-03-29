@@ -183,6 +183,7 @@ typedef struct Menu {
 
     // Only used for bag (items) menu
     int bagChoice;
+    bool selected;
 } Menu;
 
 // _____________________________________________________________________________

@@ -1,13 +1,5 @@
 [
 	{
-		"name": "",
-		"description": "Return to the field.",
-		"effect": "heal",
-		"effectParameter": 30,
-		"sprite": "return",
-		"pocket": 0
-	},
-	{
 		"name": "Spare Battery",
 		"description": "Restores 30% battery to one phone.",
 		"effect": "heal",
