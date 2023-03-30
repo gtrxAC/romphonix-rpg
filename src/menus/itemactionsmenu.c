@@ -27,6 +27,11 @@ void scrItemActionsMenu(Game *g) {
     // MENU.updateFunc = updateItemActionsMenu;
     MENU.drawFunc = drawItemActionsMenu;
     MENU.nextFunc = checkItemActionsMenu;
+    MENU.canSkip = true;
+
+    arrpush(MENU.choices, "Use");
+    arrpush(MENU.choices, "Give");
+    arrpush(MENU.choices, "Toss");
 }
 
 // _____________________________________________________________________________
@@ -41,9 +46,36 @@ void drawItemActionsMenu(Game *g) {
     arrput(g->menus, menu);
 
     // Darken it slightly by drawing a transparent black rectangle
-    DrawRectangle(0, 0, 320, 240, ColorAlpha(BLACK, 0.2f));
+    DrawRectangle(0, 0, 320, 240, ColorAlpha(BLACK, 0.3f));
 
-    drawText(g, "a", 0, 0, WHITE);
+    // Code based on standard drawMenu function, but draws on the bottom right
+    // instead of the top left.
+
+    // Get length of the longest menu choice
+    int longest = 0;
+    for (int i = 0; i < arrlen(MENU.choices); i++) {
+        int length = measureText(g, MENU.choices[i]);
+        if (length > longest) longest = length;
+    }
+
+    int baseX = 290 - longest;
+    int baseY = 224 - 14*arrlen(MENU.choices);
+
+    drawBox(g, baseX, baseY, 30 + longest, 16 + 14*arrlen(MENU.choices));
+
+    for (int i = 0; i < arrlen(MENU.choices) && MENU.choices[i]; i++) {
+        DrawTextEx(
+            g->fonts.dialogue, MENU.choices[i],
+            (Vector2) {baseX + 22, baseY + 8 + 14*i},
+            13, 0, WHITE
+        );
+    }
+
+    int selectorY = 8 + 14*MENU.choice;
+
+    if (MENU.menuAnimDir == DIR_UP) selectorY += MENU.menuAnim;
+    else selectorY -= MENU.menuAnim;
+    DrawTexture(TEX(indicator), baseX + 8, baseY + selectorY, WHITE);
 }
 
 // _____________________________________________________________________________
@@ -52,4 +84,5 @@ void drawItemActionsMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void checkItemActionsMenu(Game *g) {
+    if (MENU.choice == -1) popMenu(g);
 }

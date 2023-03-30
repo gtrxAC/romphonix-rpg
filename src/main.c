@@ -67,12 +67,15 @@ int main() {
         checkBindings(g);
 
         // Update menu/script system (only update the topmost/current menu)
-        if (arrlen(g->menus)) MENU.updateFunc(g);
-
-        // Update game world or title state (only if no menus are open)
-        switch (g->state) {
-            case ST_TITLE: updateTitle(g); break;
-            case ST_INGAME: if (!arrlen(g->menus)) updateWorld(g); break;
+        if (arrlen(g->menus)) {
+            MENU.updateFunc(g);
+        }
+        else {
+            // Update game world or title state (only if no menus are open)
+            switch (g->state) {
+                case ST_TITLE: updateTitle(g); break;
+                case ST_INGAME: if (!arrlen(g->menus)) updateWorld(g); break;
+            }
         }
 
         // Draw game into a render texture so we can scale it

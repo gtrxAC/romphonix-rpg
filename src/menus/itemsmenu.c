@@ -92,6 +92,9 @@ void drawItemsMenu(Game *g) {
     
     // Item description window (bottom left)
     drawBox(g, 0, 130, 160, 110);
+    if (arrlen(CURPOCKET)) {
+        drawTextRec(g, ISPECS(CURPOCKET[MENU.choice].id).description, 4, 134, 152, 102, WHITE);
+    }
 
     // Item list (right)
     drawBox(g, 160, 0, 160, 240);
@@ -103,13 +106,13 @@ void drawItemsMenu(Game *g) {
         // Item name
         drawText(
             g, ISPECS(CURPOCKET[i].id).name,
-            180, 6 + (i - MENU.menuScroll)*20, WHITE
+            179, 6 + (i - MENU.menuScroll)*20, WHITE
         );
 
         // Item count
         drawTextD(
             g, TextFormat("* %d", CURPOCKET[i].count),
-            290, 6 + (i - MENU.menuScroll)*20, WHITE
+            287, 6 + (i - MENU.menuScroll)*20, WHITE
         );
     }
 
