@@ -21,5 +21,7 @@ void loadMapIndex(Game *g) {
 void loadMap(Game *g, int index) {
     int unused;
     g->mapMeta = g->maps[index];
+
+    if (g->map) UnloadFileData(g->map);
     g->map = LoadFileData(g->mapMeta.fileName, &unused);
 }

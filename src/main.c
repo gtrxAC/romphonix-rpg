@@ -75,6 +75,7 @@ int main() {
             switch (g->state) {
                 case ST_TITLE: updateTitle(g); break;
                 case ST_INGAME: if (!arrlen(g->menus)) updateWorld(g); break;
+                case ST_TRANSITION: updateTransition(g); break;
             }
         }
 
@@ -84,6 +85,7 @@ int main() {
         switch (g->state) {
             case ST_TITLE: drawTitle(g); break;
             case ST_INGAME: drawWorld(g); break;
+            case ST_TRANSITION: drawTransition(g); break;
         }
         // Draw menus
         for (int i = 0; i < arrlen(g->menus); i++) MENU.drawFunc(g);

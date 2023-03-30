@@ -37,12 +37,13 @@ void scrItemActionsMenu(Game *g) {
 // _____________________________________________________________________________
 //
 //  Item actions menu - draw function
+//  Also used for the phone actions menu.
 // _____________________________________________________________________________
 //
 void drawItemActionsMenu(Game *g) {
     // Draw the previous (items) menu first
     Menu menu = arrpop(g->menus);
-    drawItemsMenu(g);
+    MENU.drawFunc(g);
     arrput(g->menus, menu);
 
     // Darken it slightly by drawing a transparent black rectangle

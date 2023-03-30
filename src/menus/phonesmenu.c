@@ -73,5 +73,16 @@ void drawPhonesMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void scrCheckPhonesMenu(Game *g) {
-    if (MENU.choice == -1) popMenu(g);
+    if (MENU.choice == -1) {
+        popMenu(g);
+    }
+    else {
+        // If the phone list isn't empty, show the actions menu
+        for (int i = 0; i < 6; i++) {
+            if (g->s.party[i].active) {
+                scrPhoneActionsMenu(g);
+                break;
+            }
+        }
+    }
 }
