@@ -53,7 +53,7 @@ typedef struct Game Game;
 #define MAP_HEIGHT (g->map[1])
 
 // Gets a byte of a map tile (val takes a MapByte defined below)
-#define MAP(x, y, val) (g->map[2 + 7*((y)*MAP_WIDTH + (x)) + (val)])
+#define MAP(x, y, val) (g->map[2 + 13*((y)*MAP_WIDTH + (x)) + (val)])
 
 // Gets specs for a phone by ID (phone data base constant data, not the phones
 // that the player owns, so this doesnt include learned moves, remaining HP, etc)
@@ -79,16 +79,22 @@ typedef struct Game Game;
 enum MapByte {
     MAP_BG_X,
     MAP_BG_Y,
-    MAP_FG_X,
-    MAP_FG_Y,
+    MAP_FG1_X,
+    MAP_FG1_Y,
+    MAP_FG2_X,
+    MAP_FG2_Y,
     MAP_COLLISION,
     MAP_STEP_SCRIPT,
-    MAP_INTERACT_SCRIPT
+    MAP_INTERACT_SCRIPT,
+    MAP_UNUSED1,
+    MAP_UNUSED2,
+    MAP_UNUSED3,
+    MAP_UNUSED4,
 };
 
 typedef enum State {
     ST_TITLE,
-    ST_MAINMENU,  // same as script but map and player aren't shown in the background
+    ST_MAINMENU,  // nothing is updated/drawn except for menus
     ST_INGAME,
     // ST_TEXTBOX,
     // ST_MENU,

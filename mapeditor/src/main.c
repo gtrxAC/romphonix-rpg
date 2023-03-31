@@ -18,7 +18,8 @@ bool mapLoaded = false;
 
 enum {
     MODE_BG,
-    MODE_FG,
+    MODE_FG1,
+    MODE_FG2,
     MODE_COLLISION,
     MODE_STEP_SCRIPT,
     MODE_INTERACT_SCRIPT
@@ -26,20 +27,21 @@ enum {
 
 #define MAP_WIDTH map[0]
 #define MAP_HEIGHT map[1]
-#define TILE_LENGTH 7
+#define TILE_LENGTH 13
 
 #define MAP(x, y, val) map[2 + TILE_LENGTH*((y)*MAP_WIDTH + (x)) + (val)]
 
-const char *modes[5] = {
-    "[1: BG]  2: FG   3: collisions   4: stepScripts   5: interactScripts",
-    " 1: BG  [2: FG]  3: collisions   4: stepScripts   5: interactScripts",
-    " 1: BG   2: FG  [3: collisions]  4: stepScripts   5: interactScripts",
-    " 1: BG   2: FG   3: collisions  [4: stepScripts]  5: interactScripts",
-    " 1: BG   2: FG   3: collisions   4: stepScripts  [5: interactScripts]"
+const char *modes[6] = {
+    "[1: BG]  2: FG1   3: FG2   4: collisions   5: stepScripts   6: interactScripts",
+    " 1: BG  [2: FG1]  3: FG2   4: collisions   5: stepScripts   6: interactScripts",
+    " 1: BG   2: FG1  [3: FG2]  4: collisions   5: stepScripts   6: interactScripts",
+    " 1: BG   2: FG1   3: FG2  [4: collisions]  5: stepScripts   6: interactScripts",
+    " 1: BG   2: FG1   3: FG2   4: collisions  [5: stepScripts]  6: interactScripts",
+    " 1: BG   2: FG1   3: FG2   4: collisions   5: stepScripts  [6: interactScripts]"
 };
 
 void newMap() {
-    char *input = tinyfd_inputBox("Width", "Map width?", "64");
+    char *input = tinyfd_inputBox("Width", "Map width? Note that maps cannot be resized later, so better to have too large than too small.", "64");
     if (!input) return;
     int width = atoi(input);
 
@@ -81,12 +83,17 @@ int main() {
                         MAP((int) pos.x, (int) pos.y, 1) = curTileY;
                         break;
 
-                    case MODE_FG:
+                    case MODE_FG1:
                         MAP((int) pos.x, (int) pos.y, 2) = curTileX;
                         MAP((int) pos.x, (int) pos.y, 3) = curTileY;
                         break;
 
-                    // collision and script use IsMouseButtonPressed instead
+                    case MODE_FG2:
+                        MAP((int) pos.x, (int) pos.y, 4) = curTileX;
+                        MAP((int) pos.x, (int) pos.y, 5) = curTileY;
+                        break;
+
+                    // collision and scripts use IsMouseButtonPressed instead
                 }
             }
         }
@@ -105,28 +112,28 @@ int main() {
                 switch (mode) {
                     // bg and fg use IsMouseButtonDown instead
                     case MODE_COLLISION:
-                        MAP((int) pos.x, (int) pos.y, 4) = !MAP((int) pos.x, (int) pos.y, 4);
+                        MAP((int) pos.x, (int) pos.y, 6) = !MAP((int) pos.x, (int) pos.y, 6);
                         break;
 
                     case MODE_STEP_SCRIPT:
-                        if (MAP((int) pos.x, (int) pos.y, 5)) {
-                            MAP((int) pos.x, (int) pos.y, 5) = 0;
+                        if (MAP((int) pos.x, (int) pos.y, 7)) {
+                            MAP((int) pos.x, (int) pos.y, 7) = 0;
                         }
                         else {
                             char *input = tinyfd_inputBox("Step script", "What script ID should this tile have?", " ");
                             if (!input) break;
-                            MAP((int) pos.x, (int) pos.y, 5) = atoi(input);
+                            MAP((int) pos.x, (int) pos.y, 7) = atoi(input);
                         }
                         break;
 
                     case MODE_INTERACT_SCRIPT:
-                        if (MAP((int) pos.x, (int) pos.y, 6)) {
-                            MAP((int) pos.x, (int) pos.y, 6) = 0;
+                        if (MAP((int) pos.x, (int) pos.y, 8)) {
+                            MAP((int) pos.x, (int) pos.y, 8) = 0;
                         }
                         else {
                             char *input = tinyfd_inputBox("Interact script", "What script ID should this tile have?", " ");
                             if (!input) break;
-                            MAP((int) pos.x, (int) pos.y, 6) = atoi(input);
+                            MAP((int) pos.x, (int) pos.y, 8) = atoi(input);
                         }
                         break;
                 }
@@ -187,16 +194,18 @@ int main() {
                         MAP(x, y, 4) = 0;
                         MAP(x, y, 5) = 0;
                         MAP(x, y, 6) = 0;
+                        MAP(x, y, 7) = 0;
                     }
                 }
             }
         }
 
         if (IsKeyPressed(KEY_ONE)) mode = MODE_BG;
-        if (IsKeyPressed(KEY_TWO)) mode = MODE_FG;
-        if (IsKeyPressed(KEY_THREE)) mode = MODE_COLLISION;
-        if (IsKeyPressed(KEY_FOUR)) mode = MODE_STEP_SCRIPT;
-        if (IsKeyPressed(KEY_FIVE)) mode = MODE_INTERACT_SCRIPT;
+        if (IsKeyPressed(KEY_TWO)) mode = MODE_FG1;
+        if (IsKeyPressed(KEY_THREE)) mode = MODE_FG2;
+        if (IsKeyPressed(KEY_FOUR)) mode = MODE_COLLISION;
+        if (IsKeyPressed(KEY_FIVE)) mode = MODE_STEP_SCRIPT;
+        if (IsKeyPressed(KEY_SIX)) mode = MODE_INTERACT_SCRIPT;
 
         // Draw
         BeginDrawing();
@@ -207,67 +216,53 @@ int main() {
             for (int y = 0; y < MAP_HEIGHT; y++) {
                 for (int x = 0; x < MAP_WIDTH; x++) {
                     switch (mode) {
+                        #define DRAW_TILE(val, color) DrawTextureRec( \
+                                tileset, (Rectangle) {MAP(x, y, (val))*16, MAP(x, y, (val) + 1)*16, 16, 16}, \
+                                (Vector2) {x*16, y*16}, (color) \
+                            );
+
                         case MODE_BG:
-                            DrawTextureRec(
-                                tileset, (Rectangle) {MAP(x, y, 0)*16, MAP(x, y, 1)*16, 16, 16},
-                                (Vector2) {x*16, y*16}, WHITE
-                            );
-                            DrawTextureRec(
-                                tileset, (Rectangle) {MAP(x, y, 2)*16, MAP(x, y, 3)*16, 16, 16},
-                                (Vector2) {x*16, y*16}, ColorAlpha(WHITE, 0.5f)
-                            );
+                            DRAW_TILE(0, WHITE);
+                            DRAW_TILE(2, ColorAlpha(WHITE, 0.5f));
+                            DRAW_TILE(4, ColorAlpha(WHITE, 0.5f));
                             break;
 
-                        case MODE_FG:
-                            DrawTextureRec(
-                                tileset, (Rectangle) {MAP(x, y, 0)*16, MAP(x, y, 1)*16, 16, 16},
-                                (Vector2) {x*16, y*16}, ColorAlpha(WHITE, 0.5f)
-                            );
-                            DrawTextureRec(
-                                tileset, (Rectangle) {MAP(x, y, 2)*16, MAP(x, y, 3)*16, 16, 16},
-                                (Vector2) {x*16, y*16}, WHITE
-                            );
+                        case MODE_FG1:
+                            DRAW_TILE(0, ColorAlpha(WHITE, 0.5f));
+                            DRAW_TILE(2, WHITE);
+                            DRAW_TILE(4, ColorAlpha(WHITE, 0.5f));
+                            break;
+
+                        case MODE_FG2:
+                            DRAW_TILE(0, ColorAlpha(WHITE, 0.5f));
+                            DRAW_TILE(2, ColorAlpha(WHITE, 0.5f));
+                            DRAW_TILE(4, WHITE);
                             break;
 
                         case MODE_COLLISION:
-                            DrawTextureRec(
-                                tileset, (Rectangle) {MAP(x, y, 0)*16, MAP(x, y, 1)*16, 16, 16},
-                                (Vector2) {x*16, y*16}, WHITE
-                            );
-                            DrawTextureRec(
-                                tileset, (Rectangle) {MAP(x, y, 2)*16, MAP(x, y, 3)*16, 16, 16},
-                                (Vector2) {x*16, y*16}, WHITE
-                            );
-                            if (MAP(x, y, 4)) DrawRectangle(x*16, y*16, 16, 16, ColorAlpha(RED, 0.5f));
+                            DRAW_TILE(0, ColorAlpha(WHITE, 0.5f));
+                            DRAW_TILE(2, ColorAlpha(WHITE, 0.5f));
+                            DRAW_TILE(4, ColorAlpha(WHITE, 0.5f));
+                            if (MAP(x, y, 6)) DrawRectangle(x*16, y*16, 16, 16, ColorAlpha(RED, 0.5f));
                             break;
 
                         case MODE_STEP_SCRIPT:
-                            DrawTextureRec(
-                                tileset, (Rectangle) {MAP(x, y, 0)*16, MAP(x, y, 1)*16, 16, 16},
-                                (Vector2) {x*16, y*16}, ColorAlpha(WHITE, 0.5f)
-                            );
-                            DrawTextureRec(
-                                tileset, (Rectangle) {MAP(x, y, 2)*16, MAP(x, y, 3)*16, 16, 16},
-                                (Vector2) {x*16, y*16}, ColorAlpha(WHITE, 0.5f)
-                            );
-                            if (MAP(x, y, 5)) {
+                            DRAW_TILE(0, ColorAlpha(WHITE, 0.5f));
+                            DRAW_TILE(2, ColorAlpha(WHITE, 0.5f));
+                            DRAW_TILE(4, ColorAlpha(WHITE, 0.5f));
+                            if (MAP(x, y, 7)) {
                                 DrawRectangle(x*16, y*16, 16, 16, ColorAlpha(YELLOW, 0.5f));
-                                DrawText(TextFormat("%d", MAP(x, y, 5)), x*16, y*16, 10, BLACK);
+                                DrawText(TextFormat("%d", MAP(x, y, 7)), x*16, y*16, 10, BLACK);
                             }
                             break;
 
                         case MODE_INTERACT_SCRIPT:
-                            DrawTextureRec(
-                                tileset, (Rectangle) {MAP(x, y, 0)*16, MAP(x, y, 1)*16, 16, 16},
-                                (Vector2) {x*16, y*16}, ColorAlpha(WHITE, 0.5f)
-                            );
-                            DrawTextureRec(
-                                tileset, (Rectangle) {MAP(x, y, 2)*16, MAP(x, y, 3)*16, 16, 16},
-                                (Vector2) {x*16, y*16}, ColorAlpha(WHITE, 0.5f)
-                            );
-                            if (MAP(x, y, 6)) {
+                            DRAW_TILE(0, ColorAlpha(WHITE, 0.5f));
+                            DRAW_TILE(2, ColorAlpha(WHITE, 0.5f));
+                            DRAW_TILE(4, ColorAlpha(WHITE, 0.5f));
+                            if (MAP(x, y, 8)) {
                                 DrawRectangle(x*16, y*16, 16, 16, ColorAlpha(SKYBLUE, 0.5f));
-                                DrawText(TextFormat("%d", MAP(x, y, 6)), x*16, y*16, 10, BLACK);
+                                DrawText(TextFormat("%d", MAP(x, y, 8)), x*16, y*16, 10, BLACK);
                             }
                             break;
                     }

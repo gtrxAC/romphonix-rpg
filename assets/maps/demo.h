@@ -19,10 +19,11 @@
 
 // Step scripts
 void scrDemoDoor(Game *g) {
-
+    changeMap(g, 1, 5, 8);
 }
-void scrDemoGrass(Game *g) {
 
+void scrDemoGrass(Game *g) {
+    
 }
 
 // Interact scripts

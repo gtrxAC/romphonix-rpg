@@ -29,7 +29,12 @@ void drawWorldRT(Game *g) {
 			);
 			DrawTextureRec(
 				TEX(tiles_overworld),
-				(Rectangle) {MAP(x, y, MAP_FG_X)*16, MAP(x, y, MAP_FG_Y)*16, 16, 16},
+				(Rectangle) {MAP(x, y, MAP_FG1_X)*16, MAP(x, y, MAP_FG1_Y)*16, 16, 16},
+				(Vector2) {x*16, y*16}, WHITE
+			);
+			DrawTextureRec(
+				TEX(tiles_overworld),
+				(Rectangle) {MAP(x, y, MAP_FG2_X)*16, MAP(x, y, MAP_FG2_Y)*16, 16, 16},
 				(Vector2) {x*16, y*16}, WHITE
 			);
 		}
