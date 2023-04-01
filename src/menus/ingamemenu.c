@@ -62,16 +62,7 @@ void scrInGameMenuCheck(Game *g) {
         case 0: scrCollectionMenu(g); break;
         case 1: scrPhonesMenu(g); break;
         case 2: scrItemsMenu(g); break;
+        case 3: scrPlayerMenu(g); break;
         default: popMenu(g); break;
     }
 }
-
-// void scrSaveMenu(Game *g) {
-//     g->state = ST_TEXTBOX;
-    
-// }
-
-// void drawSaveMenu(Game *g) {
-
-// }
-

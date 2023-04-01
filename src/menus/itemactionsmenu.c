@@ -88,5 +88,19 @@ void drawItemActionsMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void checkItemActionsMenu(Game *g) {
-    if (MENU.choice == -1) popMenu(g);
+    switch (MENU.choice) {
+        case -1: popMenu(g); break;
+
+        case 0: {
+
+        }
+
+        case 1: {
+            
+        }
+
+        case 2: {
+
+        }
+    }
 }

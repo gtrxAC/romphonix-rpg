@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stddef.h> // needed for tinyFD on windows
 #include <stdint.h>
+#include <time.h>
 
 #include "raylib.h"
 #include "stb_ds.h"
@@ -152,6 +153,9 @@ typedef struct SaveData {
     // Items are saved into a normal array, but loaded to a stb_ds dyn array
     Item bag[3][20];
 
+    char name[16];
+    char startDate[11]; // YYYY-MM-DD
+    int id;
     unsigned int money;
 } SaveData;
 
@@ -165,6 +169,13 @@ typedef struct SaveData {
 
 // Shorthand to access the previous menu
 #define LASTMENU (g->menus[arrlen(g->menus) - 2])
+
+typedef enum PlayerMenuState {
+    PMS_FRONT,
+    PMS_ANIM_FTB,  // front to back
+    PMS_BACK,
+    PMS_ANIM_BTF   // back to front
+} PlayerMenuState;
 
 typedef struct Menu {
 	const char **choices;  // stb_ds dynamic array
@@ -189,6 +200,9 @@ typedef struct Menu {
     // Only used for bag (items) menu
     int bagChoice;
     bool selected;
+
+    // Only used for player info menu
+    PlayerMenuState pms;
 } Menu;
 
 // _____________________________________________________________________________

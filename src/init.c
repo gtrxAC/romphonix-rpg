@@ -37,6 +37,8 @@ void initGame(Game *g) {
     LOAD_TEXTURE("phone_icons");
     LOAD_TEXTURE("bag");
     LOAD_TEXTURE("transition");
+    LOAD_TEXTURE("flipbox");
+    LOAD_TEXTURE("portraits");
 
     int unused;
     g->phoneDB = (PhoneDatabase *) LoadFileData("assets/data/phones.tfs", &unused);
