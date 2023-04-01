@@ -77,12 +77,9 @@ void scrCheckPhonesMenu(Game *g) {
         popMenu(g);
     }
     else {
-        // If the phone list isn't empty, show the actions menu
-        for (int i = 0; i < 6; i++) {
-            if (g->s.party[i].active) {
-                scrPhoneActionsMenu(g);
-                break;
-            }
+        // If this slot isn't empty, show the actions menu
+        if (g->s.party[MENU.choice].active) {
+            scrPhoneActionsMenu(g);
         }
     }
 }

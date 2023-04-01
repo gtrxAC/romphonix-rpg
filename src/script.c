@@ -59,8 +59,6 @@ void changeMap(Game *g, int map, int x, int y) {
 	// reset the frame counter so we don't have to keep track of when the transition started
 	g->frameCount = 1;
 	g->state = ST_TRANSITION;
-
-	loadMap(g, map);
 }
 
 // _____________________________________________________________________________

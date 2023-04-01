@@ -4,8 +4,8 @@
 // _____________________________________________________________________________
 //
 // Change this to your map's name.
-#ifndef DEMO_H
-#define DEMO_H
+#ifndef DEMOROOM_H
+#define DEMOROOM_H
 
 #include "../src/common.h"
 
@@ -18,57 +18,34 @@
 // If scripts are referenced using MENU.nextFunc, they have to be declared first
 
 // Step scripts
-void scrDemoDoor(Game *g) {
-    changeMap(g, 1, 5, 8);
-}
-
-void scrDemoGrass(Game *g) {
-
+void scrDemoRoomDoor(Game *g) {
+    changeMap(g, 0, 9, 8);
 }
 
 // Interact scripts
-void scrDemoSign(Game *g) {
-    pushTextbox(g, "This is a sign!", "");
-    MENU.nextFunc = popMenu;
-}
-
-void scrDemoMailbox(Game *g) {
-    pushTextbox(g, "You have no mail.", "");
-    MENU.nextFunc = popMenu;
-}
-
-void scrDemoClock(Game *g) {
-    pushTextbox(g, "The time is... I don't know, I don't care", "enough to check.");
-    MENU.nextFunc = popMenu;
-}
-
 
 // _____________________________________________________________________________
 //
 //  Map metadata
 // _____________________________________________________________________________
 //
-Map mapDemo = {
+Map mapDemoRoom = {
     // Name of the map, is shown to the user in some situations.
-    "Demo",
+    "Demo Room",
 
     // Path to the map, should include the full path looking from the root folder
-    "assets/maps/demo.rpx",
+    "assets/maps/demoroom.rpx",
 
     // List of step script functions (executed when player steps on a tile)
     // Each tile has a step/interact script value from 0-255, 0 means no script
     // These can be edited in the map editor by pressing 5 or 6.
     // The first one in this list is executed for any tile that has a value of 1
     {
-        scrDemoDoor,
-        scrDemoGrass
+        scrDemoRoomDoor
     },
 
     // Same but for interact scripts (executed when player interacts with the tile)
     {
-        scrDemoSign,
-        scrDemoMailbox,
-        scrDemoClock
     }
 };
 

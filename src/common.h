@@ -67,10 +67,6 @@ typedef struct Game Game;
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
-// Menu choice stack actions
-#define PUSH_MENUCHOICE() (arrpush(g->menuChoiceStack, g->menuChoice))
-#define POP_MENUCHOICE() (g->menuChoice = arrpop(g->menuChoiceStack))
-
 // _____________________________________________________________________________
 //
 //  Enumerations and Structures
@@ -166,6 +162,9 @@ typedef struct SaveData {
 //
 // Shorthand to access the current menu (top of the stack)
 #define MENU (arrlast(g->menus))
+
+// Shorthand to access the previous menu
+#define LASTMENU (g->menus[arrlen(g->menus) - 2])
 
 typedef struct Menu {
 	const char **choices;  // stb_ds dynamic array

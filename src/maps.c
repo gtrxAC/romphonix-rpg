@@ -12,10 +12,12 @@
 
 // Include your map header files here
 #include "../assets/maps/demo.h"
+#include "../assets/maps/demoroom.h"
 
 // And add them to the index here
 void loadMapIndex(Game *g) {
     arrput(g->maps, mapDemo);
+    arrput(g->maps, mapDemoRoom);
 }
 
 void loadMap(Game *g, int index) {

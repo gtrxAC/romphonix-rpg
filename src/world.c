@@ -62,8 +62,8 @@ void updateWorld(Game *g) {
 			}
 			
 			if (MAP(g->s.playerX, g->s.playerY, MAP_STEP_SCRIPT)) {
-				if (g->mapMeta.stepScripts[MAP(g->s.playerX, g->s.playerY, MAP_STEP_SCRIPT)]) {
-					g->mapMeta.stepScripts[MAP(g->s.playerX, g->s.playerY, MAP_STEP_SCRIPT)](g);
+				if (g->mapMeta.stepScripts[MAP(g->s.playerX, g->s.playerY, MAP_STEP_SCRIPT) - 1]) {
+					g->mapMeta.stepScripts[MAP(g->s.playerX, g->s.playerY, MAP_STEP_SCRIPT) - 1](g);
 				} else {
 					scrNoScript(g);
 				}

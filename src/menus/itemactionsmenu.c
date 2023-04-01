@@ -42,6 +42,9 @@ void scrItemActionsMenu(Game *g) {
 //
 void drawItemActionsMenu(Game *g) {
     // Draw the previous (items) menu first
+    // We can't use LASTMENU macro here because the draw function expects the
+    // items menu to be at the top, so we need to temporarily pop the actions
+    // menu. A bit inefficient, but it works.
     Menu menu = arrpop(g->menus);
     MENU.drawFunc(g);
     arrput(g->menus, menu);
