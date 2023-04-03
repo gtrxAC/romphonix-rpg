@@ -1,7 +1,7 @@
 // _____________________________________________________________________________
 //
 //  Phone actions menu
-//  Works much like the phone actions menu, but with different actions. The
+//  Works much like the item actions menu, but with different actions. The
 //  phone actions and the item actions menus use the same draw function.
 // _____________________________________________________________________________
 //
@@ -37,6 +37,14 @@ void checkPhoneActionsMenu(Game *g) {
     if (MENU.choice == -1) popMenu(g);
     switch (MENU.choice) {
         case -1: popMenu(g); break;
+
+        case 0: {
+            scrPhoneSpecsMenu(g);
+            // Note: at this point, MENU refers to the newly created specs menu,
+            // and LASTMENU is this menu
+            MENU.phone = &g->s.party[LASTMENU.choice];
+            break;
+        }
 
         case 1: {
             // If not already the topmost choice, swap the places of this phone

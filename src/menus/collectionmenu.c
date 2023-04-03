@@ -37,22 +37,22 @@ void updateCollectionMenu(Game *g) {
 
     if (K_UP_PRESS() && MENU.choice > 0) {
         MENU.choice--;
-        if (MENU.choice == MENU.menuScroll - 1) MENU.menuScroll--;
+        if (MENU.choice == MENU.scroll - 1) MENU.scroll--;
     }
     else if (K_DOWN_PRESS() && MENU.choice < g->phoneDB->size - 1) {
         MENU.choice++;
-        if (MENU.choice == MENU.menuScroll + 11) MENU.menuScroll++;
+        if (MENU.choice == MENU.scroll + 11) MENU.scroll++;
     }
     if (K_LEFT_PRESS()) {
         for (int i = 0; i < 11 && MENU.choice > 0; i++) {
             MENU.choice--;
-            if (MENU.choice == MENU.menuScroll - 1) MENU.menuScroll--;
+            if (MENU.choice == MENU.scroll - 1) MENU.scroll--;
         }
     }
     if (K_RIGHT_PRESS()) {
         for (int i = 0; i < 11 && MENU.choice < g->phoneDB->size - 1; i++) {
             MENU.choice++;
-            if (MENU.choice == MENU.menuScroll + 11) MENU.menuScroll++;
+            if (MENU.choice == MENU.scroll + 11) MENU.scroll++;
         }
     }
 }
@@ -70,23 +70,19 @@ void drawCollectionMenu(Game *g) {
 
     // Phone list
     drawBox(g, 0, 20, 144, 220);
-    for (int i = MENU.menuScroll; i < MENU.menuScroll + 11 && i < g->phoneDB->size; i++) {
+    for (int i = MENU.scroll; i < MENU.scroll + 11 && i < g->phoneDB->size; i++) {
         drawText(
             g, TextFormat(
                 "%s %s", SPECS(i).brand, SPECS(i).model
-            ), 20, 23 + (i - MENU.menuScroll)*20, WHITE
+            ), 20, 23 + (i - MENU.scroll)*20, WHITE
         );
     }
 
     // Phone list menu indicator (arrow)
-    int selectorY = 23 + 20*(MENU.choice - MENU.menuScroll);
-
-    if (MENU.menuAnimDir == DIR_UP) selectorY += MENU.menuAnim;
-    else selectorY -= MENU.menuAnim;
-    DrawTexture(TEX(indicator), 6, selectorY, WHITE);
+    DrawTexture(TEX(indicator), 6, 23 + 20*(MENU.choice - MENU.scroll), WHITE);
 
     // Phone list scrollbar
-    DrawRectangle(140, 20 + 1.47f*MENU.menuScroll, 4, 16, ColorAlpha(WHITE, 0.3f));
+    DrawRectangle(140, 20 + 1.47f*MENU.scroll, 4, 16, ColorAlpha(WHITE, 0.3f));
 
     // Sprite window
     PhoneSpecs *selected = &SPECS(MENU.choice);

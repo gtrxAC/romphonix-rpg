@@ -93,8 +93,6 @@ typedef enum State {
     ST_TITLE,
     ST_MAINMENU,  // nothing is updated/drawn except for menus
     ST_INGAME,
-    // ST_TEXTBOX,
-    // ST_MENU,
     ST_TRANSITION,  // transition from one map to another
     ST_BATTLE
 } State;
@@ -180,10 +178,8 @@ typedef enum PlayerMenuState {
 typedef struct Menu {
 	const char **choices;  // stb_ds dynamic array
 	int choice;
-	int menuAnim;
-	Direction menuAnimDir;
-    bool canSkip;
-    int menuScroll;  // scrolling offset for collection menu
+    bool canSkip;    // can menu be cancelled using the 'B' button?
+    int scroll;  // scrolling offset for collection menu
     
     // For menus or textboxes that use custom update/draw/check functions.
     // - Update functions check the user's input and act accordingly
@@ -192,17 +188,25 @@ typedef struct Menu {
 	void (*drawFunc)(Game *);
 	void (*nextFunc)(Game *);
     
-    // Only used for textboxes
-    const char *textbox[2];
-    char textboxDraw[2][64];
-	unsigned int textboxTime;
+    // Fields specific to certain menus
+    union {
+        struct {
+            // Textboxes
+            const char *textbox[2];
+            char textboxDraw[2][64];
+            unsigned int textboxTime;
+        };
+        struct {
+            // Bag (items) menu
+            int bagChoice;
+            bool selected;
+        };
+        // Player info menu
+        PlayerMenuState pms;
 
-    // Only used for bag (items) menu
-    int bagChoice;
-    bool selected;
-
-    // Only used for player info menu
-    PlayerMenuState pms;
+        // Phone specs menu
+        Phone *phone;
+    };
 } Menu;
 
 // _____________________________________________________________________________

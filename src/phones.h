@@ -35,6 +35,10 @@ typedef enum Condition {
     COND_GOOD
 } Condition;
 
+static const char *conditionToString[4] = {
+    "Broken", "Bad", "OK", "Good"
+};
+
 typedef struct PhoneSpecs {
     // Make sure none of the descriptions exceed the max length (should be well
     // below that, 100 is a good maximum)
@@ -42,9 +46,7 @@ typedef struct PhoneSpecs {
     char model[16];
     char sprite[32];
     char description[128];
-    
     u32 year;
-    u32 fictional;
 
     u32 battery;
     u32 attack, defense, weight;
@@ -57,7 +59,6 @@ typedef struct PhoneSpecs {
 typedef struct Phone {
     bool active;  // is this phone slot in use?
     u16 id;  // ID of phone from database
-    // char nickname[16];
 
     u16 hp, maxHP, energy;
     u8 level, exp, maxExp, baseExp;

@@ -63,7 +63,7 @@ void drawPlayerMenu(Game *g) {
             DrawTexture(TEX(portraits), 52, 68, WHITE);
             drawTextL(g, g->s.name, 119, 68, WHITE);
             drawText(g, TextFormat("ID No. %d", g->s.id), 120, 90, WHITE);
-            drawText(g, TextFormat("Collection: %d/%d", 0, 150), 120, 104, WHITE);
+            drawText(g, TextFormat("Collection: %d/%d", 0, g->phoneDB->size), 120, 104, WHITE);
             drawText(g, TextFormat("Date issued: %s", g->s.startDate), 53, 158, WHITE);
             break;
         }

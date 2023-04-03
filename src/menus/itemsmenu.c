@@ -41,23 +41,23 @@ void updateItemsMenu(Game *g) {
 
     if (K_UP_PRESS() && MENU.choice > 0) {
         MENU.choice--;
-        if (MENU.choice == MENU.menuScroll - 1) MENU.menuScroll--;
+        if (MENU.choice == MENU.scroll - 1) MENU.scroll--;
     }
     else if (K_DOWN_PRESS() && MENU.choice < ITEMCOUNT - 1) {
         MENU.choice++;
-        if (MENU.choice == MENU.menuScroll + 12) MENU.menuScroll++;
+        if (MENU.choice == MENU.scroll + 12) MENU.scroll++;
     }
     if (K_LEFT_PRESS()) {
         MENU.bagChoice--;
         if (MENU.bagChoice < 0) MENU.bagChoice = 2;
         MENU.choice = 0;
-        MENU.menuScroll = 0;
+        MENU.scroll = 0;
     }
     if (K_RIGHT_PRESS()) {
         MENU.bagChoice++;
         if (MENU.bagChoice > 2) MENU.bagChoice = 0;
         MENU.choice = 0;
-        MENU.menuScroll = 0;
+        MENU.scroll = 0;
     }
     if (K_A_PRESS() && ITEMCOUNT) {
         scrItemActionsMenu(g);
@@ -99,30 +99,26 @@ void drawItemsMenu(Game *g) {
     // Item list (right)
     drawBox(g, 160, 0, 160, 240);
     for (
-        int i = MENU.menuScroll;
-        i < MENU.menuScroll + 12 && i < arrlen(CURPOCKET);
+        int i = MENU.scroll;
+        i < MENU.scroll + 12 && i < arrlen(CURPOCKET);
         i++
     ) {
         // Item name
         drawText(
             g, ISPECS(CURPOCKET[i].id).name,
-            179, 6 + (i - MENU.menuScroll)*20, WHITE
+            179, 6 + (i - MENU.scroll)*20, WHITE
         );
 
         // Item count
         drawTextD(
             g, TextFormat("* %d", CURPOCKET[i].count),
-            287, 6 + (i - MENU.menuScroll)*20, WHITE
+            287, 6 + (i - MENU.scroll)*20, WHITE
         );
     }
 
     // Item list menu indicator/arrow
     if (arrlen(CURPOCKET)) {
-        int selectorY = 6 + 20*(MENU.choice - MENU.menuScroll);
-
-        if (MENU.menuAnimDir == DIR_UP) selectorY += MENU.menuAnim;
-        else selectorY -= MENU.menuAnim;
-        DrawTexture(TEX(indicator), 165, selectorY, WHITE);
+        DrawTexture(TEX(indicator), 165, 6 + 20*(MENU.choice - MENU.scroll), WHITE);
     } else {
         // Centered "No items" text if pocket is empty
         int textLen = measureText(g, "You have no items.");

@@ -45,9 +45,7 @@ with open('phones.json') as file:
         appendStr(i['model'], 16)
         appendStr(i['sprite'], 32)
         appendStr(i['description'], 128)
-
         append32(i['year'])
-        append32(i['fictional'])
 
         append32(i['battery'])
         append32(i['attack'])

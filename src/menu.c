@@ -36,17 +36,11 @@ void pushMenu(Game *g, int numChoices, const char **choices, bool canSkip) {
 // _____________________________________________________________________________
 //
 void updateMenu(Game *g) {
-    if (K_UP_PRESS() && MENU.choice) {
-        MENU.choice--;
-        MENU.menuAnim = 16;
-        MENU.menuAnimDir = DIR_UP;
-    }
+    if (K_UP_PRESS() && MENU.choice) MENU.choice--;
+
     else if (K_DOWN_PRESS() && MENU.choice < arrlen(MENU.choices) - 1) {
         MENU.choice++;
-        MENU.menuAnim = 16;
-        MENU.menuAnimDir = DIR_DOWN;
     }
-    if (MENU.menuAnim > 0) MENU.menuAnim -= 2;
 
     if (MENU.canSkip && K_B_PRESS()) {
         MENU.choice = -1;
@@ -81,9 +75,5 @@ void drawMenu(Game *g) {
         );
     }
 
-    int selectorY = 8 + 14*MENU.choice;
-
-    if (MENU.menuAnimDir == DIR_UP) selectorY += MENU.menuAnim;
-    else selectorY -= MENU.menuAnim;
-    DrawTexture(TEX(indicator), 8, selectorY, WHITE);
+    DrawTexture(TEX(indicator), 8, 8 + 14*MENU.choice, WHITE);
 }

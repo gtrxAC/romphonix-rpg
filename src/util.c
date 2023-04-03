@@ -7,12 +7,25 @@
 
 void drawBox(Game *g, int x, int y, int width, int height) {
     NPatchInfo nPatch = {
-		(Rectangle) {0, 0, TEX(textbox).width, TEX(textbox).height},
-		4, 4, 4, 4, NPATCH_NINE_PATCH
-	};
+        (Rectangle) {0, 0, TEX(textbox).width, TEX(textbox).height},
+        4, 4, 4, 4, NPATCH_NINE_PATCH
+    };
 
     DrawTextureNPatch(
         TEX(textbox), nPatch,
+        (Rectangle) {x, y, width, height},
+        (Vector2) {0, 0}, 0.0f, WHITE
+    );
+}
+
+void drawBoxL(Game *g, int x, int y, int width, int height) {
+    NPatchInfo nPatch = {
+        (Rectangle) {0, 0, TEX(textbox).width, TEX(textbox).height},
+        4, 4, 4, 4, NPATCH_NINE_PATCH
+    };
+
+    DrawTextureNPatch(
+        TEX(textbox_light), nPatch,
         (Rectangle) {x, y, width, height},
         (Vector2) {0, 0}, 0.0f, WHITE
     );

@@ -38,15 +38,6 @@ void popMenu(Game *g) {
 
 // _____________________________________________________________________________
 //
-//  Ends the current script and gives back player control.
-// _____________________________________________________________________________
-//
-// void endScript(Game *g) {
-// 	g->state = ST_WORLD;
-// }
-
-// _____________________________________________________________________________
-//
 //  Starts a transition where the player goes to another map.
 // _____________________________________________________________________________
 //
@@ -60,6 +51,15 @@ void changeMap(Game *g, int map, int x, int y) {
 	g->frameCount = 1;
 	g->state = ST_TRANSITION;
 }
+
+// _____________________________________________________________________________
+//
+//  Converts a condition number to a string.
+// _____________________________________________________________________________
+//
+// const char *conditionToString(int condition) {
+// 	return conditions[condition];
+// }
 
 // _____________________________________________________________________________
 //

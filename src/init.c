@@ -30,6 +30,7 @@ void initGame(Game *g) {
     LOAD_TEXTURE("title");
     LOAD_TEXTURE("indicator");
     LOAD_TEXTURE("textbox");
+    LOAD_TEXTURE("textbox_light");
     LOAD_TEXTURE("player");
     LOAD_TEXTURE("tiles_overworld");
     LOAD_TEXTURE("menu_icons");

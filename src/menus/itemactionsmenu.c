@@ -75,11 +75,7 @@ void drawItemActionsMenu(Game *g) {
         );
     }
 
-    int selectorY = 8 + 14*MENU.choice;
-
-    if (MENU.menuAnimDir == DIR_UP) selectorY += MENU.menuAnim;
-    else selectorY -= MENU.menuAnim;
-    DrawTexture(TEX(indicator), baseX + 8, baseY + selectorY, WHITE);
+    DrawTexture(TEX(indicator), baseX + 8, baseY + 8 + 14*MENU.choice, WHITE);
 }
 
 // _____________________________________________________________________________
@@ -96,7 +92,7 @@ void checkItemActionsMenu(Game *g) {
         }
 
         case 1: {
-            
+
         }
 
         case 2: {

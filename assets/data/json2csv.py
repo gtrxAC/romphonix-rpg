@@ -5,13 +5,12 @@ with open('phones.json') as file:
         def writeCol(s):
             csv.write(str(s) + ',')
 
-        csv.write('brand,model,year,fictional,battery,attack,defense,weight,rarity,brokenChance,baseExp,icon,description\n')
+        csv.write('brand,model,year,battery,attack,defense,weight,rarity,brokenChance,baseExp,icon,description\n')
         phones = json.loads(file.read())
         for p in phones:
             writeCol(p['brand'])
             writeCol(p['model'])
             writeCol(p['year'])
-            writeCol(p['fictional'])
             writeCol(p['battery'])
             writeCol(p['attack'])
             writeCol(p['defense'])
