@@ -8,15 +8,11 @@ void drawMenu(Game *g);
 //  Shows a menu where the user can select from a list of choices.
 //  The menu is pushed to the top of a menu stack, where previous menus are
 //  stored and can be returned back to.
-//
-//  If canSkip is set to true, the player can close the menu by pressing the B
-//  button (see keybindings in common.h). In this case, menuChoice is set to -1.
-//  canSkip only applies if updateMenu is used as the update function.
 // _____________________________________________________________________________
 //
-void pushMenu(Game *g, int numChoices, const char **choices, bool canSkip) {
+void pushMenu(Game *g, int numChoices, const char **choices, CloseBehavior closeBehav) {
 	arrput(g->menus, (Menu) {0});
-	MENU.canSkip = canSkip;
+	MENU.closeBehav = closeBehav;
 	MENU.updateFunc = updateMenu;
 	MENU.drawFunc = drawMenu;
 
@@ -42,9 +38,20 @@ void updateMenu(Game *g) {
         MENU.choice++;
     }
 
-    if (MENU.canSkip && K_B_PRESS()) {
-        MENU.choice = -1;
-        if (MENU.nextFunc) MENU.nextFunc(g);
+    if (K_B_PRESS()) {
+        switch (MENU.closeBehav) {
+            case CB_NOTHING: break;
+
+            case CB_NEXT_MENU: {
+                MENU.choice = -1;
+                if (MENU.nextFunc) MENU.nextFunc(g);
+                break;
+            }
+
+            case CB_CLOSE:
+                popMenu(g);
+                break;
+        }
     }
     if (K_A_PRESS()) {
         if (MENU.nextFunc) MENU.nextFunc(g);
@@ -54,7 +61,7 @@ void updateMenu(Game *g) {
 // _____________________________________________________________________________
 //
 //  Draw menu
-//  Default behavior which can be overridden by setting MENU.updateFunc
+//  Default behavior which can be overridden by setting MENU.drawFunc
 // _____________________________________________________________________________
 //
 void drawMenu(Game *g) {

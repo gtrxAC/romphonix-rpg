@@ -23,11 +23,9 @@ void checkItemActionsMenu(Game *g);
 // _____________________________________________________________________________
 //
 void scrItemActionsMenu(Game *g) {
-    pushMenu(g, 0, NULL, true);
-    // MENU.updateFunc = updateItemActionsMenu;
+    pushMenu(g, 0, NULL, CB_CLOSE);
     MENU.drawFunc = drawItemActionsMenu;
     MENU.nextFunc = checkItemActionsMenu;
-    MENU.canSkip = true;
 
     arrpush(MENU.choices, "Use");
     arrpush(MENU.choices, "Give");

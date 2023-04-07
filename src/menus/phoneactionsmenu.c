@@ -18,10 +18,9 @@ void checkPhoneActionsMenu(Game *g);
 // _____________________________________________________________________________
 //
 void scrPhoneActionsMenu(Game *g) {
-    pushMenu(g, 0, NULL, true);
+    pushMenu(g, 0, NULL, CB_CLOSE);
     MENU.drawFunc = drawItemActionsMenu;
     MENU.nextFunc = checkPhoneActionsMenu;
-    MENU.canSkip = true;
 
     arrpush(MENU.choices, "Specs");
     arrpush(MENU.choices, "Move up");
@@ -34,15 +33,13 @@ void scrPhoneActionsMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void checkPhoneActionsMenu(Game *g) {
-    if (MENU.choice == -1) popMenu(g);
     switch (MENU.choice) {
         case -1: popMenu(g); break;
 
         case 0: {
-            scrPhoneSpecsMenu(g);
-            // Note: at this point, MENU refers to the newly created specs menu,
-            // and LASTMENU is this menu
-            MENU.phone = &g->s.party[LASTMENU.choice];
+            // The phone specs menu init function takes a second argument,
+            // the phone whose specs to show.
+            scrPhoneSpecsMenu(g, &g->s.party[LASTMENU.choice]);
             break;
         }
 

@@ -57,6 +57,11 @@ int measureTextL(Game *g, const char *text) {
     return MeasureTextEx(g->fonts.large, text, 23, 1).x;
 }
 
+void drawProgressBar(Game *g, int value, int max, int x, int y, int width, Color color) {
+    DrawRectangle(x, y, width + 2, 12, BLACK);
+    DrawRectangle(x + 1, y + 1, ((float) value / max) * width, 10, color);
+}
+
 // _____________________________________________________________________________
 //
 // DrawTextRec was removed from raylib in 4.0, we need to re-implement it

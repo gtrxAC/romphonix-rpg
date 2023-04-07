@@ -18,11 +18,11 @@ void scrMainMenu(Game *g) {
 
     if (FileExists("save.tfs")) {
         const char *choices[] = {"Load Game", "New Game", "Options"};
-	    pushMenu(g, 3, choices, false);
+	    pushMenu(g, 3, choices, CB_NOTHING);
     }
     else {
         const char *choices[] = {"New Game", "Options"};
-	    pushMenu(g, 2, choices, false);
+	    pushMenu(g, 2, choices, CB_NOTHING);
     }
 
 	MENU.nextFunc = scrMainMenuCheck;

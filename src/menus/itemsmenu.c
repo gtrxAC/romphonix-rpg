@@ -22,7 +22,7 @@ void checkItemsMenu(Game *g);
 // _____________________________________________________________________________
 //
 void scrItemsMenu(Game *g) {
-    pushMenu(g, 0, NULL, true);
+    pushMenu(g, 0, NULL, CB_CLOSE);
     MENU.updateFunc = updateItemsMenu;
     MENU.drawFunc = drawItemsMenu;
 }

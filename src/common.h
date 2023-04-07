@@ -175,10 +175,18 @@ typedef enum PlayerMenuState {
     PMS_ANIM_BTF   // back to front
 } PlayerMenuState;
 
+// What happens when the menu is closed with the B button?
+// This only applies if a custom update function is not used
+typedef enum CloseBehavior {
+    CB_NOTHING,    // Nothing (menu can't be closed)
+    CB_NEXT_MENU,  // MENU.nextFunc is run and this menu's menu choice is set to -1 (used for textboxes / NPC scripting)
+    CB_CLOSE       // Menu is just closed
+} CloseBehavior;
+
 typedef struct Menu {
 	const char **choices;  // stb_ds dynamic array
 	int choice;
-    bool canSkip;    // can menu be cancelled using the 'B' button?
+    CloseBehavior closeBehav;
     int scroll;  // scrolling offset for collection menu
     
     // For menus or textboxes that use custom update/draw/check functions.

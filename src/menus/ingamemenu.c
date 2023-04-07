@@ -24,7 +24,7 @@ void scrInGameMenu(Game *g) {
         "Player",
         "Options",
     };
-    pushMenu(g, 5, choices, true);
+    pushMenu(g, 5, choices, CB_CLOSE);
     MENU.drawFunc = drawInGameMenu;
     MENU.nextFunc = scrInGameMenuCheck;
 }

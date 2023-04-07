@@ -20,7 +20,7 @@ void scrCheckPhonesMenu(Game *g);
 // _____________________________________________________________________________
 //
 void scrPhonesMenu(Game *g) {
-    pushMenu(g, 6, NULL, true);
+    pushMenu(g, 6, NULL, CB_CLOSE);
     MENU.drawFunc = drawPhonesMenu;
     MENU.nextFunc = scrCheckPhonesMenu;
 
@@ -61,8 +61,7 @@ void drawPhonesMenu(Game *g) {
         drawTextD(g, TextFormat("$ %d", ph->level), 285, 5 + i*40, WHITE);
 
         // Health bar
-        DrawRectangle(64, i*40 + 21, 102, 12, BLACK);
-        DrawRectangle(66, i*40 + 23, ((float) ph->hp / ph->maxHP) * 100, 8, BLUE);
+        drawProgressBar(g, ph->hp, ph->maxHP, 64, i*40 + 21, 100, BLUE);
         drawTextD(g, TextFormat("%d/%d", ph->hp, ph->maxHP), 172, i*40 + 20, WHITE);
     }
 }

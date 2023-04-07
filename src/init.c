@@ -40,6 +40,7 @@ void initGame(Game *g) {
     LOAD_TEXTURE("transition");
     LOAD_TEXTURE("flipbox");
     LOAD_TEXTURE("portraits");
+    LOAD_TEXTURE("unknown_phone");
 
     int unused;
     g->phoneDB = (PhoneDatabase *) LoadFileData("assets/data/phones.tfs", &unused);

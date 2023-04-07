@@ -19,7 +19,7 @@ void checkPlayerMenu(Game *g);
 // _____________________________________________________________________________
 //
 void scrPlayerMenu(Game *g) {
-    pushMenu(g, 0, NULL, true);
+    pushMenu(g, 0, NULL, CB_CLOSE);
     MENU.updateFunc = updatePlayerMenu;
     MENU.drawFunc = drawPlayerMenu;
 }

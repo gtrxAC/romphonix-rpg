@@ -22,7 +22,7 @@ void drawCollectionMenu(Game *g);
 // _____________________________________________________________________________
 //
 void scrCollectionMenu(Game *g) {
-    pushMenu(g, 0, NULL, true);
+    pushMenu(g, 0, NULL, CB_CLOSE);
     MENU.updateFunc = updateCollectionMenu;
     MENU.drawFunc = drawCollectionMenu;
 }
@@ -71,11 +71,18 @@ void drawCollectionMenu(Game *g) {
     // Phone list
     drawBox(g, 0, 20, 144, 220);
     for (int i = MENU.scroll; i < MENU.scroll + 11 && i < g->phoneDB->size; i++) {
-        drawText(
-            g, TextFormat(
-                "%s %s", SPECS(i).brand, SPECS(i).model
-            ), 20, 23 + (i - MENU.scroll)*20, WHITE
-        );
+        if (g->s.phonesSeen[i]) {
+            Color color = GRAY;
+            if (g->s.phonesCaught[i]) color = WHITE;
+
+            drawText(
+                g, TextFormat( "%s %s", SPECS(i).brand, SPECS(i).model),
+                20, 23 + (i - MENU.scroll)*20, color
+            );
+        }
+        else {
+            drawText(g, "???", 20, 23 + (i - MENU.scroll)*20, DARKGRAY);
+        }
     }
 
     // Phone list menu indicator (arrow)
@@ -85,15 +92,30 @@ void drawCollectionMenu(Game *g) {
     DrawRectangle(140, 20 + 1.47f*MENU.scroll, 4, 16, ColorAlpha(WHITE, 0.3f));
 
     // Sprite window
-    PhoneSpecs *selected = &SPECS(MENU.choice);
     drawBox(g, 144, 0, 176, 96);
-    DrawTexture(shget(g->textures, selected->sprite), 200, 16, WHITE);
+    PhoneSpecs *selected = &SPECS(MENU.choice);
+
+    if (g->s.phonesSeen[MENU.choice]) {
+        DrawTexture(shget(g->textures, selected->sprite), 200, 16, WHITE);
+    }
+    else {
+        DrawTexture(TEX(unknown_phone), 200, 16, WHITE);
+    }
  
     // Description
     drawBox(g, 144, 96, 176, 144);
-    drawTextRec(g, selected->description, 148, 100, 168, 144, WHITE);
 
-    drawText(g, TextFormat("Year: %d", selected->year), 252, 220, WHITE);
-    drawText(g, "Rarity:", 148, 220, WHITE);
-    DrawTextureRec(TEX(rarity), (Rectangle) {0, 12*selected->rarity, 64, 12}, (Vector2) {190, 220}, WHITE);
+    if (g->s.phonesSeen[MENU.choice]) {
+        drawTextRec(g, selected->description, 148, 100, 168, 144, WHITE);
+
+        drawText(g, TextFormat("Year: %d", selected->year), 252, 220, WHITE);
+        drawText(g, "Rarity:", 148, 220, WHITE);
+        DrawTextureRec(
+            TEX(rarity), (Rectangle) {0, 12*selected->rarity, 64, 12},
+            (Vector2) {190, 220}, WHITE
+        );
+    }
+    else {
+        drawTextRec(g, "Not much is known about this phone yet.", 148, 100, 168, 144, WHITE);
+    }
 }

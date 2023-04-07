@@ -35,8 +35,16 @@ typedef enum Condition {
     COND_GOOD
 } Condition;
 
-static const char *conditionToString[4] = {
+static const char *condToString[4] = {
     "Broken", "Bad", "OK", "Good"
+};
+static const float condMultipliers[4] = {
+    0.5f, 0.8f, 1.0f, 1.2f
+};
+static const float weightCondMultipliers[4] = {
+    // Weight is counted in the opposite way, lower is better,
+    // so worse condition = higher weight = worse
+    1.5f, 1.2f, 1.0f, 0.8f
 };
 
 typedef struct PhoneSpecs {

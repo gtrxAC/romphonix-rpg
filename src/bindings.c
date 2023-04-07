@@ -32,6 +32,8 @@ void checkBindings(Game *g) {
             if (!g->s.party[i].active) {
                 g->s.party[i].active = true;
                 g->s.party[i].id = id;
+                g->s.phonesSeen[id] = true;
+                g->s.phonesCaught[id] = true;
 
                 g->s.party[i].hp = 50;
                 g->s.party[i].maxHP = 100; // still not sure about this

@@ -12,6 +12,10 @@ typedef enum SkillType {
     SKT_BATTERY
 } SkillType;
 
+static const char *skillTypes[4] = {
+    "Screen", "Board", "Cover", "Battery"
+};
+
 typedef enum SkillEffect {
     SE_NONE,  // Does nothing (e.g. the secondary effect if the skill only has one effect)
     SE_DAMAGE,  // Does X damage to the enemy (X being the effect parameter)
@@ -28,7 +32,7 @@ typedef struct SkillSpecs {
 
     struct {
         SkillEffect effect;
-        int effectParameter;
+        int parameter;
     } effects[2];
 
     char learnByPhones[256];
