@@ -21,7 +21,7 @@ void scrInGameMenu(Game *g) {
         "Collection",
         "Phones",
         "Items",
-        "Player",
+        g->s.name,
         "Options",
     };
     pushMenu(g, 5, choices, CB_CLOSE);
@@ -46,10 +46,13 @@ void drawInGameMenu(Game *g) {
     }
 
     for (int i = 0; i < arrlen(MENU.choices) && MENU.choices[i]; i++) {
-        drawText(g, MENU.choices[i], 42, 16 + 33*i, WHITE);
+        drawText(
+            g, MENU.choices[i], 42, 16 + 33*i,
+            (i == MENU.choice ? WHITE : LIGHTGRAY)
+        );
     }
 
-    drawText(g, TextFormat("Money: $%d", g->s.money), 42, 178, WHITE);
+    drawText(g, TextFormat("Money: $%d", g->s.money), 10, 178, WHITE);
 }
 
 // _____________________________________________________________________________

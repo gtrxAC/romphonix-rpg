@@ -63,8 +63,15 @@ void drawPlayerMenu(Game *g) {
             DrawTexture(TEX(portraits), 52, 68, WHITE);
             drawTextL(g, g->s.name, 119, 68, WHITE);
             drawText(g, TextFormat("ID No. %d", g->s.id), 120, 90, WHITE);
-            drawText(g, TextFormat("Collection: %d/%d", 0, g->phoneDB->size), 120, 104, WHITE);
-            drawText(g, TextFormat("Date issued: %s", g->s.startDate), 53, 158, WHITE);
+
+            int collection = 0;
+            for (int i = 0; i < g->phoneDB->size; i++) {
+                if (g->s.phonesCaught[i]) collection++;
+            }
+
+            drawText(g, TextFormat("Collection: %d/%d", collection, g->phoneDB->size), 120, 104, WHITE);
+            drawText(g, TextFormat("Date: %s", g->s.startDate), 120, 118, WHITE);
+            drawText(g, TextFormat("Press L to flip!", g->s.startDate), 108, 154, GRAY);
             break;
         }
 
