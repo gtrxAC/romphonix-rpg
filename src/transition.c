@@ -5,7 +5,8 @@
 void updateTransition(Game *g) {
 	if (g->frameCount > TRANSITION_TIME*2) {
 		g->state = ST_INGAME;
-	} else if (g->frameCount == TRANSITION_TIME) {
+	}
+	else if (g->frameCount == TRANSITION_TIME) {
 		g->s.curMap = g->nextMap;
 		g->s.playerX = g->nextX;
 		g->s.playerY = g->nextY;
@@ -16,6 +17,8 @@ void updateTransition(Game *g) {
 			g->worldDrawn = true;
 			drawWorldRT(g);
 		}
+
+		setSong(g, g->mapMeta.songName);
 	}
 }
 
@@ -37,45 +40,10 @@ void drawTransition(Game *g) {
 		(Vector2) {0, 0}, 0.0f, WHITE
 	);
 
+	// Draw black rectangles around the area of the screen which is not covered
+	// by the circle texture
 	DrawRectangle(0, 0, 320, y, BLACK); // top
 	DrawRectangle(0, y + size, 320, 160, BLACK); // bottom
 	DrawRectangle(0, 0, x, 320, BLACK); // left
 	DrawRectangle(x + size, 0, 160, 320, BLACK); // right
-	
-	// {
-	// 	// DrawTexturePro(
-    //     //     TEX(transition),
-	// 	// 	(Rectangle) {
-	// 	// 		TRANSITION_CIRCLE_X/TRANSITION_TIME*(TRANSITION_TIME - g->frameCount),
-	// 	// 		TRANSITION_CIRCLE_Y/TRANSITION_TIME*(TRANSITION_TIME - g->frameCount),
-	// 	// 		320 + TRANSITION_CIRCLE_X/TRANSITION_TIME*g->frameCount*2,
-	// 	// 		240 + TRANSITION_CIRCLE_Y/TRANSITION_TIME*g->frameCount*2,
-	// 	// 	},
-	// 	// 	(Rectangle) {0, 0, 320, 240}, (Vector2) {0, 0}, 0.0f, WHITE
-	// 	// );
-
-
-	// } else {
-	// 	// DrawTexturePro(
-	// 	// 	TEX(transition),
-	// 	// 	(Rectangle) {
-	// 	// 		TRANSITION_CIRCLE_X/TRANSITION_TIME*(g->frameCount - 30),
-	// 	// 		TRANSITION_CIRCLE_Y/TRANSITION_TIME*(g->frameCount - 30),
-	// 	// 		320 + TRANSITION_CIRCLE_X/TRANSITION_TIME*(TRANSITION_TIME - (g->frameCount - 30))*2,
-	// 	// 		240 + TRANSITION_CIRCLE_Y/TRANSITION_TIME*(TRANSITION_TIME - (g->frameCount - 30))*2,
-	// 	// 	},
-	// 	// 	(Rectangle) {0, 0, 320, 240}, (Vector2) {0, 0}, 0.0f, WHITE
-	// 	// );
-	// 	DrawTexturePro(
-	// 		TEX(transition), 
-	// 		(Rectangle) {0, 0, 320, 320},
-	// 		(Rectangle) {
-	// 			*160,
-	// 			(g->frameCount/TRANSITION_TIME)*160 - 40,
-	// 			320 - (g->frameCount/TRANSITION_TIME)*320,
-	// 			320 - (g->frameCount/TRANSITION_TIME)*320,
-	// 		},
-	// 		(Vector2) {0, 0}, 0.0f, WHITE
-	// 	);
-	// }
 }

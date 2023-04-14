@@ -36,6 +36,9 @@ Map mapDemoRoom = {
     // Path to the map, should include the full path looking from the root folder
     "assets/maps/demoroom.rpx",
 
+    // Path to the song used by the map, also looking from the root
+    "assets/sounds/music/bid_right_now_p.mid",
+
     // List of step script functions (executed when player steps on a tile)
     // Each tile has a step/interact script value from 0-255, 0 means no script
     // These can be edited in the map editor by pressing 5 or 6.

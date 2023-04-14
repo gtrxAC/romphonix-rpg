@@ -36,6 +36,7 @@ void scrMainMenuCheck(Game *g) {
         case 0:
             load(g);
             g->state = ST_INGAME;
+            setSong(g, g->mapMeta.songName);
             popMenu(g);
             break;
 

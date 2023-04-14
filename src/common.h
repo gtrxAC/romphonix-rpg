@@ -124,6 +124,7 @@ typedef enum ScriptType {
 typedef struct Map {
     const char *name;
     const char *fileName;
+    const char *songName;
     void (*stepScripts[64])(Game *);
     void (*interactScripts[64])(Game *);
 } Map;

@@ -43,6 +43,7 @@ void setSong(Game *g, const char *path) {
     if (g->syn.player) {
         fluid_player_stop(g->syn.player);
         delete_fluid_player(g->syn.player);
+        delete_fluid_audio_driver(g->syn.driver);
         delete_fluid_synth(g->syn.synth);
 
         g->syn.synth = new_fluid_synth(g->syn.settings);
@@ -50,6 +51,9 @@ void setSong(Game *g, const char *path) {
 
         g->syn.sfont_id = fluid_synth_sfload(g->syn.synth, "assets/sounds/soundfont.sf2", 1);
         if (g->syn.sfont_id == FLUID_FAILED) error(g, "Failed to load soundfont");
+
+        g->syn.driver = new_fluid_audio_driver(g->syn.settings, g->syn.synth);
+        if (!g->syn.driver) error(g, "Failed to create FluidSynth audio driver");
     }
 
     // Create a new player that plays the specified file in an infinite loop
