@@ -36,30 +36,23 @@ int main() {
     SetExitKey(0);
     g->state = ST_TITLE;
     setSong(g, "assets/sounds/music/abangchung.mid");
+    SetMasterVolume(0.1f);
 
     // _________________________________________________________________________
     //
     //  Main loop
     // _________________________________________________________________________
     //
-    bool shouldClose = false;
-    while (!shouldClose) {
+    while (!g->shouldClose) {
+        // If the close button is pressed, show a menu asking what to do, if it
+        // isn't already being shown. In the title or title menu, close without
+        // asking.
         if (WindowShouldClose()) {
             if (g->state == ST_TITLE || g->state == ST_MAINMENU) {
-                shouldClose = true;
+                g->shouldClose = true;
             }
-            else {
-                switch (tinyfd_messageBox("Close", "Do you want to save your progress?", "yesnocancel", "question", 0)) {
-                    case 1: // yes
-                        save(g);
-                        // fall through
-
-                    case 2: // no
-                        shouldClose = true;
-                        break;
-
-                    // case 0 is cancel, we do nothing
-                }
+            else if (!arrlen(g->menus) || !MENU.textbox[0] || strcmp(MENU.textbox[0], "What do you want to do?")) {
+                scrExitMenu(g);
             }
         }
 
@@ -68,6 +61,15 @@ int main() {
 
         // Update menu/script system (only update the topmost/current menu)
         if (arrlen(g->menus)) {
+            // Menu sound effects are handled globally here, because they are
+            // the same for all menus, so they won't have to be implemented
+            // separately for each menu
+            if (K_UP_PRESS() || K_DOWN_PRESS() || K_LEFT_PRESS() || K_RIGHT_PRESS()) {
+                PlaySound(SOUND(scroll));
+            }
+            if (K_A_PRESS()) PlaySound(SOUND(select));
+            if (K_B_PRESS()) PlaySound(SOUND(back));
+
             MENU.updateFunc(g);
         }
         else {

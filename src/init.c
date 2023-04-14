@@ -42,6 +42,13 @@ void initGame(Game *g) {
     LOAD_TEXTURE("portraits");
     LOAD_TEXTURE("unknown_phone");
 
+    // Sound loading/unloading works just like with textures.
+    g->sounds = NULL;
+    #define LOAD_SOUND(n) shput((g->sounds), n, LoadSound("assets/sounds/sfx/" n ".wav"))
+    LOAD_SOUND("select");
+    LOAD_SOUND("scroll");
+    LOAD_SOUND("back");
+
     int unused;
     g->phoneDB = (PhoneDatabase *) LoadFileData("assets/data/phones.tfs", &unused);
     printf("PHONERPG: Loaded %d phones\n", g->phoneDB->size);
@@ -88,6 +95,11 @@ void closeGame(Game *g, int status) {
         UnloadTexture(g->textures[i].value);
     }
     shfree(g->textures);
+
+    for (int i = 0; i < shlen(g->sounds); i++) {
+        UnloadSound(g->sounds[i].value);
+    }
+    shfree(g->sounds);
 
     UnloadFont(g->fonts.dialogue);
     UnloadFont(g->fonts.large);

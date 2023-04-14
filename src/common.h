@@ -47,9 +47,6 @@ typedef struct Game Game;
 #define u16 uint16_t
 #define u32 uint32_t
 
-// Gets a texture
-#define TEX(t) (shget(g->textures, #t))
-
 #define MAP_WIDTH (g->map[0])
 #define MAP_HEIGHT (g->map[1])
 
@@ -224,6 +221,8 @@ typedef struct Menu {
 // _____________________________________________________________________________
 //
 typedef struct Game {
+    bool shouldClose;
+    
     // Internal counter that ticks every frame and can be reset by certain actions.
     unsigned int frameCount;
 
@@ -264,6 +263,9 @@ typedef struct Game {
     //  Note: music is not included here as it's managed by fluidsynth
     // _________________________________________________________________________
     //
+    // Gets a texture
+    #define TEX(t) (shget(g->textures, #t))
+
     // Hash table of texture name -> texture struct
     // Allows quick creation of textures without having hundreds of variables
     struct { char *key; Texture value; } *textures;
@@ -273,6 +275,11 @@ typedef struct Game {
         Font large;
         Font digits;
     } fonts;
+
+    // Gets a sound
+    #define SOUND(t) (shget(g->sounds, #t))
+
+    struct { char *key; Sound value; } *sounds;
 
     // _________________________________________________________________________
     //
