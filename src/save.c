@@ -9,6 +9,10 @@ void load(Game *g) {
     int unused;
     void *save = LoadFileData("save.tfs", &unused);
     memcpy(&g->s, save, sizeof(SaveData));
+    
+    loadMap(g, g->s.curMap);
+    drawWorldRT(g);
+
     free(save);
 
     // Load bag contents (static array -> dynamic array)
