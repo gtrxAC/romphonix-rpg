@@ -65,6 +65,13 @@ typedef struct Game Game;
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
+#undef GRAY
+#define GRAY (Color) { 255, 255, 255, 224 }
+#undef LIGHTGRAY
+#define LIGHTGRAY (Color) { 255, 255, 255, 160 }
+#undef GREEN
+#define GREEN (Color) {16, 255, 96, 255}
+
 // _____________________________________________________________________________
 //
 //  Enumerations and Structures
@@ -181,7 +188,15 @@ typedef enum CloseBehavior {
     CB_CLOSE       // Menu is just closed
 } CloseBehavior;
 
+// Battle state
+typedef enum BattleState {
+    BS_WAITING,     // Waiting for command (menu is shown)
+    BS_PLAYER_TURN,
+    BS_ENEMY_TURN
+} BattleState;
+
 typedef struct Menu {
+    unsigned int timer;
 	const char **choices;  // stb_ds dynamic array
 	int choice;
     CloseBehavior closeBehav;
@@ -196,14 +211,14 @@ typedef struct Menu {
     
     // Fields specific to certain menus
     union {
+        // Textboxes
         struct {
-            // Textboxes
             const char *textbox[2];
             char textboxDraw[2][64];
             unsigned int textboxTime;
         };
+        // Bag (items) menu
         struct {
-            // Bag (items) menu
             int bagChoice;
             bool selected;
         };
@@ -212,6 +227,16 @@ typedef struct Menu {
 
         // Phone specs menu
         Phone *phone;
+
+        // Battle menu
+        struct {
+            char battleTextbox[64];
+            const char *enemyName;
+            int enemyActive;  // active phone index of the enemyParty
+            int active;
+            Phone enemyParty[6];
+            BattleState battleState;
+        };
     };
 } Menu;
 

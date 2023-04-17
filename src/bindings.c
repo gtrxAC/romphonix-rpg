@@ -35,7 +35,7 @@ void checkBindings(Game *g) {
                 g->s.phonesSeen[id] = true;
                 g->s.phonesCaught[id] = true;
 
-                g->s.party[i].hp = 50;
+                g->s.party[i].hp = 100;
                 g->s.party[i].maxHP = 100; // still not sure about this
                 g->s.party[i].attack = SPECS(id).attack;
                 g->s.party[i].defense = SPECS(id).defense;
@@ -88,5 +88,25 @@ void checkBindings(Game *g) {
         } else {
             tinyfd_messageBox("Error", "The bag pocket is full!", "ok", "error", 0);
         }
+    }
+
+    // B: random wild battle
+    if (IsKeyPressed(KEY_B)) {
+        scrBattleMenu(g);
+        setSong(g, "assets/sounds/music/jht9392remix.mid");
+        int id = randomPhone(g);
+        Phone phone = {
+            true, id,
+            100, 100, 100,
+            g->s.party[0].level + GetRandomValue(-5, 5), 0, 0, SPECS(id).baseExp,
+            SPECS(id).attack, SPECS(id).defense, SPECS(id).weight,
+            GetRandomValue(0, g->skillDB->size - 1), GetRandomValue(0, g->skillDB->size - 1), 
+            GetRandomValue(0, g->skillDB->size - 1), GetRandomValue(0, g->skillDB->size - 1), 
+            GetRandomValue(0, 3), GetRandomValue(0, 3),
+            GetRandomValue(0, 3), GetRandomValue(0, 3)
+        };
+        MENU.enemyActive = 0;
+        MENU.enemyParty[0] = phone;
+        MENU.enemyName = "Enemy";
     }
 }

@@ -61,7 +61,7 @@ void drawPhonesMenu(Game *g) {
         drawTextD(g, TextFormat("$ %d", ph->level), 285, 5 + i*40, WHITE);
 
         // Health bar
-        drawProgressBar(g, ph->hp, ph->maxHP, 64, i*40 + 21, 100, BLUE);
+        drawProgressBar(g, ph->hp, ph->maxHP, 64, i*40 + 21, 100, GREEN);
         drawTextD(g, TextFormat("%d/%d", ph->hp, ph->maxHP), 172, i*40 + 20, WHITE);
     }
 }

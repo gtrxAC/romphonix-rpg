@@ -54,12 +54,24 @@ void changeMap(Game *g, int map, int x, int y) {
 
 // _____________________________________________________________________________
 //
-//  Converts a condition number to a string.
+//  Draws a random phone from the phone pool (lower rarity phones are drawn more
+//  often).
 // _____________________________________________________________________________
 //
-// const char *conditionToString(int condition) {
-// 	return conditions[condition];
-// }
+int randomPhone(Game *g) {
+	int *pool = NULL;  // stb_ds dynarray
+	const int phonesPerRarity[6] = {24, 16, 8, 4, 2, 1};
+
+	for (int i = 0; i < g->phoneDB->size; i++) {
+		for (int n = 0; n < phonesPerRarity[SPECS(i).rarity]; n++) {
+			arrpush(pool, i);
+		}
+	}
+
+	int result = pool[GetRandomValue(0, arrlen(pool) - 1)];
+	arrfree(pool);
+	return result;
+}
 
 // _____________________________________________________________________________
 //

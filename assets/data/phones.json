@@ -1567,7 +1567,7 @@
         "attack": 35,
         "defense": 40,
         "weight": 87,
-        "rarity": 3,
+        "rarity": 4,
         "brokenChance": 4,
         "baseExp": 7,
         "icon": "flip",

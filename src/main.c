@@ -71,6 +71,7 @@ int main() {
             if (K_B_PRESS()) PlaySound(SOUND(back));
 
             MENU.updateFunc(g);
+            MENU.timer++;
         }
         else {
             // Update game world or title state (only if no menus are open)

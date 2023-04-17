@@ -11,6 +11,12 @@ void initGame(Game *g) {
     InitWindow(960, 720, "ROMphonix RPG");
     g->rt = LoadRenderTexture(320, 240);
 
+    // Load the icon for the window
+    Image icon = LoadImage("assets/graphics/icon.png");
+    ImageFormat(&icon, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
+    SetWindowIcon(icon);
+    UnloadImage(icon);
+
     InitAudioDevice();
     initSynth(g);
 
@@ -41,6 +47,7 @@ void initGame(Game *g) {
     LOAD_TEXTURE("flipbox");
     LOAD_TEXTURE("portraits");
     LOAD_TEXTURE("unknown_phone");
+    LOAD_TEXTURE("battle_bg");
 
     // Sound loading/unloading works just like with textures.
     g->sounds = NULL;
@@ -48,6 +55,8 @@ void initGame(Game *g) {
     LOAD_SOUND("select");
     LOAD_SOUND("scroll");
     LOAD_SOUND("back");
+    LOAD_SOUND("hit");
+    LOAD_SOUND("miss");
 
     int unused;
     g->phoneDB = (PhoneDatabase *) LoadFileData("assets/data/phones.tfs", &unused);
