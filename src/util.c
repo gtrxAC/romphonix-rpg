@@ -58,8 +58,8 @@ int measureTextL(Game *g, const char *text) {
 }
 
 void drawProgressBar(Game *g, int value, int max, int x, int y, int width, Color color) {
-    DrawRectangle(x, y, width + 2, 12, BLACK);
-    DrawRectangle(x + 1, y + 1, ((float) value / max) * width, 10, color);
+    DrawRectangle(x, y, width + 4, 12, BLACK);
+    DrawRectangle(x + 2, y + 2, ((float) value / max) * width, 8, color);
 }
 
 // _____________________________________________________________________________

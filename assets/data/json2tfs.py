@@ -32,7 +32,9 @@ icons = {
     "communicator": 10,
     "xelibri8": 11,
     "77xx": 12,
-    "sx1": 13
+    "sx1": 13,
+    "touch": 14,
+    "qwerty_slider": 15
 }
 
 out = bytearray()
