@@ -92,7 +92,7 @@ void checkBindings(Game *g) {
 
     // B: random wild battle
     if (IsKeyPressed(KEY_B)) {
-        scrBattleMenu(g);
+        scrBattleMenu(g, true);
         setSong(g, "assets/sounds/music/jht9392remix.mid");
         int id = randomPhone(g);
         Phone phone = {

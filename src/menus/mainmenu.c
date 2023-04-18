@@ -61,7 +61,10 @@ void scrMainMenuCheck(Game *g) {
 
             g->s.id = GetRandomValue(10000, 99999);
 
+            g->s.curMap = 0;
+            loadMap(g, 0);
             g->state = ST_INGAME;
+            setSong(g, g->mapMeta.songName);
             popMenu(g);
             break;
         }

@@ -12,7 +12,7 @@
 //
 #include "../common.h"
 
-void scrBattleMenu(Game *g);
+void scrBattleMenu(Game *g, bool canRun);
 void updateBattleMenu(Game *g);
 void drawBattleMenu(Game *g);
 void checkBattleMenu(Game *g);
@@ -22,12 +22,20 @@ void checkBattleMenu(Game *g);
 //  Battle menu - init function
 // _____________________________________________________________________________
 //
-void scrBattleMenu(Game *g) {
+void scrBattleMenu(Game *g, bool canRun) {
     pushMenu(g, 0, NULL, CB_CLOSE);
     strcpy(MENU.battleTextbox, "Testing");
     MENU.updateFunc = updateBattleMenu;
     MENU.drawFunc = drawBattleMenu;
     MENU.nextFunc = checkBattleMenu;
+
+    MENU.battleState = BS_WAITING;
+    arrpush(MENU.choices, "Fight");
+    arrpush(MENU.choices, "Switch");
+    arrpush(MENU.choices, "Items");
+
+    MENU.canRun = canRun;
+    if (canRun) arrpush(MENU.choices, "Run");
 }
 
 // _____________________________________________________________________________
@@ -75,9 +83,18 @@ void drawBattleMenu(Game *g) {
 
     DrawTexture(TEX(battle_bg), 0, 0, WHITE);
 
-    // Battle menu contains a one line text box (without a typewriter effect)
-    drawBox(g, 10, 210, 300, 30);
-    drawText(g, MENU.battleTextbox, 18, 218, WHITE);
+    if (MENU.battleState = BS_WAITING) {
+        drawBox(g, 0, 176, 160, 64);
+        for (int i = 0; i < arrlen(MENU.choices); i++) {
+            drawText(g, MENU.choices[i], 20, 180, WHITE);
+        }
+        DrawTexture(TEX(indicator), 4, 180 + 14*MENU.choice, WHITE);
+    }
+    else {
+        // Battle menu contains a one line text box (without a typewriter effect)
+        drawBox(g, 10, 210, 300, 30);
+        drawText(g, MENU.battleTextbox, 18, 218, WHITE);
+    }
 
     // Player status bar
     drawBox(g, 4, 4, 152, 58);
