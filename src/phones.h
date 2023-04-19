@@ -73,6 +73,8 @@ typedef struct Phone {
     u16 attack, defense, weight;
     u16 skills[4];
     Condition screenStatus, boardStatus, coverStatus, batteryStatus;
+
+    bool confused;
 } Phone;
 
 typedef struct PhoneDatabase {

@@ -231,7 +231,7 @@ typedef struct Menu {
 
         // Battle menu
         struct {
-            char battleTextbox[64];
+            char battleTextbox[2][64];
             const char *enemyName;
             int enemyActive;  // active phone index of the enemyParty
             int active;

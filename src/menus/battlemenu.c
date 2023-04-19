@@ -49,7 +49,22 @@ void doMove(Game *g, Phone *attacker, Phone *victim, SkillSpecs skill) {
             case SE_NONE: break;
 
             case SE_DAMAGE: {
+                int damage = (float) skill.effects[i].parameter * attacker->attack / victim->defense;
+                victim->hp -= damage;
+                strcat(
+                    MENU.battleTextbox[1],
+                    TextFormat(
+                        " %s %s took %d damage!", SPECS(victim->id).brand,
+                        SPECS(victim->id).model, damage
+                    )
+                );
+            }
 
+            case SE_CONFUSE: {
+                if (GetRandomValue(0, 100) < skill.effects[i].parameter) {
+                    victim->confused = true;
+                    // strcat(MENU.battleTextbox, TextFormat(" !", damage));
+                }
             }
         }
     }
