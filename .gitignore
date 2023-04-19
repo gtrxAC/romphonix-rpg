@@ -10,6 +10,7 @@ raylib
 
 romphonix
 *.exe
+*.so.*
 *.apk
 *.keystore
 

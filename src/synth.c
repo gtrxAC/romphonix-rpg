@@ -8,16 +8,30 @@
 //
 void initSynth(Game *g) {
     g->syn.settings = new_fluid_settings();
-    if (!g->syn.settings) error(g, "Failed to create FluidSynth settings");
+    if (!g->syn.settings) {
+        error(g, "Failed to create FluidSynth settings", false);
+        return;
+    }
 
     g->syn.synth = new_fluid_synth(g->syn.settings);
-    if (!g->syn.synth) error(g, "Failed to create FluidSynth synth");
+    if (!g->syn.synth) {
+        error(g, "Failed to create FluidSynth synth", false);
+        return;
+    }
 
     g->syn.sfont_id = fluid_synth_sfload(g->syn.synth, "assets/sounds/soundfont.sf2", 1);
-    if (g->syn.sfont_id == FLUID_FAILED) error(g, "Failed to load soundfont. Make sure you are running romphonix.bat, not the exe in the windows folder.");
+    if (g->syn.sfont_id == FLUID_FAILED) {
+        error(g, "Failed to load soundfont. Make sure you are running romphonix.bat, not the exe in the windows folder.", false);
+        return;
+    }
 
     g->syn.driver = new_fluid_audio_driver(g->syn.settings, g->syn.synth);
-    if (!g->syn.driver) error(g, "Failed to create FluidSynth audio driver");
+    if (!g->syn.driver) {
+        error(g, "Failed to create FluidSynth audio driver", false);
+        return;
+    }
+
+    g->syn.loaded = true;
 }
 
 // _____________________________________________________________________________
@@ -26,11 +40,14 @@ void initSynth(Game *g) {
 // _____________________________________________________________________________
 //
 void closeSynth(Game *g) {
-    fluid_player_stop(g->syn.player);
-    delete_fluid_player(g->syn.player);
-    delete_fluid_audio_driver(g->syn.driver);
-    delete_fluid_synth(g->syn.synth);
-    delete_fluid_settings(g->syn.settings);
+    if (g->syn.player) {
+        fluid_player_stop(g->syn.player);
+        delete_fluid_player(g->syn.player);
+    }
+
+    if (g->syn.driver) delete_fluid_audio_driver(g->syn.driver);
+    if (g->syn.synth) delete_fluid_synth(g->syn.synth);
+    if (g->syn.settings) delete_fluid_settings(g->syn.settings);
 }
 
 // _____________________________________________________________________________
@@ -39,6 +56,9 @@ void closeSynth(Game *g) {
 // _____________________________________________________________________________
 //
 void setSong(Game *g, const char *path) {
+    // Ignore music changes if the synth failed to open
+    if (!g->syn.loaded) return;
+
     // Remove old player and synth (unless there's a better way to clear the "playlist"?)
     if (g->syn.player) {
         fluid_player_stop(g->syn.player);
@@ -47,13 +67,13 @@ void setSong(Game *g, const char *path) {
         delete_fluid_synth(g->syn.synth);
 
         g->syn.synth = new_fluid_synth(g->syn.settings);
-        if (!g->syn.synth) error(g, "Failed to create FluidSynth synth");
+        if (!g->syn.synth) error(g, "Failed to create FluidSynth synth", true);
 
         g->syn.sfont_id = fluid_synth_sfload(g->syn.synth, "assets/sounds/soundfont.sf2", 1);
-        if (g->syn.sfont_id == FLUID_FAILED) error(g, "Failed to load soundfont");
+        if (g->syn.sfont_id == FLUID_FAILED) error(g, "Failed to load soundfont", true);
 
         g->syn.driver = new_fluid_audio_driver(g->syn.settings, g->syn.synth);
-        if (!g->syn.driver) error(g, "Failed to create FluidSynth audio driver");
+        if (!g->syn.driver) error(g, "Failed to create FluidSynth audio driver", true);
     }
 
     // Create a new player that plays the specified file in an infinite loop

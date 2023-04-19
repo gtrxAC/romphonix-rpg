@@ -128,7 +128,7 @@ void closeGame(Game *g, int status) {
 //  Exits with an error.
 // _____________________________________________________________________________
 //
-void error(Game *g, const char *message) {
+void error(Game *g, const char *message, bool exit) {
     tinyfd_messageBox("Error", message, "ok", "error", 0);
-    closeGame(g, EXIT_FAILURE);
+    if (exit) closeGame(g, EXIT_FAILURE);
 }

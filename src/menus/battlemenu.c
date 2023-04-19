@@ -24,7 +24,7 @@ void checkBattleMenu(Game *g);
 //
 void scrBattleMenu(Game *g, bool canRun) {
     pushMenu(g, 0, NULL, CB_CLOSE);
-    strcpy(MENU.battleTextbox, "Testing");
+    strcpy(MENU.battleTextbox[0], "Command?");
     MENU.updateFunc = updateBattleMenu;
     MENU.drawFunc = drawBattleMenu;
     MENU.nextFunc = checkBattleMenu;
@@ -76,7 +76,7 @@ void doMove(Game *g, Phone *attacker, Phone *victim, SkillSpecs skill) {
 // _____________________________________________________________________________
 //
 void updateBattleMenu(Game *g) {
-    if (MENU.battleState == BS_WAITING) {
+    if (MENU.battleState == BS_WAITING || MENU.battleState == BS_WAITING_MOVE) {
         // Command menu is just a standard menu
         updateMenu(g);
     }
@@ -98,12 +98,12 @@ void drawBattleMenu(Game *g) {
 
     DrawTexture(TEX(battle_bg), 0, 0, WHITE);
 
-    if (MENU.battleState = BS_WAITING) {
+    if (MENU.battleState == BS_WAITING || MENU.battleState == BS_WAITING_MOVE) {
         drawBox(g, 0, 176, 160, 64);
         for (int i = 0; i < arrlen(MENU.choices); i++) {
-            drawText(g, MENU.choices[i], 20, 180, WHITE);
+            drawText(g, MENU.choices[i], 20, 180 + 14*i, WHITE);
         }
-        DrawTexture(TEX(indicator), 4, 180 + 14*MENU.choice, WHITE);
+        DrawTexture(TEX(indicator), 6, 180 + 14*MENU.choice, WHITE);
     }
     else {
         // Battle menu contains a one line text box (without a typewriter effect)
@@ -143,6 +143,8 @@ void drawBattleMenu(Game *g) {
 
     // Enemy phone sprite
     DrawTexture(shget(g->textures, SPECS(enemyPh->id).sprite), 240, 96, WHITE);
+
+    DrawText(TextFormat("%d", MENU.battleState), 0, 0, 10, YELLOW);
 }
 
 // _____________________________________________________________________________
@@ -151,5 +153,45 @@ void drawBattleMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void checkBattleMenu(Game *g) {
+    Phone *playerPh = &g->s.party[MENU.active];
+    Phone *enemyPh = &MENU.enemyParty[MENU.enemyActive];
 
+    switch (MENU.battleState) {
+        case BS_WAITING: {
+            switch (MENU.choice) {
+                case -1: break;
+
+                case 0: { // Fight
+                    MENU.battleState = BS_WAITING_MOVE;
+                    MENU.choice = 0;
+                    arrfree(MENU.choices);
+                    for (int i = 0; i < 4; i++) {
+                        arrpush(MENU.choices, SSPECS(playerPh->skills[0]).name);
+                    }
+                    break;
+                }
+
+                case 1: { // Switch
+
+                    break;
+                }
+                
+                case 2: { // Items
+
+                    break;
+                }
+                
+                case 3: { // Run (only visible for wild battles)
+
+                    break;
+                }
+            }
+            break;
+        }
+
+        case BS_WAITING_MOVE: {
+            // Choose which side moves first, based on the weights of the phone and a bit of random chance
+            break;
+        }
+    }
 }

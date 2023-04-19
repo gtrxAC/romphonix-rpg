@@ -34,13 +34,13 @@ case "$TARGET" in
 		CC="$ARCH-w64-mingw32-gcc"
 		EXT=".exe"
 		PLATFORM="PLATFORM_DESKTOP"
-		TARGET_FLAGS="-lopengl32 -lgdi32 -lwinmm -static -Wl,--subsystem,windows -lfluidsynth.dll -lcomdlg32 -lole32 -o windows/romphonix.exe"
+		TARGET_FLAGS="-lopengl32 -lgdi32 -lwinmm -static -Wl,--subsystem,windows -lfluidsynth.dll -lcomdlg32 -lole32 -o bin/romphonix.exe"
 		;;
 
 	"Linux")
 		CC="gcc"
 		PLATFORM="PLATFORM_DESKTOP"
-		TARGET_FLAGS="-lGL -lm -lpthread -ldl -lrt -lX11 -lfluidsynth -o romphonix"
+		TARGET_FLAGS="-lGL -lm -lpthread -ldl -lrt -lX11 -lfluidsynth -o bin/romphonix"
 		;;
 
 	"Web")
@@ -73,14 +73,6 @@ $CC $SRC -Iinclude -Llib/$TARGET \
 #  Run if -r was specified
 # ______________________________________________________________________________
 #
-if [[ "$1" = "-r" ]]; then
-	case "$TARGET" in
-		"Windows_NT") ([[ $(uname) = "Linux" ]] && wine windows/$NAME$EXT) || windows/$NAME$EXT;;
-		"Linux") ./$NAME;;
-		"Web") emrun index.html;;
-	esac
-fi
-
 # Convert phone, skill, item lists
 cd assets/data
 python json2tfs.py
@@ -90,3 +82,17 @@ cd ../..
 cd mapeditor
 # ./build.sh
 cd ..
+
+# Copy libraries (fluidsynth)
+if [[ "$TARGET" = "Linux" ]]; then
+	cp lib/Linux/libfluidsynth.so bin/libfluidsynth.so
+	cp lib/Linux/libfluidsynth.so bin/libfluidsynth.so.3
+fi
+
+if [[ "$1" = "-r" ]]; then
+	case "$TARGET" in
+		"Windows_NT") ([[ $(uname) = "Linux" ]] && wine bin/$NAME$EXT) || bin/$NAME$EXT;;
+		"Linux") LD_LIBRARY_PATH=bin ./bin/$NAME;;
+		"Web") emrun index.html;;
+	esac
+fi

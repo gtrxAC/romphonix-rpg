@@ -114,6 +114,7 @@ typedef struct Synth {
     fluid_audio_driver_t *driver;
     fluid_player_t *player;
     int sfont_id;
+    bool loaded;
 } Synth;
 
 typedef enum ScriptType {
