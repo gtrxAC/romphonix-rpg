@@ -191,10 +191,12 @@ typedef enum CloseBehavior {
 
 // Battle state
 typedef enum BattleState {
+    BS_STARTING,  // battle is starting (wild X appeared or X wants to fight)
     BS_WAITING,     // Waiting for command (menu is shown)
     BS_WAITING_MOVE,  // Waiting for command (in the move selection screen)
     BS_PLAYER_TURN,
-    BS_ENEMY_TURN
+    BS_ENEMY_TURN,
+    BS_RUN   // Run from wild battle (always succeeds)
 } BattleState;
 
 typedef struct Menu {
@@ -232,7 +234,7 @@ typedef struct Menu {
 
         // Battle menu
         struct {
-            char battleTextbox[2][64];
+            char battleTextbox[3][64];
             const char *enemyName;
             int enemyActive;  // active phone index of the enemyParty
             int active;

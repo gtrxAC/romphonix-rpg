@@ -23,13 +23,16 @@ void checkBattleMenu(Game *g);
 // _____________________________________________________________________________
 //
 void scrBattleMenu(Game *g, bool canRun) {
-    pushMenu(g, 0, NULL, CB_CLOSE);
-    strcpy(MENU.battleTextbox[0], "Command?");
+    pushMenu(g, 0, NULL, CB_NOTHING);
+    strcpy(MENU.battleTextbox[0], "Battle doesn't have a textbox set!");
+    strcpy(MENU.battleTextbox[1], "Battle doesn't have a textbox set!");
+    strcpy(MENU.battleTextbox[2], "Battle doesn't have a textbox set!");
+
     MENU.updateFunc = updateBattleMenu;
     MENU.drawFunc = drawBattleMenu;
     MENU.nextFunc = checkBattleMenu;
 
-    MENU.battleState = BS_WAITING;
+    MENU.battleState = BS_STARTING;
     arrpush(MENU.choices, "Fight");
     arrpush(MENU.choices, "Switch");
     arrpush(MENU.choices, "Items");
@@ -79,11 +82,22 @@ void updateBattleMenu(Game *g) {
     if (MENU.battleState == BS_WAITING || MENU.battleState == BS_WAITING_MOVE) {
         // Command menu is just a standard menu
         updateMenu(g);
+        if (K_B_PRESS() && MENU.battleState == BS_WAITING_MOVE) {
+            MENU.battleState = BS_WAITING;
+            MENU.choice = 0;
+            arrfree(MENU.choices);
+            arrpush(MENU.choices, "Fight");
+            arrpush(MENU.choices, "Switch");
+            arrpush(MENU.choices, "Items");
+            if (MENU.canRun) arrpush(MENU.choices, "Run");
+        }   
     }
     // For any other state, the menu only updates when the confirm button is
     // pressed.
     else if (K_A_PRESS() || K_B_PRESS()) {
-        // if (BS_)
+        switch (MENU.battleState) {
+            case BS_STARTING: MENU.battleState = BS_WAITING; break;
+        }
     }
 }
 
@@ -99,16 +113,33 @@ void drawBattleMenu(Game *g) {
     DrawTexture(TEX(battle_bg), 0, 0, WHITE);
 
     if (MENU.battleState == BS_WAITING || MENU.battleState == BS_WAITING_MOVE) {
-        drawBox(g, 0, 176, 160, 64);
+        // Left panel (options)
+        drawBox(g, 0, 176, 120, 64);
         for (int i = 0; i < arrlen(MENU.choices); i++) {
             drawText(g, MENU.choices[i], 20, 180 + 14*i, WHITE);
         }
         DrawTexture(TEX(indicator), 6, 180 + 14*MENU.choice, WHITE);
+
+        // Right panel (description, just a text box)
+        drawBox(g, 120, 176, 200, 64);
+
+        if (MENU.battleState == BS_WAITING) {
+            drawText(g, "Command?", 128, 184, WHITE);
+        }
+        else {
+	        drawTextRec(
+                g, SSPECS(playerPh->skills[MENU.choice]).description,
+                128, 182, 184, 64, WHITE
+            );
+            drawText(g, TextFormat("Type: %s"))
+        }
     }
     else {
         // Battle menu contains a one line text box (without a typewriter effect)
-        drawBox(g, 10, 210, 300, 30);
-        drawText(g, MENU.battleTextbox, 18, 218, WHITE);
+        drawBox(g, 10, 176, 300, 64);
+        drawText(g, MENU.battleTextbox[0], 18, 184, WHITE);
+        drawText(g, MENU.battleTextbox[1], 18, 202, WHITE);
+        drawText(g, MENU.battleTextbox[2], 18, 220, WHITE);
     }
 
     // Player status bar
@@ -144,6 +175,7 @@ void drawBattleMenu(Game *g) {
     // Enemy phone sprite
     DrawTexture(shget(g->textures, SPECS(enemyPh->id).sprite), 240, 96, WHITE);
 
+    // debug
     DrawText(TextFormat("%d", MENU.battleState), 0, 0, 10, YELLOW);
 }
 
@@ -182,7 +214,10 @@ void checkBattleMenu(Game *g) {
                 }
                 
                 case 3: { // Run (only visible for wild battles)
-
+                    MENU.battleState = BS_RUN;
+                    strcpy(MENU.battleTextbox[0], "Got away safely!");
+                    MENU.battleTextbox[1][0] = '\0';
+                    MENU.battleTextbox[2][0] = '\0';
                     break;
                 }
             }
@@ -190,7 +225,13 @@ void checkBattleMenu(Game *g) {
         }
 
         case BS_WAITING_MOVE: {
-            // Choose which side moves first, based on the weights of the phone and a bit of random chance
+            if (MENU.choice == -1) {
+                MENU.battleState = BS_WAITING; // go back to the start
+            }
+            else {
+                // Choose which side moves first, based on the weights of the phone and a bit of random chance
+
+            }
             break;
         }
     }
