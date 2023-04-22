@@ -58,6 +58,11 @@ void checkBindings(Game *g) {
                     }
                 }
 
+                g->s.party[i].skills[0] = 1;
+                g->s.party[i].skills[1] = 2;
+                g->s.party[i].skills[2] = 3;
+                g->s.party[i].skills[3] = 4;
+
                 got = true;
                 return;
             }
@@ -102,11 +107,17 @@ void checkBindings(Game *g) {
             SPECS(id).attack, SPECS(id).defense, SPECS(id).weight,
             GetRandomValue(0, g->skillDB->size - 1), GetRandomValue(0, g->skillDB->size - 1), 
             GetRandomValue(0, g->skillDB->size - 1), GetRandomValue(0, g->skillDB->size - 1), 
-            GetRandomValue(0, 3), GetRandomValue(0, 3),
-            GetRandomValue(0, 3), GetRandomValue(0, 3)
+            GetRandomValue(1, 4), GetRandomValue(1, 4),
+            GetRandomValue(1, 4), GetRandomValue(1, 4)
         };
         MENU.enemyActive = 0;
         MENU.enemyParty[0] = phone;
         MENU.enemyName = "Enemy";
+        strcpy(
+            MENU.battleTextbox[0],
+            TextFormat("A wild %s %s appeared!", SPECS(id).brand, SPECS(id).model)
+        );
+        MENU.battleTextbox[1][0] = '\0';
+        MENU.battleTextbox[2][0] = '\0';
     }
 }

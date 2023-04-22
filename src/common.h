@@ -7,6 +7,7 @@
 #include <stddef.h> // needed for tinyFD on windows
 #include <stdint.h>
 #include <time.h>
+#include <math.h>
 
 #include "raylib.h"
 #include "stb_ds.h"
@@ -241,6 +242,8 @@ typedef struct Menu {
             Phone enemyParty[6];
             BattleState battleState;
             bool canRun;  // is a wild battle?
+            int movedFirst;  // did the player move first this turn?
+            int playerMove;  // what move did the player choose this turn
         };
     };
 } Menu;

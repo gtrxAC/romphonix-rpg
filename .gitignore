@@ -20,6 +20,7 @@ index.html
 *.js
 *.data
 
+screenshot*.png
 *.log
 save.tfs
 assets/data/*.tfs

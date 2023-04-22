@@ -1,5 +1,16 @@
 [
 	{
+		"name": "---",
+		"description": "",
+		"skillType": "battery",
+		"effect": "none",
+		"effectParameter": 0,
+		"secondaryEffect": "none",
+		"secondaryEffectParameter": 0,
+		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+		"animation": "spr_default_anim"
+	},
+	{
 		"name": "Siphon",
 		"description": "Drains the battery of the opposing phone.",
 		"skillType": "battery",

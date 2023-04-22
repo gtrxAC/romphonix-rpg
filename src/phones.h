@@ -77,6 +77,12 @@ typedef struct Phone {
     bool confused;
 } Phone;
 
+// Data of a phone while it's in battle (this gets cleared when the battle ends,
+// includes stuff like stat changes)
+typedef struct BattlePhone {
+
+} BattlePhone;
+
 typedef struct PhoneDatabase {
     u32 size;
     PhoneSpecs phones[];

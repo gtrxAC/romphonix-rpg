@@ -49,26 +49,120 @@ void scrBattleMenu(Game *g, bool canRun) {
 void doMove(Game *g, Phone *attacker, Phone *victim, SkillSpecs skill) {
     for (int i = 0; i < 2; i++) {
         switch (skill.effects[i].effect) {
-            case SE_NONE: break;
+            case SE_NONE: {
+                if (i == 0) strcpy(MENU.battleTextbox[1], "No effect!");
+                break;
+            }
+
+            case SE_DRAIN: {
+                int damage = (float) skill.effects[i].parameter * attacker->attack / victim->defense;
+                victim->hp -= damage;
+                attacker->hp = MIN(attacker->hp + damage, 100);
+                sprintf(
+                    MENU.battleTextbox[i + 1],
+                    "Absorbed %d HP from %s %s!",
+                    damage, SPECS(victim->id).brand, SPECS(victim->id).model
+                );
+                break;
+            }
 
             case SE_DAMAGE: {
                 int damage = (float) skill.effects[i].parameter * attacker->attack / victim->defense;
                 victim->hp -= damage;
-                strcat(
-                    MENU.battleTextbox[1],
-                    TextFormat(
-                        " %s %s took %d damage!", SPECS(victim->id).brand,
-                        SPECS(victim->id).model, damage
-                    )
+                sprintf(
+                    MENU.battleTextbox[i + 1],
+                    "%s %s took %d damage!",
+                    SPECS(victim->id).brand, SPECS(victim->id).model, damage
                 );
+                break;
             }
 
             case SE_CONFUSE: {
                 if (GetRandomValue(0, 100) < skill.effects[i].parameter) {
                     victim->confused = true;
-                    // strcat(MENU.battleTextbox, TextFormat(" !", damage));
+                    sprintf(
+                        MENU.battleTextbox[i + 1],
+                        "%s %s is now confused!",
+                        SPECS(victim->id).brand, SPECS(victim->id).model
+                    );
                 }
+                break;
             }
+        }
+    }
+}
+
+// _____________________________________________________________________________
+//
+//  Battle menu - select who moves first (helper function)
+// _____________________________________________________________________________
+//
+int whoMovesFirst(int weight_1, int weight_2) {
+    float w1 = (float) weight_1;
+    float w2 = (float) weight_2;
+
+    float ratio = w1 / w2;
+    if (ratio < 1.0f) ratio = powf(ratio, 12.0f);
+    else ratio = powf(ratio, 4.0f);
+
+    float rng = (float) rand() / RAND_MAX * 2.0f;
+    return rng < ratio;
+}
+
+// _____________________________________________________________________________
+//
+//  Battle menu - set state (helper function)
+// _____________________________________________________________________________
+//
+void setBattleState(Game *g, BattleState bs) {
+    Phone *playerPh = &g->s.party[MENU.active];
+    Phone *enemyPh = &MENU.enemyParty[MENU.enemyActive];
+    MENU.battleState = bs;
+
+    switch (bs) {
+        case BS_WAITING: {
+            MENU.choice = 0;
+            arrfree(MENU.choices);
+            arrpush(MENU.choices, "Fight");
+            arrpush(MENU.choices, "Switch");
+            arrpush(MENU.choices, "Items");
+            if (MENU.canRun) arrpush(MENU.choices, "Run");
+            break;
+        }
+
+        case BS_WAITING_MOVE: {
+            MENU.battleState = BS_WAITING_MOVE;
+            MENU.choice = 0;
+            arrfree(MENU.choices);
+            for (int i = 0; i < 4; i++) {
+                arrpush(MENU.choices, SSPECS(playerPh->skills[i]).name);
+            }
+            break;
+        }
+
+        case BS_ENEMY_TURN: {
+            // for now, enemy always does random skill
+            SkillSpecs skill = SSPECS(enemyPh->skills[GetRandomValue(0, 3)]);
+            sprintf(
+                MENU.battleTextbox[0], "%s %s uses %s...",
+                SPECS(enemyPh->id).brand, SPECS(enemyPh->id).model, skill.name
+            );
+            MENU.battleTextbox[1][0] = '\0';
+            MENU.battleTextbox[2][0] = '\0';
+            doMove(g, enemyPh, playerPh, skill);
+            break;
+        }
+
+        case BS_PLAYER_TURN: {
+            SkillSpecs skill = SSPECS(MENU.playerMove);
+            sprintf(
+                MENU.battleTextbox[0], "%s %s uses %s...",
+                SPECS(playerPh->id).brand, SPECS(playerPh->id).model, skill.name
+            );
+            MENU.battleTextbox[1][0] = '\0';
+            MENU.battleTextbox[2][0] = '\0';
+            doMove(g, playerPh, enemyPh, skill);
+            break;
         }
     }
 }
@@ -83,20 +177,25 @@ void updateBattleMenu(Game *g) {
         // Command menu is just a standard menu
         updateMenu(g);
         if (K_B_PRESS() && MENU.battleState == BS_WAITING_MOVE) {
-            MENU.battleState = BS_WAITING;
-            MENU.choice = 0;
-            arrfree(MENU.choices);
-            arrpush(MENU.choices, "Fight");
-            arrpush(MENU.choices, "Switch");
-            arrpush(MENU.choices, "Items");
-            if (MENU.canRun) arrpush(MENU.choices, "Run");
+            setBattleState(g, BS_WAITING);
         }   
     }
     // For any other state, the menu only updates when the confirm button is
     // pressed.
     else if (K_A_PRESS() || K_B_PRESS()) {
         switch (MENU.battleState) {
-            case BS_STARTING: MENU.battleState = BS_WAITING; break;
+            case BS_STARTING: setBattleState(g, BS_WAITING); break;
+            case BS_PLAYER_TURN: {
+                if (MENU.movedFirst) setBattleState(g, BS_ENEMY_TURN);
+                else setBattleState(g, BS_WAITING);
+                break;
+            }
+            case BS_ENEMY_TURN: {
+                if (!MENU.movedFirst) setBattleState(g, BS_PLAYER_TURN);
+                else setBattleState(g, BS_WAITING);
+                break;
+            }
+            case BS_RUN: popMenu(g); break;
         }
     }
 }
@@ -127,11 +226,9 @@ void drawBattleMenu(Game *g) {
             drawText(g, "Command?", 128, 184, WHITE);
         }
         else {
-	        drawTextRec(
-                g, SSPECS(playerPh->skills[MENU.choice]).description,
-                128, 182, 184, 64, WHITE
-            );
-            drawText(g, TextFormat("Type: %s"))
+            #define SKILL (SSPECS(playerPh->skills[MENU.choice]))
+	        drawTextRec(g, SKILL.description, 128, 182, 184, 64, WHITE);
+            drawText(g, TextFormat("Type: %s", skillTypes[SKILL.type]), 128, 222, LIGHTGRAY);
         }
     }
     else {
@@ -194,12 +291,7 @@ void checkBattleMenu(Game *g) {
                 case -1: break;
 
                 case 0: { // Fight
-                    MENU.battleState = BS_WAITING_MOVE;
-                    MENU.choice = 0;
-                    arrfree(MENU.choices);
-                    for (int i = 0; i < 4; i++) {
-                        arrpush(MENU.choices, SSPECS(playerPh->skills[0]).name);
-                    }
+                    setBattleState(g, BS_WAITING_MOVE);
                     break;
                 }
 
@@ -226,11 +318,14 @@ void checkBattleMenu(Game *g) {
 
         case BS_WAITING_MOVE: {
             if (MENU.choice == -1) {
-                MENU.battleState = BS_WAITING; // go back to the start
+                setBattleState(g, BS_WAITING); // go back to the start
             }
             else {
                 // Choose which side moves first, based on the weights of the phone and a bit of random chance
-
+                MENU.movedFirst = whoMovesFirst(enemyPh->weight, playerPh->weight);
+                if (MENU.movedFirst) setBattleState(g, BS_PLAYER_TURN);
+                else setBattleState(g, BS_ENEMY_TURN);
+                MENU.playerMove = MENU.choice;
             }
             break;
         }
