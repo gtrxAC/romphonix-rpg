@@ -17,6 +17,13 @@ void updateBattleMenu(Game *g);
 void drawBattleMenu(Game *g);
 void checkBattleMenu(Game *g);
 
+// PLAYERP and ENEMYP contain phone properties that will (in the player's case)
+// be permanently saved.
+// MENU.player and MENU.enemy contain temporary properties (see phones.h
+// BattlePhone struct)
+#define PLAYERP (g->s.party[MENU.active])
+#define ENEMYP (MENU.enemyParty[MENU.enemyActive])
+
 // _____________________________________________________________________________
 //
 //  Battle menu - init function
@@ -46,7 +53,7 @@ void scrBattleMenu(Game *g, bool canRun) {
 //  Battle menu - do move (helper function)
 // _____________________________________________________________________________
 //
-void doMove(Game *g, Phone *attacker, Phone *victim, SkillSpecs skill) {
+void doMove(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone *victimB, SkillSpecs skill) {
     for (int i = 0; i < 2; i++) {
         switch (skill.effects[i].effect) {
             case SE_NONE: {
@@ -79,13 +86,33 @@ void doMove(Game *g, Phone *attacker, Phone *victim, SkillSpecs skill) {
 
             case SE_CONFUSE: {
                 if (GetRandomValue(0, 100) < skill.effects[i].parameter) {
-                    victim->confused = true;
+                    victimB->confused = true;
                     sprintf(
                         MENU.battleTextbox[i + 1],
                         "%s %s is now confused!",
                         SPECS(victim->id).brand, SPECS(victim->id).model
                     );
                 }
+                break;
+            }
+
+            case SE_ATK_UP: {
+                attackerB->atkUpTurns = 6;
+                sprintf(
+                    MENU.battleTextbox[i + 1],
+                    "%s %s has boosted their attack!",
+                    SPECS(attacker->id).brand, SPECS(attacker->id).model
+                );
+                break;
+            }
+
+            case SE_DEF_UP: {
+                attackerB->defUpTurns = 6;
+                sprintf(
+                    MENU.battleTextbox[i + 1],
+                    "%s %s has boosted their defense!",
+                    SPECS(attacker->id).brand, SPECS(attacker->id).model
+                );
                 break;
             }
         }
@@ -115,8 +142,6 @@ int whoMovesFirst(int weight_1, int weight_2) {
 // _____________________________________________________________________________
 //
 void setBattleState(Game *g, BattleState bs) {
-    Phone *playerPh = &g->s.party[MENU.active];
-    Phone *enemyPh = &MENU.enemyParty[MENU.enemyActive];
     MENU.battleState = bs;
 
     switch (bs) {
@@ -135,33 +160,88 @@ void setBattleState(Game *g, BattleState bs) {
             MENU.choice = 0;
             arrfree(MENU.choices);
             for (int i = 0; i < 4; i++) {
-                arrpush(MENU.choices, SSPECS(playerPh->skills[i]).name);
+                arrpush(MENU.choices, SSPECS(PLAYERP.skills[i]).name);
             }
             break;
         }
 
         case BS_ENEMY_TURN: {
             // for now, enemy always does random skill
-            SkillSpecs skill = SSPECS(enemyPh->skills[GetRandomValue(0, 3)]);
+            SkillSpecs skill = SSPECS(ENEMYP.skills[GetRandomValue(0, 3)]);
             sprintf(
                 MENU.battleTextbox[0], "%s %s uses %s...",
-                SPECS(enemyPh->id).brand, SPECS(enemyPh->id).model, skill.name
+                SPECS(ENEMYP.id).brand, SPECS(ENEMYP.id).model, skill.name
             );
             MENU.battleTextbox[1][0] = '\0';
             MENU.battleTextbox[2][0] = '\0';
-            doMove(g, enemyPh, playerPh, skill);
+            doMove(g, &ENEMYP, &PLAYERP, &MENU.enemy, &MENU.player, skill);
             break;
         }
 
         case BS_PLAYER_TURN: {
-            SkillSpecs skill = SSPECS(MENU.playerMove);
+            SkillSpecs skill = SSPECS(PLAYERP.skills[MENU.playerMove]);
             sprintf(
                 MENU.battleTextbox[0], "%s %s uses %s...",
-                SPECS(playerPh->id).brand, SPECS(playerPh->id).model, skill.name
+                SPECS(PLAYERP.id).brand, SPECS(PLAYERP.id).model, skill.name
             );
             MENU.battleTextbox[1][0] = '\0';
             MENU.battleTextbox[2][0] = '\0';
-            doMove(g, playerPh, enemyPh, skill);
+            doMove(g, &PLAYERP, &ENEMYP, &MENU.player, &MENU.enemy, skill);
+            break;
+        }
+
+        case BS_AFTER_TURN: {
+            for (int i = 0; i < 3; i++) MENU.battleTextbox[i][0] = '\0';
+            int textboxSlot = 0;
+
+            if (MENU.player.atkUpTurns) {
+                MENU.player.atkUpTurns--;
+                if (!MENU.player.atkUpTurns) {
+                    sprintf(
+                        MENU.battleTextbox[0],
+                        "%s %s's attack boost wore off...",
+                        SPECS(PLAYERP.id).brand, SPECS(PLAYERP.id).model
+                    );
+                    textboxSlot++;
+                }
+            }
+            if (MENU.enemy.atkUpTurns) {
+                MENU.enemy.atkUpTurns--;
+                if (!MENU.enemy.atkUpTurns) {
+                    sprintf(
+                        MENU.battleTextbox[textboxSlot],
+                        "%s %s's attack boost wore off...",
+                        SPECS(ENEMYP.id).brand, SPECS(ENEMYP.id).model
+                    );
+                    textboxSlot++;
+                }
+            }
+            if (MENU.player.defUpTurns) {
+                MENU.player.defUpTurns--;
+                if (!MENU.player.defUpTurns) {
+                    sprintf(
+                        MENU.battleTextbox[textboxSlot],
+                        "%s %s's defense boost wore off...",
+                        SPECS(PLAYERP.id).brand, SPECS(PLAYERP.id).model
+                    );
+                    textboxSlot++;
+                }
+            }
+            if (MENU.enemy.defUpTurns) {
+                MENU.enemy.defUpTurns--;
+                if (!MENU.enemy.defUpTurns && textboxSlot < 3) {
+                    sprintf(
+                        MENU.battleTextbox[textboxSlot],
+                        "%s %s's defense boost wore off...",
+                        SPECS(ENEMYP.id).brand, SPECS(ENEMYP.id).model
+                    );
+                    textboxSlot++;
+                }
+            }
+
+            // if no status effects were processed (nothing to show in textbox),
+            // just skip to the next turn
+            if (!textboxSlot) setBattleState(g, BS_WAITING);
             break;
         }
     }
@@ -185,16 +265,24 @@ void updateBattleMenu(Game *g) {
     else if (K_A_PRESS() || K_B_PRESS()) {
         switch (MENU.battleState) {
             case BS_STARTING: setBattleState(g, BS_WAITING); break;
+
             case BS_PLAYER_TURN: {
                 if (MENU.movedFirst) setBattleState(g, BS_ENEMY_TURN);
-                else setBattleState(g, BS_WAITING);
+                else setBattleState(g, BS_AFTER_TURN);
                 break;
             }
+            
             case BS_ENEMY_TURN: {
                 if (!MENU.movedFirst) setBattleState(g, BS_PLAYER_TURN);
-                else setBattleState(g, BS_WAITING);
+                else setBattleState(g, BS_AFTER_TURN);
                 break;
             }
+
+            case BS_AFTER_TURN: {
+                setBattleState(g, BS_WAITING);
+                break;
+            }
+
             case BS_RUN: popMenu(g); break;
         }
     }
@@ -206,9 +294,6 @@ void updateBattleMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void drawBattleMenu(Game *g) {
-    Phone *playerPh = &g->s.party[MENU.active];
-    Phone *enemyPh = &MENU.enemyParty[MENU.enemyActive];
-
     DrawTexture(TEX(battle_bg), 0, 0, WHITE);
 
     if (MENU.battleState == BS_WAITING || MENU.battleState == BS_WAITING_MOVE) {
@@ -226,7 +311,7 @@ void drawBattleMenu(Game *g) {
             drawText(g, "Command?", 128, 184, WHITE);
         }
         else {
-            #define SKILL (SSPECS(playerPh->skills[MENU.choice]))
+            #define SKILL (SSPECS(PLAYERP.skills[MENU.choice]))
 	        drawTextRec(g, SKILL.description, 128, 182, 184, 64, WHITE);
             drawText(g, TextFormat("Type: %s", skillTypes[SKILL.type]), 128, 222, LIGHTGRAY);
         }
@@ -244,33 +329,53 @@ void drawBattleMenu(Game *g) {
     drawText(g, g->s.name, 10, 10, LIGHTGRAY);
 
     // Note: '$' character in the digits font (drawTextD) says 'Lv.'
-    drawTextD(g, TextFormat("$ %d", playerPh->level), 120, 10, WHITE);
+    drawTextD(g, TextFormat("$ %d", PLAYERP.level), 120, 10, WHITE);
 
     const char *brandModel = TextFormat(
-        "%s %s", SPECS(playerPh->id).brand, SPECS(playerPh->id).model
+        "%s %s", SPECS(PLAYERP.id).brand, SPECS(PLAYERP.id).model
     );
     drawText(g, brandModel, 10, 25, WHITE);
-    drawProgressBar(g, playerPh->hp, playerPh->maxHP, 10, 42, 80, GREEN);
-    drawTextD(g, TextFormat("%d/%d", playerPh->hp, playerPh->maxHP), 98, 42, WHITE);
+    drawProgressBar(g, PLAYERP.hp, PLAYERP.maxHP, 10, 42, 80, GREEN);
+    drawTextD(g, TextFormat("%d/%d", PLAYERP.hp, PLAYERP.maxHP), 98, 42, WHITE);
+
+    // Player confused status (text with black outline)
+    if (MENU.player.confused) {
+        for (int x = -1; x < 2; x++) {
+            for (int y = -1; y < 2; y++) {
+                drawText(g, "Confused", 5 + x, 65 + y, BLACK);
+            }
+        }
+        drawText(g, "Confused", 5, 65, YELLOW);
+    }
 
     // Enemy status bar
     drawBox(g, 164, 4, 152, 58);
     drawText(g, MENU.enemyName, 170, 10, LIGHTGRAY);
-    drawTextD(g, TextFormat("$ %d", enemyPh->level), 280, 10, WHITE);
+    drawTextD(g, TextFormat("$ %d", ENEMYP.level), 280, 10, WHITE);
 
     brandModel = TextFormat(
-        "%s %s", SPECS(enemyPh->id).brand, SPECS(enemyPh->id).model
+        "%s %s", SPECS(ENEMYP.id).brand, SPECS(ENEMYP.id).model
     );
     drawText(g, brandModel, 170, 25, WHITE);
-    drawProgressBar(g, enemyPh->hp, enemyPh->maxHP, 170, 42, 80, GREEN);
-    drawTextD(g, TextFormat("%d/%d", enemyPh->hp, enemyPh->maxHP), 258, 42, WHITE);
-    drawTextD(g, TextFormat("$ %d", playerPh->level), 120, 10, WHITE);
+    drawProgressBar(g, ENEMYP.hp, ENEMYP.maxHP, 170, 42, 80, GREEN);
+    drawTextD(g, TextFormat("%d/%d", ENEMYP.hp, ENEMYP.maxHP), 258, 42, WHITE);
+    drawTextD(g, TextFormat("$ %d", PLAYERP.level), 120, 10, WHITE);
+
+    // Enemy confused status (text with black outline)
+    if (MENU.enemy.confused) {
+        for (int x = -1; x < 2; x++) {
+            for (int y = -1; y < 2; y++) {
+                drawText(g, "Confused", 259 + x, 65 + y, BLACK);
+            }
+        }
+        drawText(g, "Confused", 259, 65, YELLOW);
+    }
 
     // Player phone sprite
-    DrawTexture(shget(g->textures, SPECS(playerPh->id).sprite), 48, 96, WHITE);
+    DrawTexture(shget(g->textures, SPECS(PLAYERP.id).sprite), 48, 96, WHITE);
 
     // Enemy phone sprite
-    DrawTexture(shget(g->textures, SPECS(enemyPh->id).sprite), 240, 96, WHITE);
+    DrawTexture(shget(g->textures, SPECS(ENEMYP.id).sprite), 208, 96, WHITE);
 
     // debug
     DrawText(TextFormat("%d", MENU.battleState), 0, 0, 10, YELLOW);
@@ -282,9 +387,6 @@ void drawBattleMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void checkBattleMenu(Game *g) {
-    Phone *playerPh = &g->s.party[MENU.active];
-    Phone *enemyPh = &MENU.enemyParty[MENU.enemyActive];
-
     switch (MENU.battleState) {
         case BS_WAITING: {
             switch (MENU.choice) {
@@ -322,10 +424,10 @@ void checkBattleMenu(Game *g) {
             }
             else {
                 // Choose which side moves first, based on the weights of the phone and a bit of random chance
-                MENU.movedFirst = whoMovesFirst(enemyPh->weight, playerPh->weight);
+                MENU.movedFirst = whoMovesFirst(ENEMYP.weight, PLAYERP.weight);
+                MENU.playerMove = MENU.choice;
                 if (MENU.movedFirst) setBattleState(g, BS_PLAYER_TURN);
                 else setBattleState(g, BS_ENEMY_TURN);
-                MENU.playerMove = MENU.choice;
             }
             break;
         }

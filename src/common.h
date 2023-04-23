@@ -197,6 +197,7 @@ typedef enum BattleState {
     BS_WAITING_MOVE,  // Waiting for command (in the move selection screen)
     BS_PLAYER_TURN,
     BS_ENEMY_TURN,
+    BS_AFTER_TURN,  // check status effects every turn after both players have moved
     BS_RUN   // Run from wild battle (always succeeds)
 } BattleState;
 
@@ -244,6 +245,9 @@ typedef struct Menu {
             bool canRun;  // is a wild battle?
             int movedFirst;  // did the player move first this turn?
             int playerMove;  // what move did the player choose this turn
+
+            BattlePhone player;
+            BattlePhone enemy;
         };
     };
 } Menu;

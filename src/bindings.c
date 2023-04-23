@@ -105,10 +105,10 @@ void checkBindings(Game *g) {
             100, 100, 100,
             g->s.party[0].level + GetRandomValue(-5, 5), 0, 0, SPECS(id).baseExp,
             SPECS(id).attack, SPECS(id).defense, SPECS(id).weight,
-            GetRandomValue(0, g->skillDB->size - 1), GetRandomValue(0, g->skillDB->size - 1), 
-            GetRandomValue(0, g->skillDB->size - 1), GetRandomValue(0, g->skillDB->size - 1), 
-            GetRandomValue(1, 4), GetRandomValue(1, 4),
-            GetRandomValue(1, 4), GetRandomValue(1, 4)
+            GetRandomValue(1, g->skillDB->size - 1), GetRandomValue(1, g->skillDB->size - 1), 
+            GetRandomValue(1, g->skillDB->size - 1), GetRandomValue(1, g->skillDB->size - 1), 
+            GetRandomValue(0, 3), GetRandomValue(0, 3),
+            GetRandomValue(0, 3), GetRandomValue(0, 3)
         };
         MENU.enemyActive = 0;
         MENU.enemyParty[0] = phone;

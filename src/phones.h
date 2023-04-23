@@ -73,14 +73,14 @@ typedef struct Phone {
     u16 attack, defense, weight;
     u16 skills[4];
     Condition screenStatus, boardStatus, coverStatus, batteryStatus;
-
-    bool confused;
 } Phone;
 
 // Data of a phone while it's in battle (this gets cleared when the battle ends,
 // includes stuff like stat changes)
 typedef struct BattlePhone {
-
+    bool confused;
+    int atkUpTurns;
+    int defUpTurns;
 } BattlePhone;
 
 typedef struct PhoneDatabase {
