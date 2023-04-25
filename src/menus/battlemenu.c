@@ -244,6 +244,20 @@ void setBattleState(Game *g, BattleState bs) {
             if (!textboxSlot) setBattleState(g, BS_WAITING);
             break;
         }
+
+        case BS_WON: {
+            strcpy(MENU.battleTextbox[0], "you won, congrats i guess???");
+            strcpy(MENU.battleTextbox[1], "");
+            strcpy(MENU.battleTextbox[2], "");
+            break;
+        }
+
+        case BS_LOST: {
+            strcpy(MENU.battleTextbox[0], "LOL you lose the battle and cannot switch");
+            strcpy(MENU.battleTextbox[1], "phones yet...");
+            strcpy(MENU.battleTextbox[2], "");
+            break;
+        }
     }
 }
 
@@ -267,14 +281,34 @@ void updateBattleMenu(Game *g) {
             case BS_STARTING: setBattleState(g, BS_WAITING); break;
 
             case BS_PLAYER_TURN: {
-                if (MENU.movedFirst) setBattleState(g, BS_ENEMY_TURN);
-                else setBattleState(g, BS_AFTER_TURN);
+                if (PLAYERP.hp <= 0) {
+                    PLAYERP.hp = 0;
+                    setBattleState(g, BS_LOST);
+                }
+                else if (ENEMYP.hp <= 0) {
+                    ENEMYP.hp = 0;
+                    setBattleState(g, BS_WON);
+                }
+                else {
+                    if (MENU.movedFirst) setBattleState(g, BS_ENEMY_TURN);
+                    else setBattleState(g, BS_AFTER_TURN);
+                }
                 break;
             }
             
             case BS_ENEMY_TURN: {
-                if (!MENU.movedFirst) setBattleState(g, BS_PLAYER_TURN);
-                else setBattleState(g, BS_AFTER_TURN);
+                if (PLAYERP.hp <= 0) {
+                    PLAYERP.hp = 0;
+                    setBattleState(g, BS_LOST);
+                }
+                else if (ENEMYP.hp <= 0) {
+                    ENEMYP.hp = 0;
+                    setBattleState(g, BS_WON);
+                }
+                else {
+                    if (!MENU.movedFirst) setBattleState(g, BS_PLAYER_TURN);
+                    else setBattleState(g, BS_AFTER_TURN);
+                }
                 break;
             }
 
@@ -283,7 +317,7 @@ void updateBattleMenu(Game *g) {
                 break;
             }
 
-            case BS_RUN: popMenu(g); break;
+            case BS_RUN: case BS_WON: case BS_LOST: popMenu(g); break;
         }
     }
 }
@@ -423,7 +457,8 @@ void checkBattleMenu(Game *g) {
                 setBattleState(g, BS_WAITING); // go back to the start
             }
             else {
-                // Choose which side moves first, based on the weights of the phone and a bit of random chance
+                // Choose which side moves first, based on the weights of the
+                // phones and a bit of random chance
                 MENU.movedFirst = whoMovesFirst(ENEMYP.weight, PLAYERP.weight);
                 MENU.playerMove = MENU.choice;
                 if (MENU.movedFirst) setBattleState(g, BS_PLAYER_TURN);

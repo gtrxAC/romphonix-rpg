@@ -68,7 +68,8 @@ typedef struct Phone {
     bool active;  // is this phone slot in use?
     u16 id;  // ID of phone from database
 
-    u16 hp, maxHP, energy;
+    short hp;  // signed so we can check when it falls below 0
+    u16 maxHP, energy;
     u8 level, exp, maxExp, baseExp;
     u16 attack, defense, weight;
     u16 skills[4];

@@ -198,7 +198,9 @@ typedef enum BattleState {
     BS_PLAYER_TURN,
     BS_ENEMY_TURN,
     BS_AFTER_TURN,  // check status effects every turn after both players have moved
-    BS_RUN   // Run from wild battle (always succeeds)
+    BS_RUN,  // Run from wild battle (always succeeds)
+    BS_WON,
+    BS_LOST
 } BattleState;
 
 typedef struct Menu {
