@@ -76,14 +76,6 @@ typedef struct Phone {
     Condition screenStatus, boardStatus, coverStatus, batteryStatus;
 } Phone;
 
-// Data of a phone while it's in battle (this gets cleared when the battle ends,
-// includes stuff like stat changes)
-typedef struct BattlePhone {
-    bool confused;
-    int atkUpTurns;
-    int defUpTurns;
-} BattlePhone;
-
 typedef struct PhoneDatabase {
     u32 size;
     PhoneSpecs phones[];

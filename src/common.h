@@ -190,18 +190,7 @@ typedef enum CloseBehavior {
     CB_CLOSE       // Menu is just closed
 } CloseBehavior;
 
-// Battle state
-typedef enum BattleState {
-    BS_STARTING,  // battle is starting (wild X appeared or X wants to fight)
-    BS_WAITING,     // Waiting for command (menu is shown)
-    BS_WAITING_MOVE,  // Waiting for command (in the move selection screen)
-    BS_PLAYER_TURN,
-    BS_ENEMY_TURN,
-    BS_AFTER_TURN,  // check status effects every turn after both players have moved
-    BS_RUN,  // Run from wild battle (always succeeds)
-    BS_WON,
-    BS_LOST
-} BattleState;
+#include "battle/battle.h"
 
 typedef struct Menu {
     unsigned int timer;

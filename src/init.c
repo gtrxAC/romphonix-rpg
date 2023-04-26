@@ -48,6 +48,7 @@ void initGame(Game *g) {
     LOAD_TEXTURE("portraits");
     LOAD_TEXTURE("unknown_phone");
     LOAD_TEXTURE("battle_bg");
+    LOAD_TEXTURE("status");
 
     // Sound loading/unloading works just like with textures.
     g->sounds = NULL;
