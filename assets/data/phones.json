@@ -11,7 +11,7 @@
         "brokenChance": 4,
         "baseExp": 7,
         "icon": "touch",
-        "description": "An early touchscreen Alcatel phone which combines a phone with organizer features from a PDA.",
+        "description": "An early touchscreen Alcatel phone which combines a phone with organizer features of a PDA.",
         "sprite": "Alcatel_OT_COM"
     },
     {
@@ -832,7 +832,7 @@
         "attack": 25,
         "defense": 50,
         "weight": 170,
-        "rarity": 2,
+        "rarity": 3,
         "brokenChance": 5,
         "baseExp": 5,
         "icon": "candybar",
@@ -1527,7 +1527,7 @@
         "baseExp": 8,
         "icon": "slider",
         "description": "The Chinese equivalent of the SPH-A800, with a different UI, sounds, synth, etc.",
-        "sprite": "Samsung_SCH_M309"
+        "sprite": "Samsung_SPH_A800"
     },
     {
         "brand": "Samsung",
