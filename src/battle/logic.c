@@ -22,8 +22,10 @@ int whoMovesFirst(int weight_1, int weight_2) {
 //  Battle menu - calculate damage (helper function)
 // _____________________________________________________________________________
 //
-int getDamage(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone *victimB, int damage) {
-    int result = damage * victim->defense / attacker->attack;
+int getDamage(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone *victimB, SkillSpecs skill) {
+    int result = skill.effects[0].effect * victim->defense / attacker->attack;
+
+    // Stat changes
     if (attackerB->atkUpAmount > 0) {
         for (int i = 0; i < attackerB->atkUpAmount; i++) {
             result *= 1.2f;
@@ -49,6 +51,21 @@ int getDamage(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, B
         }
         victimB->defUpAmount *= -1;
     }
+
+    // Skill type and phone condition
+    int status;
+    switch (skill.type) {
+        case SKT_BATTERY: status = attacker->batteryStatus; break;
+        case SKT_BOARD: status = attacker->boardStatus; break;
+        case SKT_COVER: status = attacker->coverStatus; break;
+        case SKT_SCREEN: status = attacker->screenStatus; break;
+    }
+    switch (status) {
+        case COND_BROKEN: result *= 0.7f; break;
+        case COND_BAD: result *= 0.9f; break;
+        case COND_GOOD: result *= 1.1f; break;
+    }
+
     return result;
 }
 
@@ -69,9 +86,7 @@ void doMove(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, Bat
             }
 
             case SE_DRAIN: {
-                int damage = getDamage(
-                    g, attacker, victim, attackerB, victimB, skill.effects[i].parameter
-                );
+                int damage = getDamage(g, attacker, victim, attackerB, victimB, skill);
                 victim->hp -= damage;
                 attacker->hp = MIN(attacker->hp + damage, attacker->maxHP);
                 sprintf(
@@ -83,9 +98,7 @@ void doMove(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, Bat
             }
 
             case SE_DAMAGE: {
-                int damage = getDamage(
-                    g, attacker, victim, attackerB, victimB, skill.effects[i].parameter
-                );
+                int damage = getDamage(g, attacker, victim, attackerB, victimB, skill);
                 victim->hp -= damage;
                 sprintf(
                     MENU.battleTextbox[i + 1],
