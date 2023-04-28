@@ -295,7 +295,7 @@
         "rarity": 3,
         "brokenChance": 4,
         "baseExp": 7,
-        "icon": "candybar",
+        "icon": "new_candybar",
         "description": "A Windows Mobile phone which was available on AT&T. Features include a large screen and 1MP camera.",
         "sprite": "HTC_2125"
     },
@@ -775,7 +775,7 @@
         "rarity": 5,
         "brokenChance": 5,
         "baseExp": 7,
-        "icon": "touch",
+        "icon": "p900",
         "description": "A small LG CDMA phone. The keypad opens up to reveal a large touchscreen.",
         "sprite": "LG_VX_9000"
     },
@@ -805,7 +805,7 @@
         "rarity": 4,
         "brokenChance": 4,
         "baseExp": 8,
-        "icon": "p900",
+        "icon": "touch",
         "description": "A Motorola touchscreen phone with A-GPS and microSD card support.",
         "sprite": "Motorola_A1000"
     },
@@ -1855,7 +1855,7 @@
         "rarity": 4,
         "brokenChance": 5,
         "baseExp": 8,
-        "icon": "flipcover",
+        "icon": "candybar",
         "description": "The first Japanese mobile phone with a built-in camera. It also had a colour screen.",
         "sprite": "Sharp_J_SH04"
     },
@@ -1975,7 +1975,7 @@
         "rarity": 3,
         "brokenChance": 4,
         "baseExp": 5,
-        "icon": "flipcover",
+        "icon": "candybar",
         "description": "A lightweight phone from Sony, one of the earliest phones with polyphonic ringtones.",
         "sprite": "Sony_CMD_J7"
     },

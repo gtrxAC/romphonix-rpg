@@ -25,16 +25,15 @@ icons = {
     "flip": 3,
     "flipcover": 4,
     "qwerty": 5,
-    "gx55x": 6,
-    "3650": 7,
-    "ngage": 8,
-    "p900": 9,
-    "communicator": 10,
-    "xelibri8": 11,
-    "77xx": 12,
-    "sx1": 13,
-    "touch": 14,
-    "qwerty_slider": 15
+    "3650": 6,
+    "ngage": 7,
+    "p900": 8,
+    "communicator": 9,
+    "xelibri8": 10,
+    "77xx": 11,
+    "sx1": 12,
+    "touch": 13,
+    "qwerty_slider": 14
 }
 
 out = bytearray()
