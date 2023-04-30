@@ -145,6 +145,7 @@ void setBattleState(Game *g, BattleState bs) {
         }
 
         case BS_WON: {
+            setSong(g, "assets/sounds/music/thtune.mid");
             strcpy(MENU.battleTextbox[0], "you won, congrats i guess???");
             strcpy(MENU.battleTextbox[1], "");
             strcpy(MENU.battleTextbox[2], "");

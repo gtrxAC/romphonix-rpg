@@ -22,8 +22,8 @@ int whoMovesFirst(int weight_1, int weight_2) {
 //  Battle menu - calculate damage (helper function)
 // _____________________________________________________________________________
 //
-int getDamage(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone *victimB, SkillSpecs skill) {
-    int result = skill.effects[0].effect * victim->defense / attacker->attack;
+int getDamage(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone *victimB, int damage, SkillType type) {
+    float result = (float) damage * victim->defense / attacker->attack;
 
     // Stat changes
     if (attackerB->atkUpAmount > 0) {
@@ -54,7 +54,7 @@ int getDamage(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, B
 
     // Skill type and phone condition
     int status;
-    switch (skill.type) {
+    switch (type) {
         case SKT_BATTERY: status = attacker->batteryStatus; break;
         case SKT_BOARD: status = attacker->boardStatus; break;
         case SKT_COVER: status = attacker->coverStatus; break;
@@ -66,7 +66,7 @@ int getDamage(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, B
         case COND_GOOD: result *= 1.1f; break;
     }
 
-    return result;
+    return (int) result;
 }
 
 // _____________________________________________________________________________
@@ -86,7 +86,10 @@ void doMove(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, Bat
             }
 
             case SE_DRAIN: {
-                int damage = getDamage(g, attacker, victim, attackerB, victimB, skill);
+                int damage = getDamage(
+                    g, attacker, victim, attackerB, victimB,
+                    skill.effects[i].parameter, skill.type
+                );
                 victim->hp -= damage;
                 attacker->hp = MIN(attacker->hp + damage, attacker->maxHP);
                 sprintf(
@@ -98,7 +101,10 @@ void doMove(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, Bat
             }
 
             case SE_DAMAGE: {
-                int damage = getDamage(g, attacker, victim, attackerB, victimB, skill);
+                int damage = getDamage(
+                    g, attacker, victim, attackerB, victimB,
+                    skill.effects[i].parameter, skill.type
+                );
                 victim->hp -= damage;
                 sprintf(
                     MENU.battleTextbox[i + 1],
@@ -130,24 +136,42 @@ void doMove(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, Bat
             }
 
             case SE_ATK_UP: {
-                attackerB->atkUpAmount++;
-                attackerB->atkUpTurns = 6;
-                sprintf(
-                    MENU.battleTextbox[i + 1],
-                    "%s %s has boosted their attack!",
-                    SPECS(attacker->id).brand, SPECS(attacker->id).model
-                );
+                if (attackerB->atkUpAmount < 3) {
+                    attackerB->atkUpAmount++;
+                    attackerB->atkUpTurns = skill.effects[i].parameter + 1;
+                    sprintf(
+                        MENU.battleTextbox[i + 1],
+                        "%s %s has boosted their attack!",
+                        SPECS(attacker->id).brand, SPECS(attacker->id).model
+                    );
+                }
+                else {
+                    sprintf(
+                        MENU.battleTextbox[i + 1],
+                        "%s %s's attack is already maxed out...",
+                        SPECS(attacker->id).brand, SPECS(attacker->id).model
+                    );
+                }
                 break;
             }
 
             case SE_DEF_UP: {
-                attackerB->defUpAmount++;
-                attackerB->defUpTurns = 6;
-                sprintf(
-                    MENU.battleTextbox[i + 1],
-                    "%s %s has boosted their defense!",
-                    SPECS(attacker->id).brand, SPECS(attacker->id).model
-                );
+                if (attackerB->defUpAmount < 3) {
+                    attackerB->defUpAmount++;
+                    attackerB->defUpTurns = skill.effects[i].parameter + 1;
+                    sprintf(
+                        MENU.battleTextbox[i + 1],
+                        "%s %s has boosted their defense!",
+                        SPECS(attacker->id).brand, SPECS(attacker->id).model
+                    );
+                }
+                else {
+                    sprintf(
+                        MENU.battleTextbox[i + 1],
+                        "%s %s's defense is already maxed out...",
+                        SPECS(attacker->id).brand, SPECS(attacker->id).model
+                    );
+                }
                 break;
             }
         }

@@ -1,43 +1,20 @@
 [
 	{
-		"name": "Spare Battery",
-		"description": "Restores 30% battery to one phone.",
-		"effect": "heal",
-		"effectParameter": 30,
-		"sprite": "Spare_Battery",
-		"pocket": 0
+		"name": "` Siphon",
+		"description": "A memory card containing the skill \"Siphon\" which can be inserted into a phone.",
+		"effect": "skill",
+		"effectParameter": 1,
+		"sprite": "Memory_Card",
+		"pocket": "cards"
 	},
-	{
-		"name": "Extended Battery",
-		"description": "Restores 50% battery to one phone.",
-		"effect": "heal",
-		"effectParameter": 50,
-		"sprite": "Extended_Battery",
-		"pocket": 0
-	},
-	{
-		"name": "Super Battery",
-		"description": "Restores 70% battery to one phone.",
-		"effect": "heal",
-		"effectParameter": 70,
-		"sprite": "Super_Battery",
-		"pocket": 0
-	},
-	{
-		"name": "Power Bank",
-		"description": "Revives a dead phone with 50% battery.",
-		"effect": "revive",
-		"effectParameter": 50,
-		"sprite": "Power_Bank",
-		"pocket": 0
-	},
+
 	{
 		"name": "Upgrade",
-		"description": "Upgrades one stat for one phone.",
+		"description": "A firmware upgrade on a floppy disk. Can be used to upgrade one stat of a phone.",
 		"effect": "upgrade",
 		"effectParameter": 1,
 		"sprite": "Upgrade",
-		"pocket": 0
+		"pocket": "items"
 	},
 	{
 		"name": "Screwdriver",
@@ -45,22 +22,55 @@
 		"effect": "repair",
 		"effectParameter": 1,
 		"sprite": "Screwdriver",
-		"pocket": 0
+		"pocket": "items"
 	},
 	{
-		"name": "Automatic Screwdriver",
+		"name": "Auto Screwdriver",
 		"description": "Can be used to repair phones a good amount.",
 		"effect": "repair",
 		"effectParameter": 2,
 		"sprite": "Automatic_Screwdriver",
-		"pocket": 0
+		"pocket": "items"
 	},
 	{
 		"name": "Repair Kit",
-		"description": "Can be used to combine the parts from two phones.",
+		"description": "Can be used to combine the parts from two phones to create one better condition phone.",
 		"effect": "combine",
 		"effectParameter": 1,
 		"sprite": "Repair_Kit",
-		"pocket": 0
+		"pocket": "items"
+	},
+
+	{
+		"name": "Spare Battery",
+		"description": "Restores a phone's battery by a little bit.",
+		"effect": "heal",
+		"effectParameter": 30,
+		"sprite": "Spare_Battery",
+		"pocket": "healing"
+	},
+	{
+		"name": "Extended Battery",
+		"description": "Restores a phone's battery by a good amount.",
+		"effect": "heal",
+		"effectParameter": 50,
+		"sprite": "Extended_Battery",
+		"pocket": "healing"
+	},
+	{
+		"name": "Super Battery",
+		"description": "Restores a phone's battery by a lot.",
+		"effect": "heal",
+		"effectParameter": 70,
+		"sprite": "Super_Battery",
+		"pocket": "healing"
+	},
+	{
+		"name": "Power Bank",
+		"description": "Revives a dead phone with 50% battery.",
+		"effect": "revive",
+		"effectParameter": 50,
+		"sprite": "Power_Bank",
+		"pocket": "healing"
 	}
 ]

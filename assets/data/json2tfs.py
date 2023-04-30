@@ -116,7 +116,14 @@ itemEffects = {
     "revive": 1,
     "upgrade": 2,
     "repair": 3,
-    "combine": 4
+    "combine": 4,
+    "skill": 4
+}
+
+bagPockets = {
+    "cards": 0,
+    "items": 1,
+    "healing": 2
 }
 
 with open('items.json') as file:
@@ -128,7 +135,7 @@ with open('items.json') as file:
         append32(itemEffects[i['effect']])
         append32(i['effectParameter'])
         appendStr(i['sprite'], 32)
-        append32(i['pocket'])
+        append32(bagPockets[i['pocket']])
         
 with open('items.tfs', 'wb') as outfile:
     outfile.write(out)

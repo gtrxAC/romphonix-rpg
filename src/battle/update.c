@@ -56,7 +56,11 @@ void updateBattleMenu(Game *g) {
                 break;
             }
 
-            case BS_RUN: case BS_WON: case BS_LOST: popMenu(g); break;
+            case BS_RUN: case BS_WON: case BS_LOST: {
+                popMenu(g);
+                setSong(g, g->mapMeta.songName);
+                break;
+            } 
         }
     }
 }
