@@ -796,6 +796,21 @@
     },
     {
         "brand": "Motorola",
+        "model": "A835",
+        "year": 2003,
+        "battery": 1050,
+        "attack": 45,
+        "defense": 25,
+        "weight": 157,
+        "rarity": 3,
+        "brokenChance": 5,
+        "baseExp": 8,
+        "icon": "new_candybar",
+        "description": "One of the first mobile phones with 3G, which adds support for video calling.",
+        "sprite": "Motorola_A835"
+    },
+    {
+        "brand": "Motorola",
         "model": "A1000",
         "year": 2004,
         "battery": 1600,
