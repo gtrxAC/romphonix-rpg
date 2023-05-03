@@ -33,6 +33,7 @@ typedef struct SkillSpecs {
     struct {
         SkillEffect effect;
         int parameter;
+        int chance;
     } effects[2];
 
     char learnByPhones[256];

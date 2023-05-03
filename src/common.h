@@ -240,6 +240,9 @@ typedef struct Menu {
             BattlePhone player;
             BattlePhone enemy;
         };
+
+        // Switch phone menu (in battle)
+        BattleState nextBattleState;
     };
 } Menu;
 

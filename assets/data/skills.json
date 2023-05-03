@@ -3,21 +3,20 @@
 		"name": "---",
 		"description": "",
 		"skillType": "battery",
-		"effect": "none",
-		"effectParameter": 0,
-		"secondaryEffect": "none",
-		"secondaryEffectParameter": 0,
+		"effects": [],
 		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
 		"animation": "spr_default_anim"
 	},
 	{
 		"name": "Siphon",
-		"description": "Drains the battery of the opposing phone.",
+		"description": "Drain the battery of the opposing phone.",
 		"skillType": "battery",
-		"effect": "drain",
-		"effectParameter": 20,
-		"secondaryEffect": "none",
-		"secondaryEffectParameter": 0,
+		"effects": [
+			{
+				"type": "drain",
+				"parameter": 20
+			}
+		],
 		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
 		"animation": "spr_default_anim"
 	},
@@ -25,32 +24,42 @@
 		"name": "Mosaic",
 		"description": "Attack with a chance of confusion.",
 		"skillType": "screen",
-		"effect": "damage",
-		"effectParameter": 25,
-		"secondaryEffect": "confuse",
-		"secondaryEffectParameter": 30,
+		"effects": [
+			{
+				"type": "damage",
+				"parameter": 25
+			},
+			{
+				"type": "confuse",
+				"chance": 30
+			}
+		],
 		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
 		"animation": "spr_default_anim"
 	},
 	{
 		"name": "Power Save",
-		"description": "Increase defence for five turns.",
+		"description": "Save battery life to increase defense.",
 		"skillType": "battery",
-		"effect": "def_up",
-		"effectParameter": 5,
-		"secondaryEffect": "none",
-		"secondaryEffectParameter": 0,
+		"effects": [
+			{
+				"type": "def_up",
+				"parameter": 5
+			}
+		],
 		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
 		"animation": "spr_default_anim"
 	},
 	{
 		"name": "Optimise",
-		"description": "Increase attack for five turns.",
+		"description": "Optimise the phone's performance to increase attack.",
 		"skillType": "battery",
-		"effect": "atk_up",
-		"effectParameter": 5,
-		"secondaryEffect": "none",
-		"secondaryEffectParameter": 0,
+		"effects": [
+			{
+				"type": "atk_up",
+				"parameter": 5
+			}
+		],
 		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
 		"animation": "spr_default_anim"
 	}

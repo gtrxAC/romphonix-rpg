@@ -12,6 +12,8 @@
 //
 #include "../common.h"
 
+void scrSwitchPhoneMenu(Game *, BattleState);
+
 // _____________________________________________________________________________
 //
 //  Battle menu - init function
@@ -153,9 +155,21 @@ void setBattleState(Game *g, BattleState bs) {
         }
 
         case BS_LOST: {
-            strcpy(MENU.battleTextbox[0], "LOL you lose the battle and cannot switch");
-            strcpy(MENU.battleTextbox[1], "phones yet...");
-            strcpy(MENU.battleTextbox[2], "");
+            bool havePhones = false;
+            for (int i = 0; i < 6; i++) {
+                if (g->s.party[i].active && g->s.party[i].hp) {
+                    havePhones = true;
+                    break;
+                }
+            }
+            if (havePhones) {
+                scrSwitchPhoneMenu(g, BS_WAITING);
+            }
+            else {
+                strcpy(MENU.battleTextbox[0], "LOL you lose the battle and ran out");
+                strcpy(MENU.battleTextbox[1], "of phones...");
+                strcpy(MENU.battleTextbox[2], "");
+            }
             break;
         }
     }
@@ -178,7 +192,7 @@ void checkBattleMenu(Game *g) {
                 }
 
                 case 1: { // Switch
-
+                    scrSwitchPhoneMenu(g, BS_ENEMY_TURN);
                     break;
                 }
                 

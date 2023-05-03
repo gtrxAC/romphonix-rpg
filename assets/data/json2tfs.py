@@ -85,6 +85,14 @@ skillEffects = {
     "def_up": 5
 }
 
+def appendEffect(eff):
+    if 'parameter' not in eff: eff['parameter'] = 0
+    if 'chance' not in eff: eff['chance'] = 100
+
+    append32(skillEffects[eff['type']])
+    append32(eff['parameter'])
+    append32(eff['chance'])
+
 with open('skills.json') as file:
     skills = json.loads(file.read())
     append32(len(skills))
@@ -92,10 +100,17 @@ with open('skills.json') as file:
         appendStr(s['name'], 16)
         appendStr(s['description'], 128)
         append32(skillTypes[s['skillType']])
-        append32(skillEffects[s['effect']])
-        append32(s['effectParameter'])
-        append32(skillEffects[s['secondaryEffect']])
-        append32(s['secondaryEffectParameter'])
+        
+        if len(s['effects']):
+            appendEffect(s['effects'][0])
+
+            if len(s['effects']) > 1:
+                appendEffect(s['effects'][1])
+            else:
+                for i in range(0, 3): append32(0)
+        else:
+            for i in range(0, 6): append32(0)
+
         appendStr(s['learnByPhones'], 256)
         appendStr(s['animation'], 64)
         

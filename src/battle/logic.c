@@ -79,6 +79,14 @@ void doMove(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, Bat
         strcpy(MENU.battleTextbox[1], "But it failed due to confusion!");
     }
     else for (int i = 0; i < 2; i++) {
+        // Chance to miss
+        // If the first/primary effect of the skill misses, the secondary
+        // effect is not even processed (returns from function)
+        if (GetRandomValue(0, 100) >= skill.effects[i].chance) {
+            if (i == 0) strcpy(MENU.battleTextbox[1], "But it missed!");
+            return;
+        }
+
         switch (skill.effects[i].effect) {
             case SE_NONE: {
                 if (i == 0) strcpy(MENU.battleTextbox[1], "No effect!");
@@ -115,22 +123,20 @@ void doMove(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, Bat
             }
 
             case SE_CONFUSE: {
-                if (GetRandomValue(0, 100) < skill.effects[i].parameter) {
-                    if (victimB->confusedTurns) {
-                        sprintf(
-                            MENU.battleTextbox[i + 1],
-                            "%s %s is already confused!",
-                            SPECS(victim->id).brand, SPECS(victim->id).model
-                        );
-                    }
-                    else {
-                        victimB->confusedTurns = GetRandomValue(3, 6);
-                        sprintf(
-                            MENU.battleTextbox[i + 1],
-                            "%s %s is now confused!",
-                            SPECS(victim->id).brand, SPECS(victim->id).model
-                        );
-                    }
+                if (victimB->confusedTurns) {
+                    sprintf(
+                        MENU.battleTextbox[i + 1],
+                        "%s %s is already confused!",
+                        SPECS(victim->id).brand, SPECS(victim->id).model
+                    );
+                }
+                else {
+                    victimB->confusedTurns = GetRandomValue(3, 6);
+                    sprintf(
+                        MENU.battleTextbox[i + 1],
+                        "%s %s is now confused!",
+                        SPECS(victim->id).brand, SPECS(victim->id).model
+                    );
                 }
                 break;
             }
