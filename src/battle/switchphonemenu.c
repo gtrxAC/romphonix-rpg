@@ -1,7 +1,7 @@
 // _____________________________________________________________________________
 //
 //  Switch phone menu
-//  This menu is part of the battle system, it uses the draw and update function
+//  This menu is part of the battle system, it uses the draw function
 //  of phonesmenu.c, but a custom check function to switch the selected phone
 //  into battle.
 // _____________________________________________________________________________

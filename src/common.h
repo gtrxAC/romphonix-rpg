@@ -200,8 +200,9 @@ typedef struct Menu {
     int scroll;  // scrolling offset for collection menu
     
     // For menus or textboxes that use custom update/draw/check functions.
-    // - Update functions check the user's input and act accordingly
+    // - Update functions check the user's keyboard input and act accordingly (e.g. move cursor up/down)
     // - Draw functions draw the menu.
+    // - Check functions (aka next function) checks what the user has selected in the menu and acts accordingly
 	void (*updateFunc)(Game *);
 	void (*drawFunc)(Game *);
 	void (*nextFunc)(Game *);
@@ -243,6 +244,12 @@ typedef struct Menu {
 
         // Switch phone menu (in battle)
         BattleState nextBattleState;
+
+        // Use item menu (select which phone the item is to be used on)
+        struct {
+            int itemBagPocket;  // bag pocket id
+            int item;  // bag item index (item slot in the user's bag, not item ID!)
+        };
     };
 } Menu;
 

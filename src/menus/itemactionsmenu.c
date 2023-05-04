@@ -17,6 +17,8 @@ void updateItemActionsMenu(Game *g);
 void drawItemActionsMenu(Game *g);
 void checkItemActionsMenu(Game *g);
 
+void scrUseItemMenu(Game *g, int, int);
+
 // _____________________________________________________________________________
 //
 //  Item actions menu - init function
@@ -85,14 +87,30 @@ void checkItemActionsMenu(Game *g) {
     switch (MENU.choice) {
         case -1: popMenu(g); break;
 
+        // Use
         case 0: {
+            popMenu(g);
+            // Now MENU refers to the items menu
+            scrUseItemMenu(g, MENU.bagChoice, MENU.choice);
 
+            // switch (ISPECS(g->s.bag[LASTMENU.bagChoice][LASTMENU.choice].id).effect) {
+            //     case IE_HEAL: {
+            //         break;
+            //     }
+
+            //     default: {
+            //         pushTextbox(g, "This item cannot be used (yet).", "");
+            //         MENU.nextFunc = popMenu;
+            //         break;
+            //     }
+            // }
         }
 
+        // Give (to a phone)
         case 1: {
-
         }
 
+        // Toss (destroy)
         case 2: {
 
         }
