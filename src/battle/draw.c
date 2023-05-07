@@ -75,10 +75,10 @@ void drawBattleMenu(Game *g) {
     }
     else {
         // Battle menu contains a one line text box (without a typewriter effect)
-        drawBox(g, 10, 176, 300, 64);
-        drawText(g, MENU.battleTextbox[0], 18, 184, WHITE);
-        drawText(g, MENU.battleTextbox[1], 18, 202, WHITE);
-        drawText(g, MENU.battleTextbox[2], 18, 220, WHITE);
+        drawBox(g, 0, 176, 320, 64);
+        drawText(g, MENU.battleTextbox[0], 8, 184, WHITE);
+        drawText(g, MENU.battleTextbox[1], 8, 202, WHITE);
+        drawText(g, MENU.battleTextbox[2], 8, 220, WHITE);
     }
 
     // Player status bar

@@ -52,7 +52,7 @@
 	},
 	{
 		"name": "Optimise",
-		"description": "Optimise the phone's performance to increase attack.",
+		"description": "Optimise performance to increase attack.",
 		"skillType": "battery",
 		"effects": [
 			{

@@ -84,26 +84,28 @@ void drawItemActionsMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void checkItemActionsMenu(Game *g) {
-    switch (MENU.choice) {
-        case -1: popMenu(g); break;
+    popMenu(g);
+    // Now MENU refers to the items menu
 
+    switch (MENU.choice) {
         // Use
         case 0: {
-            popMenu(g);
-            // Now MENU refers to the items menu
-            scrUseItemMenu(g, MENU.bagChoice, MENU.choice);
+            switch (ISPECS(g->bag[MENU.bagChoice][MENU.choice].id).effect) {
+                // Effects which are applied to a phone
+                case IE_HEAL:
+                case IE_REVIVE:
+                case IE_UPGRADE:
+                case IE_REPAIR: {
+                    scrUseItemMenu(g, MENU.bagChoice, MENU.choice);
+                    break;
+                }
 
-            // switch (ISPECS(g->s.bag[LASTMENU.bagChoice][LASTMENU.choice].id).effect) {
-            //     case IE_HEAL: {
-            //         break;
-            //     }
-
-            //     default: {
-            //         pushTextbox(g, "This item cannot be used (yet).", "");
-            //         MENU.nextFunc = popMenu;
-            //         break;
-            //     }
-            // }
+                default: {
+                    pushTextbox(g, "This item cannot be used (yet).", "");
+                    MENU.nextFunc = popMenu;
+                    break;
+                }
+            }
         }
 
         // Give (to a phone)

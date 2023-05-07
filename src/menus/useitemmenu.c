@@ -67,6 +67,26 @@ void scrCheckUseItemMenu(Game *g) {
                 );
                 MENU.nextFunc = popMenu;
             }
+            break;
+        }
+
+        case IE_REVIVE: {
+            if (phone->hp <= 0) {
+                phone->hp = phone->maxHP * ISPECS(item->id).effectParameter / 100;
+                pushTextbox(
+                    g, TextFormat(
+                        "%s %s has been revived.",
+                        SPECS(phone->id).brand, SPECS(phone->id).model
+                    ), ""
+                );
+                MENU.nextFunc = popMenu;
+            }
+            else {
+                pushTextbox(g, "This phone is already alive!", "");
+                MENU.nextFunc = popMenu;
+                return;
+            }
+            break;
         }
     }
     

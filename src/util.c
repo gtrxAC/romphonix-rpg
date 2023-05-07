@@ -194,7 +194,8 @@ static void DrawTextBoxedSelectable(Font font, const char *text, Rectangle rec, 
             }
         }
 
-        textOffsetX += glyphWidth;
+        // Slight modification: fix empty space at the start of a line, caused by word wrap
+        if (textOffsetX || codepoint != ' ') textOffsetX += glyphWidth;
     }
 }
 
