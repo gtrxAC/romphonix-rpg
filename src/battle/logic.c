@@ -66,7 +66,9 @@ int getDamage(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, B
         case COND_GOOD: result *= 1.1f; break;
     }
 
-    return (int) result;
+    PlaySound(SOUND(hit));
+
+    return MIN((int) result, victim->hp);
 }
 
 // _____________________________________________________________________________
@@ -77,13 +79,17 @@ int getDamage(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, B
 void doMove(Game *g, Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone *victimB, SkillSpecs skill) {
     if (attackerB->confusedTurns && GetRandomValue(0, 100) < 40) {
         strcpy(MENU.battleTextbox[1], "But it failed due to confusion!");
+        PlaySound(SOUND(miss));
     }
     else for (int i = 0; i < 2; i++) {
         // Chance to miss
         // If the first/primary effect of the skill misses, the secondary
         // effect is not even processed (returns from function)
         if (GetRandomValue(0, 100) >= skill.effects[i].chance) {
-            if (i == 0) strcpy(MENU.battleTextbox[1], "But it missed!");
+            if (i == 0) {
+                strcpy(MENU.battleTextbox[1], "But it missed!");
+                PlaySound(SOUND(miss));
+            }
             return;
         }
 

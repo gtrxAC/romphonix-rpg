@@ -1,7 +1,7 @@
 #ifndef BATTLE_H
 #define BATTLE_H
 
-void scrBattleMenu(Game *g, bool canRun);
+bool scrBattleMenu(Game *g, bool canRun);
 void updateBattleMenu(Game *g);
 void drawBattleMenu(Game *g);
 void checkBattleMenu(Game *g);

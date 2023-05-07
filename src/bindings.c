@@ -97,27 +97,30 @@ void checkBindings(Game *g) {
 
     // B: random wild battle
     if (IsKeyPressed(KEY_B)) {
-        scrBattleMenu(g, true);
-        setSong(g, "assets/sounds/music/jht9392remix.mid");
-        int id = randomPhone(g);
-        Phone phone = {
-            true, id,
-            100, 100, 100,
-            g->s.party[0].level + GetRandomValue(-5, 5), 0, 0, SPECS(id).baseExp,
-            SPECS(id).attack, SPECS(id).defense, SPECS(id).weight,
-            GetRandomValue(1, g->skillDB->size - 1), GetRandomValue(1, g->skillDB->size - 1), 
-            GetRandomValue(1, g->skillDB->size - 1), GetRandomValue(1, g->skillDB->size - 1), 
-            GetRandomValue(0, 3), GetRandomValue(0, 3),
-            GetRandomValue(0, 3), GetRandomValue(0, 3)
-        };
-        MENU.enemyActive = 0;
-        MENU.enemyParty[0] = phone;
-        MENU.enemyName = "Enemy";
-        strcpy(
-            MENU.battleTextbox[0],
-            TextFormat("A wild %s %s appeared!", SPECS(id).brand, SPECS(id).model)
-        );
-        MENU.battleTextbox[1][0] = '\0';
-        MENU.battleTextbox[2][0] = '\0';
+        if (scrBattleMenu(g, true)) {
+            setSong(g, "assets/sounds/music/jht9392remix.mid");
+            int id = randomPhone(g);
+            Phone phone = {
+                true, id,
+                100, 100, 100,
+                g->s.party[0].level + GetRandomValue(-5, 5), 0, 0, SPECS(id).baseExp,
+                SPECS(id).attack, SPECS(id).defense, SPECS(id).weight,
+                {
+                    GetRandomValue(1, g->skillDB->size - 1), GetRandomValue(1, g->skillDB->size - 1), 
+                    GetRandomValue(1, g->skillDB->size - 1), GetRandomValue(1, g->skillDB->size - 1), 
+                },
+                GetRandomValue(0, 3), GetRandomValue(0, 3),
+                GetRandomValue(0, 3), GetRandomValue(0, 3)
+            };
+            MENU.enemyActive = 0;
+            MENU.enemyParty[0] = phone;
+            MENU.enemyName = "Enemy";
+            strcpy(
+                MENU.battleTextbox[0],
+                TextFormat("A wild %s %s appeared!", SPECS(id).brand, SPECS(id).model)
+            );
+            MENU.battleTextbox[1][0] = '\0';
+            MENU.battleTextbox[2][0] = '\0';
+        }
     }
 }

@@ -25,4 +25,4 @@ SRC="src/*.c src/*/*.c"
 # Compiler flags for release and debug mode
 # To set debug mode, run: DEBUG=1 ./build.sh
 RELEASE_FLAGS="-Os -flto -s"
-DEBUG_FLAGS="-DDEBUG -O0 -g -Wall -Wextra -Wpedantic"
+DEBUG_FLAGS="-DDEBUG -O0 -g -Wall -Wextra -Wpedantic -Wno-unused-variable -Wno-switch -Wno-sign-compare -Wno-unused-value -Wno-pointer-sign -Wno-unused-parameter"

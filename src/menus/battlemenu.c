@@ -17,9 +17,29 @@ void scrSwitchPhoneMenu(Game *, BattleState);
 // _____________________________________________________________________________
 //
 //  Battle menu - init function
+//  Note: returns true if the battle can be created, false if not (player
+//  doesn't have any phones)
+//  Do not edit battle variables if the function returns false - use an if
+//  statement instead: if (scrBattleMenu(...)) { set battle variables... }
 // _____________________________________________________________________________
 //
-void scrBattleMenu(Game *g, bool canRun) {
+bool scrBattleMenu(Game *g, bool canRun) {
+    // Choose the player's active phone (first phone that has remaining HP)
+    bool found = false;
+    for (int i = 0; i < 6; i++) {
+        if (g->s.party[i].active && g->s.party[i].hp > 0) {
+            MENU.active = i;
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        pushTextbox(g, "You don't have any phones!", "");
+        MENU.nextFunc = popMenu;
+        return false;
+    }
+
     pushMenu(g, 0, NULL, CB_NOTHING);
     strcpy(MENU.battleTextbox[0], "Battle doesn't have a textbox set!");
     strcpy(MENU.battleTextbox[1], "Battle doesn't have a textbox set!");
@@ -36,6 +56,7 @@ void scrBattleMenu(Game *g, bool canRun) {
 
     MENU.canRun = canRun;
     if (canRun) arrpush(MENU.choices, "Run");
+    return true;
 }
 
 // _____________________________________________________________________________

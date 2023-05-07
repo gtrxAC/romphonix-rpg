@@ -27,6 +27,7 @@ void scrInGameMenu(Game *g) {
     pushMenu(g, 5, choices, CB_CLOSE);
     MENU.drawFunc = drawInGameMenu;
     MENU.nextFunc = scrInGameMenuCheck;
+    PlaySound(SOUND(hit));
 }
 
 // _____________________________________________________________________________

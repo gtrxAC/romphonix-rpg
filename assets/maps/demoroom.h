@@ -19,6 +19,7 @@
 
 // Step scripts
 void scrDemoRoomDoor(Game *g) {
+    PlaySound(SOUND(door));
     changeMap(g, 0, 9, 8);
 }
 
@@ -49,6 +50,7 @@ Map mapDemoRoom = {
 
     // Same but for interact scripts (executed when player interacts with the tile)
     {
+        0
     }
 };
 

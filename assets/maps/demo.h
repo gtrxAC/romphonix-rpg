@@ -19,6 +19,7 @@
 
 // Step scripts
 void scrDemoDoor(Game *g) {
+    PlaySound(SOUND(door));
     changeMap(g, 1, 5, 8);
 }
 
