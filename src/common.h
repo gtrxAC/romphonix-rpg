@@ -223,8 +223,14 @@ typedef struct Menu {
         // Player info menu
         PlayerMenuState pms;
 
-        // Phone specs menu
+        // Phone specs menus
         Phone *phone;
+
+        // Repair menu
+        struct {
+            Phone *repairPhone;
+            int repairAmount;
+        };
 
         // Battle menu
         struct {

@@ -59,6 +59,7 @@ void initGame(Game *g) {
     LOAD_SOUND("hit");
     LOAD_SOUND("miss");
     LOAD_SOUND("door");
+    LOAD_SOUND("heal");
 
     int unused;
     g->phoneDB = (PhoneDatabase *) LoadFileData("assets/data/phones.tfs", &unused);

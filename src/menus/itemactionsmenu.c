@@ -84,10 +84,11 @@ void drawItemActionsMenu(Game *g) {
 // _____________________________________________________________________________
 //
 void checkItemActionsMenu(Game *g) {
+    int choice = MENU.choice;
     popMenu(g);
     // Now MENU refers to the items menu
 
-    switch (MENU.choice) {
+    switch (choice) {
         // Use
         case 0: {
             switch (ISPECS(g->bag[MENU.bagChoice][MENU.choice].id).effect) {
