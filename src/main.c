@@ -36,7 +36,8 @@ int main() {
     SetExitKey(0);
     g->state = ST_TITLE;
     setSong(g, "assets/sounds/music/abangchung.mid");
-    SetMasterVolume(0.1f);
+
+    loadSettings(g);
 
     // _________________________________________________________________________
     //
@@ -106,6 +107,7 @@ int main() {
         );
         EndDrawing();
 
+        updateSchedSound(g);
         g->frameCount++;
     }
 

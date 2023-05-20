@@ -39,10 +39,12 @@ void checkExitMenu(Game *g) {
             break;
 
         case 1:
-            save();
+            save(g);
             // fall through
 
         case 2:
+            // always save the settings anyway
+            saveSettings(g);
             g->shouldClose = true;
             break;
     }

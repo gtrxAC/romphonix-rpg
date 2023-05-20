@@ -42,13 +42,16 @@ void scrMainMenuCheck(Game *g) {
 
         case 1: {
             // TODO: introduction thing
-            char *defaultName = getenv("USER");
+            char *defaultName = getenv("USER");  // Linux
+            if (!defaultName) defaultName = getenv("USERNAME");  // Windows
             if (!defaultName) defaultName = " ";
             char *name;
 
             nameEntry:
                 name = tinyfd_inputBox("Name", "What is your name?", defaultName);
-                if (!name || strlen(name) > 15) {
+                if (!name) return;
+
+                if (strlen(name) > 15) {
                     tinyfd_messageBox("Error", "Name must be 1-15 characters!", "ok", "error", 0);
                     goto nameEntry;
                 }
@@ -70,8 +73,7 @@ void scrMainMenuCheck(Game *g) {
         }
 
         case 2:
-            // TODO: settings thing
-            setSong(g, "assets/sounds/music/abangchung.mid");
+            scrSettingsMenu(g);
             break;
     }
 }

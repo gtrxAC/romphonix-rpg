@@ -207,3 +207,24 @@ static void DrawTextRec(Font font, const char *text, Rectangle rec, float fontSi
 void drawTextRec(Game *g, const char *text, int x, int y, int width, int height, Color color) {
     DrawTextRec(g->fonts.dialogue, text, (Rectangle) {x, y, width, height}, 13, 0, true, color);
 }
+
+// _____________________________________________________________________________
+//
+//  Sound scheduling system
+//  Allows playing one sound shortly after another by using a timer. Only
+//  one scheduled sound can exist at a time.
+// _____________________________________________________________________________
+//
+void schedSound(Game *g, Sound sound, int frames) {
+    g->schedSound = sound;
+    g->schedSoundTimer = frames;
+}
+
+void updateSchedSound(Game *g) {
+    if (g->schedSoundTimer) {
+        g->schedSoundTimer--;
+        if (!g->schedSoundTimer) {
+            PlaySound(g->schedSound);
+        }
+    }
+}

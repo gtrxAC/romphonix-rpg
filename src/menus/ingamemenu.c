@@ -67,6 +67,7 @@ void scrInGameMenuCheck(Game *g) {
         case 1: scrPhonesMenu(g); break;
         case 2: scrItemsMenu(g); break;
         case 3: scrPlayerMenu(g); break;
+        case 4: scrSettingsMenu(g); break;
         default: popMenu(g); break;
     }
 }

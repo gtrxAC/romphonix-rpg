@@ -27,6 +27,7 @@ release
 screenshot*.png
 *.log
 save.tfs
+settings.tfs
 assets/data/*.tfs
 
 # Sub-projects (map editor)

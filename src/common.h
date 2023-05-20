@@ -145,6 +145,8 @@ typedef struct Map {
 #include "items.h"
 #include "skills.h"
 
+// If adding new fields, try to add them to the end of the list to keep previous
+// versions' save files working
 typedef struct SaveData {
     // Player location
     int curMap, playerX, playerY, playerDir;
@@ -155,7 +157,8 @@ typedef struct SaveData {
     Phone party[6];
     Phone pc[10][5][5];  // these values may be tweaked later, but 5 × 5 is a good grid size
 
-    // Items are saved into a normal array, but loaded to a stb_ds dyn array
+    // Items are saved into a normal array, but loaded to a stb_ds dyn array, right now this is the only savable thing that is not directly
+    // read from the save file data
     Item bag[3][20];
 
     char name[16];
@@ -163,6 +166,13 @@ typedef struct SaveData {
     int id;
     unsigned int money;
 } SaveData;
+
+// Settings work similarly to a save file, but they are loaded before starting the game, and saved to a different file.
+// This allows the player to start a new game but keep the settings.
+typedef struct Settings {
+    int musicVolume;
+    int sfxVolume;
+} Settings;
 
 // _____________________________________________________________________________
 //
@@ -270,6 +280,10 @@ typedef struct Game {
     // Internal counter that ticks every frame and can be reset by certain actions.
     unsigned int frameCount;
 
+    // Sound scheduling (util.c)
+    Sound schedSound;
+    int schedSoundTimer;
+
     // Current game "state", basically which screen the player is on
     State state;
 
@@ -298,6 +312,7 @@ typedef struct Game {
 
     SaveData s;
     Item *bag[3];  // 3 stb_ds dyn arrays
+    Settings settings;
 
     Menu *menus; // stb_ds dynamic array (menu stack)
 

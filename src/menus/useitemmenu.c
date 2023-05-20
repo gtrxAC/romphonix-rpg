@@ -59,7 +59,7 @@ void scrCheckUseItemMenu(Game *g) {
             else {
                 int heal = MIN(ISPECS(item->id).effectParameter, phone->maxHP - phone->hp);
                 phone->hp += heal;
-                PlaySound(SOUND(heal));
+                schedSound(g, SOUND(heal), 10);
                 pushTextbox(
                     g, TextFormat(
                         "Healed %s %s by %d HP.",
@@ -74,7 +74,7 @@ void scrCheckUseItemMenu(Game *g) {
         case IE_REVIVE: {
             if (phone->hp <= 0) {
                 phone->hp = phone->maxHP * ISPECS(item->id).effectParameter / 100;
-                PlaySound(SOUND(heal));
+                schedSound(g, SOUND(heal), 10);
                 pushTextbox(
                     g, TextFormat(
                         "%s %s has been revived.",

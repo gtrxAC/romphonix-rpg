@@ -24,7 +24,7 @@ void initSynth(Game *g) {
 
     g->syn.sfont_id = fluid_synth_sfload(g->syn.synth, "assets/sounds/soundfont.sf2", 1);
     if (g->syn.sfont_id == FLUID_FAILED) {
-        error(g, "Failed to load soundfont. Make sure you are running romphonix.bat, not the exe in the windows folder.", false);
+        error(g, "Failed to load soundfont. Make sure you are running romphonix_win.bat or romphonix_linux.sh, not the files in the bin folder.", false);
         return;
     }
 
