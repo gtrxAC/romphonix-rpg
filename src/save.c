@@ -42,17 +42,17 @@ void loadSettings() {
         memcpy(&g.settings, settings, sizeof(Settings));
     }
     else {
-        g.settings.musicVolume = 6;
-        g.settings.sfxVolume = 2;
+        g.settings.musicVolume = 10;
+        g.settings.sfxVolume = 3;
     }
 
     // Apply the loaded settings
     // synth.gain is in the range 0-10, default 0.2
     fluid_settings_setnum(
         g.syn.settings, "synth.gain",
-        (float) g.settings.musicVolume / 20
+        (float) g.settings.musicVolume / 40
     );
-    SetMasterVolume((float) g.settings.sfxVolume / 10);
+    SetMasterVolume((float) g.settings.sfxVolume / 20);
 }
 
 // _____________________________________________________________________________

@@ -43,13 +43,13 @@ void updateSettingsMenu() {
         case 0: {
             if (
                 (delta == -1 && g.settings.musicVolume > 0) ||
-                (delta == 1 && g.settings.musicVolume < 10)
+                (delta == 1 && g.settings.musicVolume < 20)
             ) {
                 g.settings.musicVolume += delta;
             }
             fluid_settings_setnum(
                 g.syn.settings, "synth.gain",
-                (float) g.settings.musicVolume / 20
+                (float) g.settings.musicVolume / 40
             );
             break;
         }
@@ -57,11 +57,11 @@ void updateSettingsMenu() {
         case 1: {
             if (
                 (delta == -1 && g.settings.sfxVolume > 0) ||
-                (delta == 1 && g.settings.sfxVolume < 10)
+                (delta == 1 && g.settings.sfxVolume < 20)
             ) {
                 g.settings.sfxVolume += delta;
             }
-            SetMasterVolume((float) g.settings.sfxVolume / 10);
+            SetMasterVolume((float) g.settings.sfxVolume / 20);
             StopSound(SOUND(scroll));
             schedSound(SOUND(select), 2);
             break;
@@ -89,11 +89,11 @@ void drawSettingsMenu() {
     DrawTexture(TEX(indicator), 8, 8 + 14*MENU.choice, WHITE);
 
     // Draw values (right aligned)
-    const char *volStr = TextFormat("%d / 10", g.settings.musicVolume);
+    const char *volStr = TextFormat("%d / 20", g.settings.musicVolume);
     int width = measureText(volStr);
     drawText(volStr, 312 - width, 8, WHITE);
 
-    volStr = TextFormat("%d / 10", g.settings.sfxVolume);
+    volStr = TextFormat("%d / 20", g.settings.sfxVolume);
     width = measureText(volStr);
     drawText(volStr, 312 - width, 22, WHITE);
 

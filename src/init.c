@@ -60,6 +60,8 @@ void initGame() {
     LOAD_SOUND("miss");
     LOAD_SOUND("door");
     LOAD_SOUND("heal");
+    LOAD_SOUND("stat_up");
+    LOAD_SOUND("stat_down");
 
     int unused;
     g.phoneDB = (PhoneDatabase *) LoadFileData("assets/data/phones.tfs", &unused);
