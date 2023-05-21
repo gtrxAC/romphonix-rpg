@@ -11,7 +11,7 @@
 //
 #include "common.h"
 
-void checkBindings(Game *g) {
+void checkBindings() {
     // Screen scaling with page up/down
     int scale = GetScreenWidth() / 320;
     if (IsKeyPressed(KEY_PAGE_UP) && scale < 6) {
@@ -29,39 +29,39 @@ void checkBindings(Game *g) {
 
         bool got = false;
         for (int i = 0; i < 6; i++) {
-            if (!g->s.party[i].active) {
-                g->s.party[i].active = true;
-                g->s.party[i].id = id;
-                g->s.phonesSeen[id] = true;
-                g->s.phonesCaught[id] = true;
+            if (!g.s.party[i].active) {
+                g.s.party[i].active = true;
+                g.s.party[i].id = id;
+                g.s.phonesSeen[id] = true;
+                g.s.phonesCaught[id] = true;
 
-                g->s.party[i].hp = 100;
-                g->s.party[i].maxHP = 100; // still not sure about this
-                g->s.party[i].attack = SPECS(id).attack;
-                g->s.party[i].defense = SPECS(id).defense;
-                g->s.party[i].weight = SPECS(id).weight;
+                g.s.party[i].hp = 100;
+                g.s.party[i].maxHP = 100; // still not sure about this
+                g.s.party[i].attack = SPECS(id).attack;
+                g.s.party[i].defense = SPECS(id).defense;
+                g.s.party[i].weight = SPECS(id).weight;
                 
-                g->s.party[i].level = 40;
-                g->s.party[i].baseExp = SPECS(id).baseExp;
+                g.s.party[i].level = 40;
+                g.s.party[i].baseExp = SPECS(id).baseExp;
 
-                g->s.party[i].screenStatus = GetRandomValue(1, 3);
-                g->s.party[i].boardStatus = GetRandomValue(1, 3);
-                g->s.party[i].coverStatus = GetRandomValue(1, 3);
-                g->s.party[i].batteryStatus = GetRandomValue(1, 3);
+                g.s.party[i].screenStatus = GetRandomValue(1, 3);
+                g.s.party[i].boardStatus = GetRandomValue(1, 3);
+                g.s.party[i].coverStatus = GetRandomValue(1, 3);
+                g.s.party[i].batteryStatus = GetRandomValue(1, 3);
 
                 if (GetRandomValue(1, 256) < SPECS(id).brokenChance) {
                     switch (GetRandomValue(0, 3)) {
-                        case 0: g->s.party[i].screenStatus = COND_BROKEN; break;
-                        case 1: g->s.party[i].boardStatus = COND_BROKEN; break;
-                        case 2: g->s.party[i].coverStatus = COND_BROKEN; break;
-                        case 3: g->s.party[i].batteryStatus = COND_BROKEN; break;
+                        case 0: g.s.party[i].screenStatus = COND_BROKEN; break;
+                        case 1: g.s.party[i].boardStatus = COND_BROKEN; break;
+                        case 2: g.s.party[i].coverStatus = COND_BROKEN; break;
+                        case 3: g.s.party[i].batteryStatus = COND_BROKEN; break;
                     }
                 }
 
-                g->s.party[i].skills[0] = 1;
-                g->s.party[i].skills[1] = 2;
-                g->s.party[i].skills[2] = 3;
-                g->s.party[i].skills[3] = 4;
+                g.s.party[i].skills[0] = 1;
+                g.s.party[i].skills[1] = 2;
+                g.s.party[i].skills[2] = 3;
+                g.s.party[i].skills[3] = 4;
 
                 got = true;
                 return;
@@ -78,7 +78,7 @@ void checkBindings(Game *g) {
         int id = atoi(input);
         ItemSpecs *item = &ISPECS(id);
 
-        #define POCKET (g->bag[item->pocket])
+        #define POCKET (g.bag[item->pocket])
 
         // Search if there is already a stack with this item
         for (int i = 0; i < arrlen(POCKET); i++) {
@@ -97,17 +97,17 @@ void checkBindings(Game *g) {
 
     // B: random wild battle
     if (IsKeyPressed(KEY_B)) {
-        if (scrBattleMenu(g, true)) {
-            setSong(g, "assets/sounds/music/jht9392remix.mid");
-            int id = randomPhone(g);
+        if (scrBattleMenu(true)) {
+            setSong("assets/sounds/music/jht9392remix.mid");
+            int id = randomPhone();
             Phone phone = {
                 true, id,
                 100, 100, 100,
-                g->s.party[0].level + GetRandomValue(-5, 5), 0, 0, SPECS(id).baseExp,
+                g.s.party[0].level + GetRandomValue(-5, 5), 0, 0, SPECS(id).baseExp,
                 SPECS(id).attack, SPECS(id).defense, SPECS(id).weight,
                 {
-                    GetRandomValue(1, g->skillDB->size - 1), GetRandomValue(1, g->skillDB->size - 1), 
-                    GetRandomValue(1, g->skillDB->size - 1), GetRandomValue(1, g->skillDB->size - 1), 
+                    GetRandomValue(1, g.skillDB->size - 1), GetRandomValue(1, g.skillDB->size - 1), 
+                    GetRandomValue(1, g.skillDB->size - 1), GetRandomValue(1, g.skillDB->size - 1), 
                 },
                 GetRandomValue(0, 3), GetRandomValue(0, 3),
                 GetRandomValue(0, 3), GetRandomValue(0, 3)

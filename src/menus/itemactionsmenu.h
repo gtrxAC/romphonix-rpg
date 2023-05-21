@@ -3,9 +3,9 @@
 
 #include "../common.h"
 
-void scrItemActionsMenu(Game *g);
-void updateItemActionsMenu(Game *g);
-void drawItemActionsMenu(Game *g);
-void checkItemActionsMenu(Game *g);
+void scrItemActionsMenu();
+void updateItemActionsMenu();
+void drawItemActionsMenu();
+void checkItemActionsMenu();
 
 #endif

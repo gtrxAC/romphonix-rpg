@@ -1,16 +1,16 @@
 #ifndef BATTLE_H
 #define BATTLE_H
 
-bool scrBattleMenu(Game *g, bool canRun);
-void updateBattleMenu(Game *g);
-void drawBattleMenu(Game *g);
-void checkBattleMenu(Game *g);
+bool scrBattleMenu(bool canRun);
+void updateBattleMenu();
+void drawBattleMenu();
+void checkBattleMenu();
 
 // PLAYERP and ENEMYP contain phone properties that will (in the player's case)
 // be permanently saved.
 // MENU.player and MENU.enemy contain temporary properties (see phones.h
 // BattlePhone struct)
-#define PLAYERP (g->s.party[MENU.active])
+#define PLAYERP (g.s.party[MENU.active])
 #define ENEMYP (MENU.enemyParty[MENU.enemyActive])
 
 // Battle state

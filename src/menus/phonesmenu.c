@@ -10,17 +10,17 @@
 //
 #include "../common.h"
 
-void scrPhonesMenu(Game *g);
-void drawPhonesMenu(Game *g);
-void scrCheckPhonesMenu(Game *g);
+void scrPhonesMenu();
+void drawPhonesMenu();
+void scrCheckPhonesMenu();
 
 // _____________________________________________________________________________
 //
 //  Phones menu - init function
 // _____________________________________________________________________________
 //
-void scrPhonesMenu(Game *g) {
-    pushMenu(g, 6, NULL, CB_CLOSE);
+void scrPhonesMenu() {
+    pushMenu(6, NULL, CB_CLOSE);
     MENU.drawFunc = drawPhonesMenu;
     MENU.nextFunc = scrCheckPhonesMenu;
 
@@ -33,36 +33,36 @@ void scrPhonesMenu(Game *g) {
 //  Phones menu - draw function
 // _____________________________________________________________________________
 //
-void drawPhonesMenu(Game *g) {
+void drawPhonesMenu() {
     for (int i = 0; i < 6; i++) {
-        Phone *ph = &g->s.party[i];
+        Phone *ph = &g.s.party[i];
         PhoneSpecs *spec = &SPECS(ph->id);
 
         // Box
-        drawBox(g, 0, i*40, 320, 40);
+        drawBox(0, i*40, 320, 40);
 
         // Menu indicator (arrow)
         if (MENU.choice == i) {
             DrawTexture(TEX(indicator), 6, 14 + i*40, WHITE);
         }
 
-        if (!g->s.party[i].active) continue;
+        if (!g.s.party[i].active) continue;
 
         // Sprite
         DrawTextureRec(
             TEX(phone_icons),
-            (Rectangle) {(g->frameCount % 40 < 20) * 32, 32*spec->icon, 32, 32},
+            (Rectangle) {(g.frameCount % 40 < 20) * 32, 32*spec->icon, 32, 32},
             (Vector2) {MENU.choice == i ? 24 : 16, 4 + i*40}, WHITE
         );
 
         // Text
         // Note: '$' character in the digits font (drawTextD) says 'Lv.'
-        drawText(g, TextFormat("%s %s", spec->brand, spec->model), 64, 5 + i*40, WHITE);
-        drawTextD(g, TextFormat("$ %d", ph->level), 285, 5 + i*40, WHITE);
+        drawText(TextFormat("%s %s", spec->brand, spec->model), 64, 5 + i*40, WHITE);
+        drawTextD(TextFormat("$ %d", ph->level), 285, 5 + i*40, WHITE);
 
         // Health bar
-        drawProgressBar(g, ph->hp, ph->maxHP, 64, i*40 + 21, 100, GREEN);
-        drawTextD(g, TextFormat("%d/%d", ph->hp, ph->maxHP), 172, i*40 + 20, WHITE);
+        drawProgressBar(ph->hp, ph->maxHP, 64, i*40 + 21, 100, GREEN);
+        drawTextD(TextFormat("%d/%d", ph->hp, ph->maxHP), 172, i*40 + 20, WHITE);
     }
 }
 
@@ -71,14 +71,14 @@ void drawPhonesMenu(Game *g) {
 //  Phones menu - check user input function
 // _____________________________________________________________________________
 //
-void scrCheckPhonesMenu(Game *g) {
+void scrCheckPhonesMenu() {
     if (MENU.choice == -1) {
-        popMenu(g);
+        popMenu();
     }
     else {
         // If this slot isn't empty, show the actions menu
-        if (g->s.party[MENU.choice].active) {
-            scrPhoneActionsMenu(g);
+        if (g.s.party[MENU.choice].active) {
+            scrPhoneActionsMenu();
         }
     }
 }

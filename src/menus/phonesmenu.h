@@ -3,8 +3,8 @@
 
 #include "common.h"
 
-void scrPhonesMenu(Game *g);
-void drawPhonesMenu(Game *g);
-void scrCheckPhonesMenu(Game *g);
+void scrPhonesMenu();
+void drawPhonesMenu();
+void scrCheckPhonesMenu();
 
 #endif

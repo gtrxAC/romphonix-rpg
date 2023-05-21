@@ -7,16 +7,16 @@
 //
 #include "common.h"
 
-void updateTextbox(Game *g);
-void drawTextbox(Game *g);
+void updateTextbox();
+void drawTextbox();
 
 // _____________________________________________________________________________
 //
 //  Shows a text box with two lines.
 // _____________________________________________________________________________
 //
-void pushTextbox(Game *g, const char *line1, const char *line2) {
-	arrput(g->menus, (Menu) {0});
+void pushTextbox(const char *line1, const char *line2) {
+	arrput(g.menus, (Menu) {0});
 	MENU.updateFunc = updateTextbox;
 	MENU.drawFunc = drawTextbox;
 
@@ -31,9 +31,9 @@ void pushTextbox(Game *g, const char *line1, const char *line2) {
 //  Removes the last menu or text box from the menu stack.
 // _____________________________________________________________________________
 //
-void popMenu(Game *g) {
+void popMenu() {
 	arrfree(MENU.choices);
-	arrpop(g->menus);
+	arrpop(g.menus);
 }
 
 // _____________________________________________________________________________
@@ -41,15 +41,15 @@ void popMenu(Game *g) {
 //  Starts a transition where the player goes to another map.
 // _____________________________________________________________________________
 //
-void changeMap(Game *g, int map, int x, int y) {
-	g->nextX = x;
-	g->nextY = y;
-	g->nextMap = map;
-	g->worldDrawn = false;
+void changeMap(int map, int x, int y) {
+	g.nextX = x;
+	g.nextY = y;
+	g.nextMap = map;
+	g.worldDrawn = false;
 
 	// reset the frame counter so we don't have to keep track of when the transition started
-	g->frameCount = 1;
-	g->state = ST_TRANSITION;
+	g.frameCount = 1;
+	g.state = ST_TRANSITION;
 }
 
 // _____________________________________________________________________________
@@ -58,11 +58,11 @@ void changeMap(Game *g, int map, int x, int y) {
 //  often).
 // _____________________________________________________________________________
 //
-int randomPhone(Game *g) {
+int randomPhone() {
 	int *pool = NULL;  // stb_ds dynarray
 	const int phonesPerRarity[6] = {24, 16, 8, 4, 2, 1};
 
-	for (int i = 0; i < g->phoneDB->size; i++) {
+	for (int i = 0; i < g.phoneDB->size; i++) {
 		for (int n = 0; n < phonesPerRarity[SPECS(i).rarity]; n++) {
 			arrpush(pool, i);
 		}
@@ -78,10 +78,10 @@ int randomPhone(Game *g) {
 //  Update textbox menu
 // _____________________________________________________________________________
 //
-void updateTextbox(Game *g) {
+void updateTextbox() {
 	if (K_A_PRESS()) {
-		if (MENU.nextFunc) MENU.nextFunc(g);
-		else g->state = ST_INGAME;
+		if (MENU.nextFunc) MENU.nextFunc();
+		else g.state = ST_INGAME;
 	}
 }
 
@@ -90,11 +90,11 @@ void updateTextbox(Game *g) {
 //  Draw textbox menu
 // _____________________________________________________________________________
 //
-void drawTextbox(Game *g) {
+void drawTextbox() {
 	int lineCount = 1;
 	if (strlen(MENU.textbox[1])) lineCount++;
 
-	drawBox(g, 10, 224 - 14*lineCount, 300, 16 + 14*lineCount);
+	drawBox(10, 224 - 14*lineCount, 300, 16 + 14*lineCount);
 
 	// The text uses a typewriter animation - so at the beginning only
 	// part of the text is drawn, we use separate text buffers and a
@@ -109,12 +109,12 @@ void drawTextbox(Game *g) {
 	MENU.textboxDraw[1][line2Len] = 0;
 
 	DrawTextEx(
-		g->fonts.dialogue, MENU.textboxDraw[0],
+		g.fonts.dialogue, MENU.textboxDraw[0],
 		(Vector2) {18, 232 - 14*lineCount},
 		13, 0, WHITE
 	);
 	if (lineCount == 2) DrawTextEx(
-		g->fonts.dialogue, MENU.textboxDraw[1],
+		g.fonts.dialogue, MENU.textboxDraw[1],
 		(Vector2) {18, 218},
 		13, 0, WHITE
 	);
@@ -122,7 +122,7 @@ void drawTextbox(Game *g) {
 	MENU.textboxTime++;
 }
 
-void scrNoScript(Game *g) {
-	pushTextbox(g, "No function assigned to this script index!", "");
+void scrNoScript() {
+	pushTextbox("No function assigned to this script index!", "");
 	MENU.nextFunc = popMenu;
 }

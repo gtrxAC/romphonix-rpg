@@ -11,18 +11,18 @@
 #include "../common.h"
 #include "itemactionsmenu.h"
 
-void scrItemsMenu(Game *g);
-void updateItemsMenu(Game *g);
-void drawItemsMenu(Game *g);
-void checkItemsMenu(Game *g);
+void scrItemsMenu();
+void updateItemsMenu();
+void drawItemsMenu();
+void checkItemsMenu();
 
 // _____________________________________________________________________________
 //
 //  Items menu - init function
 // _____________________________________________________________________________
 //
-void scrItemsMenu(Game *g) {
-    pushMenu(g, 0, NULL, CB_CLOSE);
+void scrItemsMenu() {
+    pushMenu(0, NULL, CB_CLOSE);
     MENU.updateFunc = updateItemsMenu;
     MENU.drawFunc = drawItemsMenu;
     MENU.bagChoice = 1;  // start in the middle pocket (items)
@@ -35,10 +35,10 @@ void scrItemsMenu(Game *g) {
 //  like tabs.
 // _____________________________________________________________________________
 //
-void updateItemsMenu(Game *g) {
-    #define ITEMCOUNT (arrlen(g->bag[MENU.bagChoice]))
+void updateItemsMenu() {
+    #define ITEMCOUNT (arrlen(g.bag[MENU.bagChoice]))
     
-    if (K_B_PRESS()) popMenu(g);
+    if (K_B_PRESS()) popMenu();
 
     if (K_UP_PRESS() && MENU.choice > 0) {
         MENU.choice--;
@@ -61,7 +61,7 @@ void updateItemsMenu(Game *g) {
         MENU.scroll = 0;
     }
     if (K_A_PRESS() && ITEMCOUNT) {
-        scrItemActionsMenu(g);
+        scrItemActionsMenu();
     }
 }
 
@@ -76,16 +76,16 @@ const char *pocketNames[3] = {
     "Bag - Healing"
 };
 
-void drawItemsMenu(Game *g) {
-    #define CURPOCKET (g->bag[MENU.bagChoice])
+void drawItemsMenu() {
+    #define CURPOCKET (g.bag[MENU.bagChoice])
 
     // "Items" title (top left)
-    drawBox(g, 0, 0, 140, 20);
-    int textWidth = measureText(g, pocketNames[MENU.bagChoice]);
-    drawText(g, pocketNames[MENU.bagChoice], 70 - textWidth/2, 3, WHITE);
+    drawBox(0, 0, 140, 20);
+    int textWidth = measureText(pocketNames[MENU.bagChoice]);
+    drawText(pocketNames[MENU.bagChoice], 70 - textWidth/2, 3, WHITE);
 
     // Bag sprite window (center left), bag texture
-    drawBox(g, 0, 20, 140, 110);
+    drawBox(0, 20, 140, 110);
     DrawTextureRec(
         TEX(bag),
         (Rectangle) {MENU.bagChoice*96, 0, 96, 96},
@@ -94,17 +94,17 @@ void drawItemsMenu(Game *g) {
 
     // Selected item sprite (below the bag sprite)
     if (arrlen(CURPOCKET)) {
-        DrawTexture(shget(g->textures, ISPECS(CURPOCKET[MENU.choice].id).sprite), 102, 87, WHITE);
+        DrawTexture(shget(g.textures, ISPECS(CURPOCKET[MENU.choice].id).sprite), 102, 87, WHITE);
     }
     
     // Item description window (bottom left)
-    drawBox(g, 0, 130, 140, 110);
+    drawBox(0, 130, 140, 110);
     if (arrlen(CURPOCKET)) {
-        drawTextRec(g, ISPECS(CURPOCKET[MENU.choice].id).description, 4, 134, 132, 102, WHITE);
+        drawTextRec(ISPECS(CURPOCKET[MENU.choice].id).description, 4, 134, 132, 102, WHITE);
     }
 
     // Item list (right)
-    drawBox(g, 140, 0, 180, 240);
+    drawBox(140, 0, 180, 240);
     for (
         int i = MENU.scroll;
         i < MENU.scroll + 12 && i < arrlen(CURPOCKET);
@@ -128,7 +128,7 @@ void drawItemsMenu(Game *g) {
         DrawTexture(TEX(indicator), 146, 6 + 20*(MENU.choice - MENU.scroll), WHITE);
     } else {
         // Centered "No items" text if pocket is empty
-        int textLen = measureText(g, "You have no items.");
-        drawText(g, "You have no items.", 230 - textLen/2, 114, WHITE);
+        int textLen = measureText("You have no items.");
+        drawText("You have no items.", 230 - textLen/2, 114, WHITE);
     }
 }

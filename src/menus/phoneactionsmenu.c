@@ -8,17 +8,17 @@
 #include "../common.h"
 #include "itemactionsmenu.h"
 
-void scrPhoneActionsMenu(Game *g);
-void updatePhoneActionsMenu(Game *g);
-void checkPhoneActionsMenu(Game *g);
+void scrPhoneActionsMenu();
+void updatePhoneActionsMenu();
+void checkPhoneActionsMenu();
 
 // _____________________________________________________________________________
 //
 //  Phone actions menu - init function
 // _____________________________________________________________________________
 //
-void scrPhoneActionsMenu(Game *g) {
-    pushMenu(g, 0, NULL, CB_CLOSE);
+void scrPhoneActionsMenu() {
+    pushMenu(0, NULL, CB_CLOSE);
     MENU.drawFunc = drawItemActionsMenu;
     MENU.nextFunc = checkPhoneActionsMenu;
 
@@ -32,14 +32,14 @@ void scrPhoneActionsMenu(Game *g) {
 //  Phone actions menu - check user input function
 // _____________________________________________________________________________
 //
-void checkPhoneActionsMenu(Game *g) {
+void checkPhoneActionsMenu() {
     switch (MENU.choice) {
-        case -1: popMenu(g); break;
+        case -1: popMenu(); break;
 
         case 0: {
             // The phone specs menu init function takes a second argument,
             // the phone whose specs to show.
-            scrPhoneSpecsMenu(g, &g->s.party[LASTMENU.choice]);
+            scrPhoneSpecsMenu(&g.s.party[LASTMENU.choice]);
             break;
         }
 
@@ -48,10 +48,10 @@ void checkPhoneActionsMenu(Game *g) {
             // and the one above it. Also switch the menu choice to keep
             // pointing at the same phone, so it can easily be moved again.
             if (LASTMENU.choice != 0) {
-                Phone this = g->s.party[LASTMENU.choice];
-                Phone other = g->s.party[LASTMENU.choice - 1];
-                g->s.party[LASTMENU.choice - 1] = this;
-                g->s.party[LASTMENU.choice] = other;
+                Phone this = g.s.party[LASTMENU.choice];
+                Phone other = g.s.party[LASTMENU.choice - 1];
+                g.s.party[LASTMENU.choice - 1] = this;
+                g.s.party[LASTMENU.choice] = other;
                 LASTMENU.choice--;
             }
             break;
@@ -63,14 +63,14 @@ void checkPhoneActionsMenu(Game *g) {
             // sure we have space to move to (no blank spots in between).
             int phoneCount = 0;
             for (int i = 0; i < 6; i++) {
-                if (g->s.party[i].active) phoneCount++;
+                if (g.s.party[i].active) phoneCount++;
             }
 
             if (LASTMENU.choice < phoneCount - 1) {
-                Phone this = g->s.party[LASTMENU.choice];
-                Phone other = g->s.party[LASTMENU.choice + 1];
-                g->s.party[LASTMENU.choice + 1] = this;
-                g->s.party[LASTMENU.choice] = other;
+                Phone this = g.s.party[LASTMENU.choice];
+                Phone other = g.s.party[LASTMENU.choice + 1];
+                g.s.party[LASTMENU.choice + 1] = this;
+                g.s.party[LASTMENU.choice] = other;
                 LASTMENU.choice++;
             }
             break;

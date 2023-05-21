@@ -8,23 +8,23 @@
 //
 #include "../common.h"
 
-void drawInGameMenu(Game *g);
-void scrInGameMenuCheck(Game *g);
+void drawInGameMenu();
+void scrInGameMenuCheck();
 
 // _____________________________________________________________________________
 //
 //  In-game menu - init function
 // _____________________________________________________________________________
 //
-void scrInGameMenu(Game *g) {
+void scrInGameMenu() {
     const char *choices[] = {
         "Collection",
         "Phones",
         "Items",
-        g->s.name,
+        g.s.name,
         "Options",
     };
-    pushMenu(g, 5, choices, CB_CLOSE);
+    pushMenu(5, choices, CB_CLOSE);
     MENU.drawFunc = drawInGameMenu;
     MENU.nextFunc = scrInGameMenuCheck;
     PlaySound(SOUND(hit));
@@ -35,8 +35,8 @@ void scrInGameMenu(Game *g) {
 //  In-game menu - draw function
 // _____________________________________________________________________________
 //
-void drawInGameMenu(Game *g) {
-    drawBox(g, 0, 0, 130, 35 + 33*arrlen(MENU.choices));
+void drawInGameMenu() {
+    drawBox(0, 0, 130, 35 + 33*arrlen(MENU.choices));
 
     for (int i = 0; i < 5; i++) {
         DrawTextureRec(
@@ -53,7 +53,7 @@ void drawInGameMenu(Game *g) {
         );
     }
 
-    drawText(g, TextFormat("Money: $%d", g->s.money), 10, 178, WHITE);
+    drawText(TextFormat("Money: $%d", g.s.money), 10, 178, WHITE);
 }
 
 // _____________________________________________________________________________
@@ -61,13 +61,13 @@ void drawInGameMenu(Game *g) {
 //  In-game menu - check user input function
 // _____________________________________________________________________________
 //
-void scrInGameMenuCheck(Game *g) {
+void scrInGameMenuCheck() {
     switch (MENU.choice) {
-        case 0: scrCollectionMenu(g); break;
-        case 1: scrPhonesMenu(g); break;
-        case 2: scrItemsMenu(g); break;
-        case 3: scrPlayerMenu(g); break;
-        case 4: scrSettingsMenu(g); break;
-        default: popMenu(g); break;
+        case 0: scrCollectionMenu(); break;
+        case 1: scrPhonesMenu(); break;
+        case 2: scrItemsMenu(); break;
+        case 3: scrPlayerMenu(); break;
+        case 4: scrSettingsMenu(); break;
+        default: popMenu(); break;
     }
 }

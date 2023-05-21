@@ -8,17 +8,17 @@
 //
 #include "../common.h"
 
-void scrRepairMenu(Game *g, Phone *phone, int amount);
-void scrCheckRepairMenu(Game *g);
-void drawRepairMenu(Game *g);
+void scrRepairMenu(Phone *phone, int amount);
+void scrCheckRepairMenu();
+void drawRepairMenu();
 
 // _____________________________________________________________________________
 //
 //  Repair menu - init function
 // _____________________________________________________________________________
 //
-void scrRepairMenu(Game *g, Phone *phone, int amount) {
-    scrTextBoxMenu(g);
+void scrRepairMenu(Phone *phone, int amount) {
+    scrTextBoxMenu();
     MENU.drawFunc = drawRepairMenu;
     MENU.nextFunc = scrCheckRepairMenu;
     MENU.repairPhone = phone;
@@ -63,16 +63,16 @@ void scrRepairMenu(Game *g, Phone *phone, int amount) {
 //  Repair menu - draw function
 // _____________________________________________________________________________
 //
-void drawRepairMenu(Game *g) {
+void drawRepairMenu() {
     // This is just a text box (but only one static line and without typewriter effect)
-	drawBox(g, 10, 210, 300, 30);
+	drawBox(10, 210, 300, 30);
 	DrawTextEx(
-		g->fonts.dialogue, "Which part's condition do you want to improve?",
+		g.fonts.dialogue, "Which part's condition do you want to improve?",
 		(Vector2) {18, 218}, 13, 0, WHITE
 	);
 
     // Draw a standard selection menu
-    drawMenu(g);
+    drawMenu();
 }
 
 // _____________________________________________________________________________
@@ -80,9 +80,9 @@ void drawRepairMenu(Game *g) {
 //  Repair menu - check user input function
 // _____________________________________________________________________________
 //
-void scrCheckRepairMenu(Game *g) {
+void scrCheckRepairMenu() {
     if (MENU.choice == -1) {
-        popMenu(g);
+        popMenu();
         return;
     }
 
@@ -108,9 +108,9 @@ void scrCheckRepairMenu(Game *g) {
             );
         }
 
-        popMenu(g); // close this menu
-        popMenu(g); // close use item menu
-        popMenu(g); // close item actions menu
+        popMenu(); // close this menu
+        popMenu(); // close use item menu
+        popMenu(); // close item actions menu
 
         // excessive spaces to create a little bit of a pause
         pushTextbox(

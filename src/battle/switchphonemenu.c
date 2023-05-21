@@ -8,18 +8,18 @@
 //
 #include "../common.h"
 
-void scrSwitchPhoneMenu(Game *, BattleState);
-void setBattleState(Game *, BattleState);
-void drawPhonesMenu(Game *);
-void scrCheckSwitchPhoneMenu(Game *);
+void scrSwitchPhoneMenu(BattleState);
+void setBattleState(BattleState);
+void drawPhonesMenu();
+void scrCheckSwitchPhoneMenu();
 
 // _____________________________________________________________________________
 //
 //  Switch phone menu - init function
 // _____________________________________________________________________________
 //
-void scrSwitchPhoneMenu(Game *g, BattleState nextState) {
-    pushMenu(g, 6, NULL, CB_CLOSE);
+void scrSwitchPhoneMenu(BattleState nextState) {
+    pushMenu(6, NULL, CB_CLOSE);
     MENU.drawFunc = drawPhonesMenu;
     MENU.nextFunc = scrCheckSwitchPhoneMenu;
     MENU.nextBattleState = nextState;
@@ -33,8 +33,8 @@ void scrSwitchPhoneMenu(Game *g, BattleState nextState) {
 //  Switch phone menu - check user input function
 // _____________________________________________________________________________
 //
-void scrCheckSwitchPhoneMenu(Game *g) {
-    if (g->s.party[MENU.choice].active && g->s.party[MENU.choice].hp) {
+void scrCheckSwitchPhoneMenu() {
+    if (g.s.party[MENU.choice].active && g.s.party[MENU.choice].hp) {
         LASTMENU.active = MENU.choice;
         LASTMENU.player = (BattlePhone) {0}; // reset any stat changes
 
@@ -46,7 +46,7 @@ void scrCheckSwitchPhoneMenu(Game *g) {
         }
 
         BattleState nextBS = MENU.nextBattleState;
-        popMenu(g);
-        setBattleState(g, nextBS);
+        popMenu();
+        setBattleState(nextBS);
     }
 }

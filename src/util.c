@@ -5,7 +5,7 @@
 //
 #include "common.h"
 
-void drawBox(Game *g, int x, int y, int width, int height) {
+void drawBox(int x, int y, int width, int height) {
     NPatchInfo nPatch = {
         (Rectangle) {0, 0, TEX(textbox).width, TEX(textbox).height},
         4, 4, 4, 4, NPATCH_NINE_PATCH
@@ -18,7 +18,7 @@ void drawBox(Game *g, int x, int y, int width, int height) {
     );
 }
 
-void drawBoxL(Game *g, int x, int y, int width, int height) {
+void drawBoxL(int x, int y, int width, int height) {
     NPatchInfo nPatch = {
         (Rectangle) {0, 0, TEX(textbox).width, TEX(textbox).height},
         4, 4, 4, 4, NPATCH_NINE_PATCH
@@ -31,33 +31,33 @@ void drawBoxL(Game *g, int x, int y, int width, int height) {
     );
 }
 
-void drawText(Game *g, const char *text, int x, int y, Color color) {
-    DrawTextEx(g->fonts.dialogue, text, (Vector2) {x, y}, 13, 0, color);
+void drawText(const char *text, int x, int y, Color color) {
+    DrawTextEx(g.fonts.dialogue, text, (Vector2) {x, y}, 13, 0, color);
 }
 
-void drawTextL(Game *g, const char *text, int x, int y, Color color) {
-    DrawTextEx(g->fonts.large, text, (Vector2) {x, y}, 23, 1, color);
+void drawTextL(const char *text, int x, int y, Color color) {
+    DrawTextEx(g.fonts.large, text, (Vector2) {x, y}, 23, 1, color);
 }
 
-void drawTextD(Game *g, const char *text, int x, int y, Color color) {
+void drawTextD(const char *text, int x, int y, Color color) {
     // Draw an outline around the text
     for (int dx = -1; dx <= 1; dx++) {
         for (int dy = -1; dy <= 1; dy++) {
-            DrawTextEx(g->fonts.digits, text, (Vector2) {x + dx, y + dy}, 13, 0, BLACK);
+            DrawTextEx(g.fonts.digits, text, (Vector2) {x + dx, y + dy}, 13, 0, BLACK);
         }
     }
-    DrawTextEx(g->fonts.digits, text, (Vector2) {x, y}, 13, 0, color);
+    DrawTextEx(g.fonts.digits, text, (Vector2) {x, y}, 13, 0, color);
 }
 
-int measureText(Game *g, const char *text) {
-    return MeasureTextEx(g->fonts.dialogue, text, 13, 0).x;
+int measureText(const char *text) {
+    return MeasureTextEx(g.fonts.dialogue, text, 13, 0).x;
 }
 
-int measureTextL(Game *g, const char *text) {
-    return MeasureTextEx(g->fonts.large, text, 23, 1).x;
+int measureTextL(const char *text) {
+    return MeasureTextEx(g.fonts.large, text, 23, 1).x;
 }
 
-void drawProgressBar(Game *g, int value, int max, int x, int y, int width, Color color) {
+void drawProgressBar(int value, int max, int x, int y, int width, Color color) {
     DrawRectangle(x, y, width + 4, 12, BLACK);
     DrawRectangle(x + 2, y + 2, ((float) value / max) * width, 8, color);
 }
@@ -204,8 +204,8 @@ static void DrawTextRec(Font font, const char *text, Rectangle rec, float fontSi
     DrawTextBoxedSelectable(font, text, rec, fontSize, spacing, wordWrap, tint, 0, 0, WHITE, WHITE);
 }
 
-void drawTextRec(Game *g, const char *text, int x, int y, int width, int height, Color color) {
-    DrawTextRec(g->fonts.dialogue, text, (Rectangle) {x, y, width, height}, 13, 0, true, color);
+void drawTextRec(const char *text, int x, int y, int width, int height, Color color) {
+    DrawTextRec(g.fonts.dialogue, text, (Rectangle) {x, y, width, height}, 13, 0, true, color);
 }
 
 // _____________________________________________________________________________
@@ -215,16 +215,16 @@ void drawTextRec(Game *g, const char *text, int x, int y, int width, int height,
 //  one scheduled sound can exist at a time.
 // _____________________________________________________________________________
 //
-void schedSound(Game *g, Sound sound, int frames) {
-    g->schedSound = sound;
-    g->schedSoundTimer = frames;
+void schedSound(Sound sound, int frames) {
+    g.schedSound = sound;
+    g.schedSoundTimer = frames;
 }
 
-void updateSchedSound(Game *g) {
-    if (g->schedSoundTimer) {
-        g->schedSoundTimer--;
-        if (!g->schedSoundTimer) {
-            PlaySound(g->schedSound);
+void updateSchedSound() {
+    if (g.schedSoundTimer) {
+        g.schedSoundTimer--;
+        if (!g.schedSoundTimer) {
+            PlaySound(g.schedSound);
         }
     }
 }

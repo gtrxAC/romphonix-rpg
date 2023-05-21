@@ -15,15 +15,15 @@
 #include "../assets/maps/demoroom.h"
 
 // And add them to the index here
-void loadMapIndex(Game *g) {
-    arrput(g->maps, mapDemo);
-    arrput(g->maps, mapDemoRoom);
+void loadMapIndex() {
+    arrput(g.maps, mapDemo);
+    arrput(g.maps, mapDemoRoom);
 }
 
-void loadMap(Game *g, int index) {
+void loadMap(int index) {
     int unused;
-    g->mapMeta = g->maps[index];
+    g.mapMeta = g.maps[index];
 
-    if (g->map) UnloadFileData(g->map);
-    g->map = LoadFileData(g->mapMeta.fileName, &unused);
+    if (g.map) UnloadFileData(g.map);
+    g.map = LoadFileData(g.mapMeta.fileName, &unused);
 }

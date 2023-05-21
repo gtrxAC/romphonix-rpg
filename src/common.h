@@ -48,19 +48,19 @@ typedef struct Game Game;
 #define u16 uint16_t
 #define u32 uint32_t
 
-#define MAP_WIDTH (g->map[0])
-#define MAP_HEIGHT (g->map[1])
+#define MAP_WIDTH (g.map[0])
+#define MAP_HEIGHT (g.map[1])
 
 // Gets a byte of a map tile (val takes a MapByte defined below)
-#define MAP(x, y, val) (g->map[2 + 13*((y)*MAP_WIDTH + (x)) + (val)])
+#define MAP(x, y, val) (g.map[2 + 13*((y)*MAP_WIDTH + (x)) + (val)])
 
 // Gets specs for a phone by ID (phone data base constant data, not the phones
 // that the player owns, so this doesnt include learned moves, remaining HP, etc)
-#define SPECS(id) (g->phoneDB->phones[id])
+#define SPECS(id) (g.phoneDB->phones[id])
 
 // Gets specs for an item or skill (database constant data)
-#define ISPECS(id) (g->itemDB->items[id])
-#define SSPECS(id) (g->skillDB->skills[id])
+#define ISPECS(id) (g.itemDB->items[id])
+#define SSPECS(id) (g.skillDB->skills[id])
 
 // Math stuff
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
@@ -131,8 +131,8 @@ typedef struct Map {
     const char *name;
     const char *fileName;
     const char *songName;
-    void (*stepScripts[64])(Game *);
-    void (*interactScripts[64])(Game *);
+    void (*stepScripts[64])();
+    void (*interactScripts[64])();
 } Map;
 
 #include "phones.h"
@@ -180,10 +180,10 @@ typedef struct Settings {
 // _____________________________________________________________________________
 //
 // Shorthand to access the current menu (top of the stack)
-#define MENU (arrlast(g->menus))
+#define MENU (arrlast(g.menus))
 
 // Shorthand to access the previous menu
-#define LASTMENU (g->menus[arrlen(g->menus) - 2])
+#define LASTMENU (g.menus[arrlen(g.menus) - 2])
 
 typedef enum PlayerMenuState {
     PMS_FRONT,
@@ -213,9 +213,9 @@ typedef struct Menu {
     // - Update functions check the user's keyboard input and act accordingly (e.g. move cursor up/down)
     // - Draw functions draw the menu.
     // - Check functions (aka next function) checks what the user has selected in the menu and acts accordingly
-	void (*updateFunc)(Game *);
-	void (*drawFunc)(Game *);
-	void (*nextFunc)(Game *);
+	void (*updateFunc)();
+	void (*drawFunc)();
+	void (*nextFunc)();
     
     // Fields specific to certain menus
     union {
@@ -323,7 +323,7 @@ typedef struct Game {
     // _________________________________________________________________________
     //
     // Gets a texture
-    #define TEX(t) (shget(g->textures, #t))
+    #define TEX(t) (shget(g.textures, #t))
 
     // Hash table of texture name -> texture struct
     // Allows quick creation of textures without having hundreds of variables
@@ -336,7 +336,7 @@ typedef struct Game {
     } fonts;
 
     // Gets a sound
-    #define SOUND(t) (shget(g->sounds, #t))
+    #define SOUND(t) (shget(g.sounds, #t))
 
     struct { char *key; Sound value; } *sounds;
 
@@ -347,6 +347,8 @@ typedef struct Game {
     //
     // ScriptType scriptType;
 } Game;
+
+extern Game g;
 
 #include "script.h"
 

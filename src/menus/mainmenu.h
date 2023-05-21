@@ -3,6 +3,6 @@
 
 // #include "common.h"
 
-// void scrMainMenu(Game *g);
+// void scrMainMenu();
 
 // #endif

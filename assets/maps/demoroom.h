@@ -18,9 +18,9 @@
 // If scripts are referenced using MENU.nextFunc, they have to be declared first
 
 // Step scripts
-void scrDemoRoomDoor(Game *g) {
+void scrDemoRoomDoor() {
     PlaySound(SOUND(door));
-    changeMap(g, 0, 9, 8);
+    changeMap(0, 9, 8);
 }
 
 // Interact scripts

@@ -9,18 +9,18 @@
 //
 #include "../common.h"
 
-void scrUseItemMenu(Game *, int, int);
-void drawPhonesMenu(Game *);
-void exitUseItemMenu(Game *g);
-void scrCheckUseItemMenu(Game *);
+void scrUseItemMenu(int, int);
+void drawPhonesMenu();
+void exitUseItemMenu();
+void scrCheckUseItemMenu();
 
 // _____________________________________________________________________________
 //
 //  Use item menu - init function
 // _____________________________________________________________________________
 //
-void scrUseItemMenu(Game *g, int bagPocket, int item) {
-    pushMenu(g, 6, NULL, CB_CLOSE);
+void scrUseItemMenu(int bagPocket, int item) {
+    pushMenu(6, NULL, CB_CLOSE);
     MENU.drawFunc = drawPhonesMenu;
     MENU.nextFunc = scrCheckUseItemMenu;
     MENU.itemBagPocket = bagPocket;
@@ -35,14 +35,14 @@ void scrUseItemMenu(Game *g, int bagPocket, int item) {
 //  Use item menu - check user input function
 // _____________________________________________________________________________
 //
-void scrCheckUseItemMenu(Game *g) {
-    Phone *phone = &g->s.party[MENU.choice];
-    Item *item = &g->bag[MENU.itemBagPocket][MENU.item];
+void scrCheckUseItemMenu() {
+    Phone *phone = &g.s.party[MENU.choice];
+    Item *item = &g.bag[MENU.itemBagPocket][MENU.item];
 
     // Don't allow use on empty phone slots
     if (!phone->active) return;
 
-    popMenu(g);
+    popMenu();
 
     switch (ISPECS(item->id).effect) {
         case IE_HEAL: {
@@ -59,7 +59,7 @@ void scrCheckUseItemMenu(Game *g) {
             else {
                 int heal = MIN(ISPECS(item->id).effectParameter, phone->maxHP - phone->hp);
                 phone->hp += heal;
-                schedSound(g, SOUND(heal), 10);
+                schedSound(SOUND(heal), 10);
                 pushTextbox(
                     g, TextFormat(
                         "Healed %s %s by %d HP.",
@@ -74,7 +74,7 @@ void scrCheckUseItemMenu(Game *g) {
         case IE_REVIVE: {
             if (phone->hp <= 0) {
                 phone->hp = phone->maxHP * ISPECS(item->id).effectParameter / 100;
-                schedSound(g, SOUND(heal), 10);
+                schedSound(SOUND(heal), 10);
                 pushTextbox(
                     g, TextFormat(
                         "%s %s has been revived.",
@@ -84,7 +84,7 @@ void scrCheckUseItemMenu(Game *g) {
                 MENU.nextFunc = popMenu;
             }
             else {
-                pushTextbox(g, "This phone is already alive!", "");
+                pushTextbox("This phone is already alive!", "");
                 MENU.nextFunc = popMenu;
                 return;
             }
@@ -92,7 +92,7 @@ void scrCheckUseItemMenu(Game *g) {
         }
 
         case IE_REPAIR: {
-            scrRepairMenu(g, phone, ISPECS(item->id).effectParameter);
+            scrRepairMenu(phone, ISPECS(item->id).effectParameter);
             break;
         }
     }

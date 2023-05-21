@@ -18,28 +18,28 @@
 // If scripts are referenced using MENU.nextFunc, they have to be declared first
 
 // Step scripts
-void scrDemoDoor(Game *g) {
+void scrDemoDoor() {
     PlaySound(SOUND(door));
-    changeMap(g, 1, 5, 8);
+    changeMap(1, 5, 8);
 }
 
-void scrDemoGrass(Game *g) {
+void scrDemoGrass() {
 
 }
 
 // Interact scripts
-void scrDemoSign(Game *g) {
-    pushTextbox(g, "This is a sign!", "");
+void scrDemoSign() {
+    pushTextbox("This is a sign!", "");
     MENU.nextFunc = popMenu;
 }
 
-void scrDemoMailbox(Game *g) {
-    pushTextbox(g, "You have no mail.", "");
+void scrDemoMailbox() {
+    pushTextbox("You have no mail.", "");
     MENU.nextFunc = popMenu;
 }
 
-void scrDemoClock(Game *g) {
-    pushTextbox(g, "The time is... I don't know, I don't care", "enough to check.");
+void scrDemoClock() {
+    pushTextbox("The time is... I don't know, I don't care", "enough to check.");
     MENU.nextFunc = popMenu;
 }
 

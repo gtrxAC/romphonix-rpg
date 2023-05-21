@@ -7,17 +7,17 @@
 //
 #include "../common.h"
 
-void scrTextBoxMenu(Game *g);
-void drawTextBoxMenu(Game *g);
-void updateMenu(Game *g);
+void scrTextBoxMenu();
+void drawTextBoxMenu();
+void updateMenu();
 
 // _____________________________________________________________________________
 //
 //  Text box menu - init function
 // _____________________________________________________________________________
 //
-void scrTextBoxMenu(Game *g) {
-    pushMenu(g, 0, NULL, CB_CLOSE);
+void scrTextBoxMenu() {
+    pushMenu(0, NULL, CB_CLOSE);
     MENU.updateFunc = updateMenu;
     MENU.drawFunc = drawTextBoxMenu;
 }
@@ -27,7 +27,7 @@ void scrTextBoxMenu(Game *g) {
 //  Text box menu - draw function
 // _____________________________________________________________________________
 //
-void drawTextBoxMenu(Game *g) {
-    drawTextbox(g);
-    drawMenu(g);
+void drawTextBoxMenu() {
+    drawTextbox();
+    drawMenu();
 }

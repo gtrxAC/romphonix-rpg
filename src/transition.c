@@ -2,31 +2,31 @@
 
 #define TRANSITION_TIME 30       // in frames, for inwards and outwards transition each, so actual time is ×2
 
-void updateTransition(Game *g) {
-	if (g->frameCount > TRANSITION_TIME*2) {
-		g->state = ST_INGAME;
+void updateTransition() {
+	if (g.frameCount > TRANSITION_TIME*2) {
+		g.state = ST_INGAME;
 	}
-	else if (g->frameCount == TRANSITION_TIME) {
-		g->s.curMap = g->nextMap;
-		g->s.playerX = g->nextX;
-		g->s.playerY = g->nextY;
+	else if (g.frameCount == TRANSITION_TIME) {
+		g.s.curMap = g.nextMap;
+		g.s.playerX = g.nextX;
+		g.s.playerY = g.nextY;
 
-        loadMap(g, g->s.curMap);
+        loadMap(g.s.curMap);
 
-		if (!g->worldDrawn) {
-			g->worldDrawn = true;
-			drawWorldRT(g);
+		if (!g.worldDrawn) {
+			g.worldDrawn = true;
+			drawWorldRT();
 		}
 
-		setSong(g, g->mapMeta.songName);
+		setSong(g.mapMeta.songName);
 	}
 }
 
-void drawTransition(Game *g) {
-	float transitionTimer = (float) g->frameCount/TRANSITION_TIME;
+void drawTransition() {
+	float transitionTimer = (float) g.frameCount/TRANSITION_TIME;
 
-	if (g->frameCount > TRANSITION_TIME) {
-		transitionTimer = 1 - (float) (g->frameCount - 30)/TRANSITION_TIME;
+	if (g.frameCount > TRANSITION_TIME) {
+		transitionTimer = 1 - (float) (g.frameCount - 30)/TRANSITION_TIME;
 	}
 	
 	int x = transitionTimer*160;

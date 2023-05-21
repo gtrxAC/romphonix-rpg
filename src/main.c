@@ -17,6 +17,8 @@
 #define STB_DS_IMPLEMENTATION
 #include "common.h"
 
+Game g;
+
 // _____________________________________________________________________________
 //
 //  Calls initialization tasks and runs the main loop.
@@ -24,44 +26,42 @@
 //
 int main() {
     // Create game state structure
-    Game *g = malloc(sizeof(Game));
-    if (!g) error(g, "Failed to allocate game state", true);
-    memset(g, 0, sizeof(Game));
+    memset(&g, 0, sizeof(Game));
 
     // Initialize the game - this loads the window and assets.
-    initGame(g);
+    initGame();
 
     // Set up the game variables.
     SetTargetFPS(60);
     SetExitKey(0);
-    g->state = ST_TITLE;
-    setSong(g, "assets/sounds/music/abangchung.mid");
+    g.state = ST_TITLE;
+    setSong("assets/sounds/music/abangchung.mid");
 
-    loadSettings(g);
+    loadSettings();
 
     // _________________________________________________________________________
     //
     //  Main loop
     // _________________________________________________________________________
     //
-    while (!g->shouldClose) {
+    while (!g.shouldClose) {
         // If the close button is pressed, show a menu asking what to do, if it
         // isn't already being shown. In the title or title menu, close without
         // asking.
         if (WindowShouldClose()) {
-            if (g->state == ST_TITLE || g->state == ST_MAINMENU) {
-                g->shouldClose = true;
+            if (g.state == ST_TITLE || g.state == ST_MAINMENU) {
+                g.shouldClose = true;
             }
-            else if (!arrlen(g->menus) || !MENU.textbox[0] || strcmp(MENU.textbox[0], "What do you want to do?")) {
-                scrExitMenu(g);
+            else if (!arrlen(g.menus) || !MENU.textbox[0] || strcmp(MENU.textbox[0], "What do you want to do?")) {
+                scrExitMenu();
             }
         }
 
         // Check global keybindings
-        checkBindings(g);
+        checkBindings();
 
         // Update menu/script system (only update the topmost/current menu)
-        if (arrlen(g->menus)) {
+        if (arrlen(g.menus)) {
             // Menu sound effects are handled globally here, because they are
             // the same for all menus, so they won't have to be implemented
             // separately for each menu
@@ -71,28 +71,28 @@ int main() {
             if (K_A_PRESS()) PlaySound(SOUND(select));
             if (K_B_PRESS()) PlaySound(SOUND(back));
 
-            MENU.updateFunc(g);
+            MENU.updateFunc();
             MENU.timer++;
         }
         else {
             // Update game world or title state (only if no menus are open)
-            switch (g->state) {
-                case ST_TITLE: updateTitle(g); break;
-                case ST_INGAME: if (!arrlen(g->menus)) updateWorld(g); break;
-                case ST_TRANSITION: updateTransition(g); break;
+            switch (g.state) {
+                case ST_TITLE: updateTitle(); break;
+                case ST_INGAME: if (!arrlen(g.menus)) updateWorld(); break;
+                case ST_TRANSITION: updateTransition(); break;
             }
         }
 
         // Draw game into a render texture so we can scale it
-        BeginTextureMode(g->rt);
+        BeginTextureMode(g.rt);
         ClearBackground(BLACK);
-        switch (g->state) {
-            case ST_TITLE: drawTitle(g); break;
-            case ST_INGAME: drawWorld(g); break;
-            case ST_TRANSITION: drawWorld(g); drawTransition(g); break;
+        switch (g.state) {
+            case ST_TITLE: drawTitle(); break;
+            case ST_INGAME: drawWorld(); break;
+            case ST_TRANSITION: drawWorld(); drawTransition(); break;
         }
         // Draw menus
-        for (int i = 0; i < arrlen(g->menus); i++) MENU.drawFunc(g);
+        for (int i = 0; i < arrlen(g.menus); i++) MENU.drawFunc();
         EndTextureMode();
 
         // Draw render texture on screen
@@ -100,17 +100,17 @@ int main() {
         BeginDrawing();
         ClearBackground(BLACK);
         DrawTexturePro(
-            g->rt.texture,
+            g.rt.texture,
             (Rectangle){0, 0, 320, -240},
             (Rectangle){0, 0, GetScreenWidth(), GetScreenHeight()},
             (Vector2){0, 0}, 0.0f, WHITE
         );
         EndDrawing();
 
-        updateSchedSound(g);
-        g->frameCount++;
+        updateSchedSound();
+        g.frameCount++;
     }
 
     // Unload assets and resources when the close button was pressed
-    closeGame(g, 0);
+    closeGame(0);
 }

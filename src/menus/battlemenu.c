@@ -12,7 +12,7 @@
 //
 #include "../common.h"
 
-void scrSwitchPhoneMenu(Game *, BattleState);
+void scrSwitchPhoneMenu(BattleState);
 
 // _____________________________________________________________________________
 //
@@ -23,11 +23,11 @@ void scrSwitchPhoneMenu(Game *, BattleState);
 //  statement instead: if (scrBattleMenu(...)) { set battle variables... }
 // _____________________________________________________________________________
 //
-bool scrBattleMenu(Game *g, bool canRun) {
+bool scrBattleMenu(bool canRun) {
     // Choose the player's active phone (first phone that has remaining HP)
     bool found = false;
     for (int i = 0; i < 6; i++) {
-        if (g->s.party[i].active && g->s.party[i].hp > 0) {
+        if (g.s.party[i].active && g.s.party[i].hp > 0) {
             MENU.active = i;
             found = true;
             break;
@@ -35,12 +35,12 @@ bool scrBattleMenu(Game *g, bool canRun) {
     }
 
     if (!found) {
-        pushTextbox(g, "You don't have any phones!", "");
+        pushTextbox("You don't have any phones!", "");
         MENU.nextFunc = popMenu;
         return false;
     }
 
-    pushMenu(g, 0, NULL, CB_NOTHING);
+    pushMenu(0, NULL, CB_NOTHING);
     strcpy(MENU.battleTextbox[0], "Battle doesn't have a textbox set!");
     strcpy(MENU.battleTextbox[1], "Battle doesn't have a textbox set!");
     strcpy(MENU.battleTextbox[2], "Battle doesn't have a textbox set!");
@@ -64,7 +64,7 @@ bool scrBattleMenu(Game *g, bool canRun) {
 //  Battle menu - update status effect timers (helper function)
 // _____________________________________________________________________________
 //
-void updateStatusTimers(Game *g, int *textboxSlot, Phone *phone, BattlePhone *bPhone) {
+void updateStatusTimers(int *textboxSlot, Phone *phone, BattlePhone *bPhone) {
     if (bPhone->atkUpTurns > 0) {
         bPhone->atkUpTurns--;
         if (!bPhone->atkUpTurns) {
@@ -105,7 +105,7 @@ void updateStatusTimers(Game *g, int *textboxSlot, Phone *phone, BattlePhone *bP
 //  Battle menu - set state (helper function)
 // _____________________________________________________________________________
 //
-void setBattleState(Game *g, BattleState bs) {
+void setBattleState(BattleState bs) {
     MENU.battleState = bs;
 
     switch (bs) {
@@ -138,7 +138,7 @@ void setBattleState(Game *g, BattleState bs) {
             );
             MENU.battleTextbox[1][0] = '\0';
             MENU.battleTextbox[2][0] = '\0';
-            doMove(g, &ENEMYP, &PLAYERP, &MENU.enemy, &MENU.player, skill);
+            doMove(&ENEMYP, &PLAYERP, &MENU.enemy, &MENU.player, skill);
             break;
         }
 
@@ -150,7 +150,7 @@ void setBattleState(Game *g, BattleState bs) {
             );
             MENU.battleTextbox[1][0] = '\0';
             MENU.battleTextbox[2][0] = '\0';
-            doMove(g, &PLAYERP, &ENEMYP, &MENU.player, &MENU.enemy, skill);
+            doMove(&PLAYERP, &ENEMYP, &MENU.player, &MENU.enemy, skill);
             break;
         }
 
@@ -158,17 +158,17 @@ void setBattleState(Game *g, BattleState bs) {
             for (int i = 0; i < 3; i++) MENU.battleTextbox[i][0] = '\0';
             int textboxSlot = 0;
 
-            updateStatusTimers(g, &textboxSlot, &PLAYERP, &MENU.player);
-            updateStatusTimers(g, &textboxSlot, &ENEMYP, &MENU.enemy);
+            updateStatusTimers(&textboxSlot, &PLAYERP, &MENU.player);
+            updateStatusTimers(&textboxSlot, &ENEMYP, &MENU.enemy);
 
             // if no status effects were processed (nothing to show in textbox),
             // just skip to the next turn
-            if (!textboxSlot) setBattleState(g, BS_WAITING);
+            if (!textboxSlot) setBattleState(BS_WAITING);
             break;
         }
 
         case BS_WON: {
-            setSong(g, "assets/sounds/music/thtune.mid");
+            setSong("assets/sounds/music/thtune.mid");
             strcpy(MENU.battleTextbox[0], "you won, congrats i guess???");
             strcpy(MENU.battleTextbox[1], "");
             strcpy(MENU.battleTextbox[2], "");
@@ -178,13 +178,13 @@ void setBattleState(Game *g, BattleState bs) {
         case BS_LOST: {
             bool havePhones = false;
             for (int i = 0; i < 6; i++) {
-                if (g->s.party[i].active && g->s.party[i].hp) {
+                if (g.s.party[i].active && g.s.party[i].hp) {
                     havePhones = true;
                     break;
                 }
             }
             if (havePhones) {
-                scrSwitchPhoneMenu(g, BS_WAITING);
+                scrSwitchPhoneMenu(BS_WAITING);
             }
             else {
                 strcpy(MENU.battleTextbox[0], "LOL you lose the battle and ran out");
@@ -201,19 +201,19 @@ void setBattleState(Game *g, BattleState bs) {
 //  Battle menu - check user input function
 // _____________________________________________________________________________
 //
-void checkBattleMenu(Game *g) {
+void checkBattleMenu() {
     switch (MENU.battleState) {
         case BS_WAITING: {
             switch (MENU.choice) {
                 case -1: break;
 
                 case 0: { // Fight
-                    setBattleState(g, BS_WAITING_MOVE);
+                    setBattleState(BS_WAITING_MOVE);
                     break;
                 }
 
                 case 1: { // Switch
-                    scrSwitchPhoneMenu(g, BS_ENEMY_TURN);
+                    scrSwitchPhoneMenu(BS_ENEMY_TURN);
                     break;
                 }
                 
@@ -235,15 +235,15 @@ void checkBattleMenu(Game *g) {
 
         case BS_WAITING_MOVE: {
             if (MENU.choice == -1) {
-                setBattleState(g, BS_WAITING); // go back to the start
+                setBattleState(BS_WAITING); // go back to the start
             }
             else {
                 // Choose which side moves first, based on the weights of the
                 // phones and a bit of random chance
                 MENU.movedFirst = whoMovesFirst(ENEMYP.weight, PLAYERP.weight);
                 MENU.playerMove = MENU.choice;
-                if (MENU.movedFirst) setBattleState(g, BS_PLAYER_TURN);
-                else setBattleState(g, BS_ENEMY_TURN);
+                if (MENU.movedFirst) setBattleState(BS_PLAYER_TURN);
+                else setBattleState(BS_ENEMY_TURN);
             }
             break;
         }

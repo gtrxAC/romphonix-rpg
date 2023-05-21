@@ -8,16 +8,16 @@
 //
 #include "../common.h"
 
-void scrExitMenu(Game *g);
-void checkExitMenu(Game *g);
+void scrExitMenu();
+void checkExitMenu();
 
 // _____________________________________________________________________________
 //
 //  Text box menu - init function
 // _____________________________________________________________________________
 //
-void scrExitMenu(Game *g) {
-    scrTextBoxMenu(g);
+void scrExitMenu() {
+    scrTextBoxMenu();
     MENU.textbox[0] = "What do you want to do?";
     MENU.textbox[1] = "";
     arrpush(MENU.choices, "Continue");
@@ -31,21 +31,21 @@ void scrExitMenu(Game *g) {
 //  Text box menu - check user input function
 // _____________________________________________________________________________
 //
-void checkExitMenu(Game *g) {
+void checkExitMenu() {
     switch (MENU.choice) {
         case -1:
         case 0:
-            popMenu(g);
+            popMenu();
             break;
 
         case 1:
-            save(g);
+            save();
             // fall through
 
         case 2:
             // always save the settings anyway
-            saveSettings(g);
-            g->shouldClose = true;
+            saveSettings();
+            g.shouldClose = true;
             break;
     }
 }

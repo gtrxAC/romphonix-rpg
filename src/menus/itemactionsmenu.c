@@ -12,20 +12,20 @@
 //
 #include "../common.h"
 
-void scrItemActionsMenu(Game *g);
-void updateItemActionsMenu(Game *g);
-void drawItemActionsMenu(Game *g);
-void checkItemActionsMenu(Game *g);
+void scrItemActionsMenu();
+void updateItemActionsMenu();
+void drawItemActionsMenu();
+void checkItemActionsMenu();
 
-void scrUseItemMenu(Game *g, int, int);
+void scrUseItemMenu(int, int);
 
 // _____________________________________________________________________________
 //
 //  Item actions menu - init function
 // _____________________________________________________________________________
 //
-void scrItemActionsMenu(Game *g) {
-    pushMenu(g, 0, NULL, CB_CLOSE);
+void scrItemActionsMenu() {
+    pushMenu(0, NULL, CB_CLOSE);
     MENU.drawFunc = drawItemActionsMenu;
     MENU.nextFunc = checkItemActionsMenu;
 
@@ -40,14 +40,14 @@ void scrItemActionsMenu(Game *g) {
 //  Also used for the phone actions menu.
 // _____________________________________________________________________________
 //
-void drawItemActionsMenu(Game *g) {
+void drawItemActionsMenu() {
     // Draw the previous (items) menu first
     // We can't use LASTMENU macro here because the draw function expects the
     // items menu to be at the top, so we need to temporarily pop the actions
     // menu. A bit inefficient, but it works.
-    Menu menu = arrpop(g->menus);
-    MENU.drawFunc(g);
-    arrput(g->menus, menu);
+    Menu menu = arrpop(g.menus);
+    MENU.drawFunc();
+    arrput(g.menus, menu);
 
     // Darken it slightly by drawing a transparent black rectangle
     DrawRectangle(0, 0, 320, 240, ColorAlpha(BLACK, 0.3f));
@@ -58,18 +58,18 @@ void drawItemActionsMenu(Game *g) {
     // Get length of the longest menu choice
     int longest = 0;
     for (int i = 0; i < arrlen(MENU.choices); i++) {
-        int length = measureText(g, MENU.choices[i]);
+        int length = measureText(MENU.choices[i]);
         if (length > longest) longest = length;
     }
 
     int baseX = 290 - longest;
     int baseY = 224 - 14*arrlen(MENU.choices);
 
-    drawBox(g, baseX, baseY, 30 + longest, 16 + 14*arrlen(MENU.choices));
+    drawBox(baseX, baseY, 30 + longest, 16 + 14*arrlen(MENU.choices));
 
     for (int i = 0; i < arrlen(MENU.choices) && MENU.choices[i]; i++) {
         DrawTextEx(
-            g->fonts.dialogue, MENU.choices[i],
+            g.fonts.dialogue, MENU.choices[i],
             (Vector2) {baseX + 22, baseY + 8 + 14*i},
             13, 0, WHITE
         );
@@ -83,26 +83,26 @@ void drawItemActionsMenu(Game *g) {
 //  Item actions menu - check user input function
 // _____________________________________________________________________________
 //
-void checkItemActionsMenu(Game *g) {
+void checkItemActionsMenu() {
     int choice = MENU.choice;
-    popMenu(g);
+    popMenu();
     // Now MENU refers to the items menu
 
     switch (choice) {
         // Use
         case 0: {
-            switch (ISPECS(g->bag[MENU.bagChoice][MENU.choice].id).effect) {
+            switch (ISPECS(g.bag[MENU.bagChoice][MENU.choice].id).effect) {
                 // Effects which are applied to a phone
                 case IE_HEAL:
                 case IE_REVIVE:
                 case IE_UPGRADE:
                 case IE_REPAIR: {
-                    scrUseItemMenu(g, MENU.bagChoice, MENU.choice);
+                    scrUseItemMenu(MENU.bagChoice, MENU.choice);
                     break;
                 }
 
                 default: {
-                    pushTextbox(g, "This item cannot be used (yet).", "");
+                    pushTextbox("This item cannot be used (yet).", "");
                     MENU.nextFunc = popMenu;
                     break;
                 }
