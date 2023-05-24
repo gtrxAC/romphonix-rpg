@@ -117,6 +117,5 @@ void scrCheckRepairMenu() {
             g, "Condition improved!                    ",
             "Oh, and your screwdriver broke..."
         );
-        MENU.nextFunc = popMenu;
     }
 }

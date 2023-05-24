@@ -36,7 +36,6 @@ bool scrBattleMenu(bool canRun) {
 
     if (!found) {
         pushTextbox("You don't have any phones!", "");
-        MENU.nextFunc = popMenu;
         return false;
     }
 

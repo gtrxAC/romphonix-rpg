@@ -49,6 +49,9 @@ void initGame() {
     LOAD_TEXTURE("unknown_phone");
     LOAD_TEXTURE("battle_bg");
     LOAD_TEXTURE("status");
+    LOAD_TEXTURE("d307");
+    LOAD_TEXTURE("intro_gradient");
+    LOAD_TEXTURE("prof_rocky");
 
     // Sound loading/unloading works just like with textures.
     g.sounds = NULL;

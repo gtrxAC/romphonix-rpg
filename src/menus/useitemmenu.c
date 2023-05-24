@@ -53,7 +53,6 @@ void scrCheckUseItemMenu() {
                         SPECS(phone->id).brand, SPECS(phone->id).model
                     ), ""
                 );
-                MENU.nextFunc = popMenu;
                 return;
             }
             else {
@@ -66,7 +65,6 @@ void scrCheckUseItemMenu() {
                         SPECS(phone->id).brand, SPECS(phone->id).model, heal
                     ), ""
                 );
-                MENU.nextFunc = popMenu;
             }
             break;
         }
@@ -81,11 +79,9 @@ void scrCheckUseItemMenu() {
                         SPECS(phone->id).brand, SPECS(phone->id).model
                     ), ""
                 );
-                MENU.nextFunc = popMenu;
             }
             else {
                 pushTextbox("This phone is already alive!", "");
-                MENU.nextFunc = popMenu;
                 return;
             }
             break;

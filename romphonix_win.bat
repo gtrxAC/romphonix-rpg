@@ -1,1 +1,1 @@
-.\windows\romphonix.exe
+.\bin\romphonix.exe

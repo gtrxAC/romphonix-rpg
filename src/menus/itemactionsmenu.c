@@ -103,7 +103,6 @@ void checkItemActionsMenu() {
 
                 default: {
                     pushTextbox("This item cannot be used (yet).", "");
-                    MENU.nextFunc = popMenu;
                     break;
                 }
             }

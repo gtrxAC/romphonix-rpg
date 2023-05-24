@@ -97,6 +97,10 @@ enum MapByte {
 typedef enum State {
     ST_TITLE,
     ST_MAINMENU,  // nothing is updated/drawn except for menus
+    ST_INTRO_FADE,
+    ST_INTRO_D307,
+    ST_INTRO_FADE2,
+    ST_INTRO_ROCKY,
     ST_INGAME,
     ST_TRANSITION,  // transition from one map to another
     ST_BATTLE

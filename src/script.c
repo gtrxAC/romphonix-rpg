@@ -20,8 +20,6 @@ void pushTextbox(const char *line1, const char *line2) {
 	MENU.updateFunc = updateTextbox;
 	MENU.drawFunc = drawTextbox;
 
-	// arrput(MENU.choices, line1);
-	// arrput(MENU.choices, line2);
 	MENU.textbox[0] = line1;
 	MENU.textbox[1] = line2;
 }
@@ -80,7 +78,9 @@ int randomPhone() {
 //
 void updateTextbox() {
 	if (K_A_PRESS()) {
-		if (MENU.nextFunc) MENU.nextFunc();
+		void (*func)() = MENU.nextFunc;
+		popMenu();
+		if (func) func();
 		else g.state = ST_INGAME;
 	}
 }
@@ -124,5 +124,4 @@ void drawTextbox() {
 
 void scrNoScript() {
 	pushTextbox("No function assigned to this script index!", "");
-	MENU.nextFunc = popMenu;
 }

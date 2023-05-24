@@ -1,11 +1,8 @@
 // _____________________________________________________________________________
 //
 //  ROMphonix RPG - a phone collecting RPG
-//  Based on gtrxAC's raylib RPG demo
 //
 //  This is the main source code file, which only contains the main function.
-//  It creates the game state "g" which is passed as a pointer to every other
-//  function in the game.
 //
 //  The main function handles calling other functions that alter the game state
 //  or draw parts of the game.
@@ -78,6 +75,8 @@ int main() {
             // Update game world or title state (only if no menus are open)
             switch (g.state) {
                 case ST_TITLE: updateTitle(); break;
+                case ST_INTRO_FADE: updateIntroFade(); break;
+                case ST_INTRO_FADE2: updateIntroFade2(); break;
                 case ST_INGAME: if (!arrlen(g.menus)) updateWorld(); break;
                 case ST_TRANSITION: updateTransition(); break;
             }
@@ -88,6 +87,10 @@ int main() {
         ClearBackground(BLACK);
         switch (g.state) {
             case ST_TITLE: drawTitle(); break;
+            case ST_INTRO_FADE: drawIntroFade(); break;
+            case ST_INTRO_D307: drawIntroD307(); break;
+            case ST_INTRO_FADE2: drawIntroFade2(); break;
+            case ST_INTRO_ROCKY: drawIntroRocky(); break;
             case ST_INGAME: drawWorld(); break;
             case ST_TRANSITION: drawWorld(); drawTransition(); break;
         }

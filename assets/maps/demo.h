@@ -30,17 +30,14 @@ void scrDemoGrass() {
 // Interact scripts
 void scrDemoSign() {
     pushTextbox("This is a sign!", "");
-    MENU.nextFunc = popMenu;
 }
 
 void scrDemoMailbox() {
     pushTextbox("You have no mail.", "");
-    MENU.nextFunc = popMenu;
 }
 
 void scrDemoClock() {
     pushTextbox("The time is... I don't know, I don't care", "enough to check.");
-    MENU.nextFunc = popMenu;
 }
 
 

@@ -69,6 +69,8 @@ void scrMainMenuCheck() {
             g.state = ST_INGAME;
             setSong(g.mapMeta.songName);
             popMenu();
+
+            scrIntro();
             break;
         }
 
