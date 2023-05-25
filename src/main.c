@@ -91,6 +91,7 @@ int main() {
             case ST_INTRO_D307: drawIntroD307(); break;
             case ST_INTRO_FADE2: drawIntroFade2(); break;
             case ST_INTRO_ROCKY: drawIntroRocky(); break;
+            case ST_INTRO_APPEARANCE: drawIntroAppearanceState(); break;
             case ST_INGAME: drawWorld(); break;
             case ST_TRANSITION: drawWorld(); drawTransition(); break;
         }

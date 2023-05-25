@@ -101,6 +101,7 @@ typedef enum State {
     ST_INTRO_D307,
     ST_INTRO_FADE2,
     ST_INTRO_ROCKY,
+    ST_INTRO_APPEARANCE,
     ST_INGAME,
     ST_TRANSITION,  // transition from one map to another
     ST_BATTLE
@@ -167,6 +168,7 @@ typedef struct SaveData {
 
     char name[16];
     char startDate[11]; // YYYY-MM-DD
+    int appearance;
     int id;
     unsigned int money;
 } SaveData;

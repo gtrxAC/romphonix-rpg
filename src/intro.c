@@ -26,6 +26,8 @@ void scrIntroAppearance();
 void drawIntroAppearance();
 void updateIntroAppearance();
 void checkIntroAppearance();
+void scrIntroAppearanceConfirm();
+void checkIntroAppearanceConfirm();
 
 // _____________________________________________________________________________
 //
@@ -93,12 +95,13 @@ void scrIntroFade2() {
 }
 
 void drawIntroFade2() {
-    Color tint = {255, 255, 255, g.frameCount*2};
+    Color tintRed = {230, 41, 55, g.frameCount*2};
+    Color tintWhite = {255, 255, 255, g.frameCount*2};
     DrawTexturePro(
-        TEX(intro_gradient), (Rectangle) {0, 0, 1, 64},
-        (Rectangle) {0, 0, 320, 240}, (Vector2) {0, 0}, 0.0f, tint
+        TEX(gradient), (Rectangle) {0, 0, 1, 64},
+        (Rectangle) {0, 0, 320, 240}, (Vector2) {0, 0}, 0.0f, tintRed
     );
-    DrawTexture(TEX(prof_rocky), 124, 48, tint);
+    DrawTexture(TEX(prof_rocky), 124, 48, tintWhite);
 }
 
 void updateIntroFade2() {
@@ -114,8 +117,8 @@ void updateIntroFade2() {
 //
 void drawIntroRocky() {
     DrawTexturePro(
-        TEX(intro_gradient), (Rectangle) {0, 0, 1, 64},
-        (Rectangle) {0, 0, 320, 240}, (Vector2) {0, 0}, 0.0f, WHITE
+        TEX(gradient), (Rectangle) {0, 0, 1, 64},
+        (Rectangle) {0, 0, 320, 240}, (Vector2) {0, 0}, 0.0f, RED
     );
     DrawTexture(TEX(prof_rocky), 124, 48, WHITE);
 }
@@ -199,8 +202,18 @@ void scrIntroRocky9() {
 //  Part 5 - Ask for the player's appearance
 // _____________________________________________________________________________
 //
+// This one is used for everything with ST_INTRO_APPEARANCE (i.e. part 5 and 6)
+void drawIntroAppearanceState() {
+    // Draw the gradient (same as part 4 but different color)
+    DrawTexturePro(
+        TEX(gradient), (Rectangle) {0, 0, 1, 64},
+        (Rectangle) {0, 0, 320, 240}, (Vector2) {0, 0}, 0.0f, BLUE
+    );
+}
+
 void scrIntroAppearance() {
-    pushTextbox("What do you look like?");
+    g.state = ST_INTRO_APPEARANCE;
+    pushTextbox("What do you look like?", "");
     pushMenu(0, NULL, CB_NOTHING);
     MENU.updateFunc = updateIntroAppearance;
     MENU.drawFunc = drawIntroAppearance;
@@ -213,43 +226,70 @@ void updateIntroAppearance() {
 
     else if (K_RIGHT_PRESS() && MENU.choice < 7) MENU.choice++;
 
-    // if (K_A_PRESS()) checkIntroAppearance();
+    if (K_A_PRESS()) scrIntroAppearanceConfirm();
 }
 
 void drawIntroAppearance() {
-    // Draw the gradient (same as part 4)
-    DrawTexturePro(
-        TEX(intro_gradient), (Rectangle) {0, 0, 1, 64},
-        (Rectangle) {0, 0, 320, 240}, (Vector2) {0, 0}, 0.0f, WHITE
-    );
-
     // Draw the textbox behind the menu
     Menu menu = arrpop(g.menus);
     MENU.drawFunc();
     arrpush(g.menus, menu);
 
+    // Player appearance rotation
+    Direction clockwise[] = {DIR_UP, DIR_RIGHT, DIR_DOWN, DIR_LEFT};
+    Direction dir = clockwise[g.frameCount/30 % 4];
+
     // Draw the 8 player appearances
     for (int i = 0; i < 8; i++) {
         DrawTextureRec(
             shget(g.textures, TextFormat("player%d", i)),
-            (Rectangle) {(g.frameCount/4 % 4)*16, 16, 16, 16},
-            (Vector2) {32 + i*32, 120}, WHITE
+            (Rectangle) {(g.frameCount/6 % 4)*16, dir*16, 16, 16},
+            (Vector2) {36 + i*32, 104}, WHITE
         );
     }
 
     // Choice indicator
-    DrawTexture(TEX(indicator), 22 + MENU.choice*32, 123, WHITE);
+    DrawTexture(TEX(indicator), 24 + MENU.choice*32, 107, WHITE);
 }
 
+// _____________________________________________________________________________
+//
+//  Part 6 - Confirm the chosen appearance
+// _____________________________________________________________________________
+//
 void drawIntroAppearanceConfirm() {
-    drawTextBoxMenu();
+    // When the player chooses an appearance, zoom in its large sprite and then
+    // ask for confirmation
+    if (MENU.timer > 30) drawTextBoxMenu();
+
+    // Over 30 frames, transition from the original chosen sprite's size and
+    // location to the large sprite's size centered
+    DrawTexturePro(
+        shget(g.textures, TextFormat("large_player%d", LASTMENU.choice)),
+        (Rectangle) {0, 0, 60, 100},
+        (Rectangle) {
+            MAX((30.0f - MENU.timer)/30.0f, 0.0f)*(36.0f + LASTMENU.choice*32.0f) + MIN(MENU.timer/30.0f, 1.0f)*130.0f,
+            MAX((30.0f - MENU.timer)/30.0f, 0.0f)*107.0f + MIN(MENU.timer/30.0f, 1.0f)*65.0f,
+            MIN(16 + 1.46f*MENU.timer, 60),
+            MIN(16 + 2.8f*MENU.timer, 100)
+        },
+        (Vector2) {0, 0}, 0.0f, WHITE
+    );
 }
 
 void scrIntroAppearanceConfirm() {
-
+    g.s.appearance = MENU.choice;
     scrTextBoxMenu();
+    MENU.drawFunc = drawIntroAppearanceConfirm;
+    MENU.nextFunc = checkIntroAppearanceConfirm;
     MENU.textbox[0] = "You look like this?";
+    MENU.textbox[1] = "";
     arrpush(MENU.choices, "Yes");
     arrpush(MENU.choices, "No");
+}
 
+void checkIntroAppearanceConfirm() {
+    popMenu();
+    if (MENU.choice == 0) {
+    }
 }
