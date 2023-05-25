@@ -37,7 +37,6 @@ void initGame() {
     LOAD_TEXTURE("indicator");
     LOAD_TEXTURE("textbox");
     LOAD_TEXTURE("textbox_light");
-    LOAD_TEXTURE("player");
     LOAD_TEXTURE("tiles_overworld");
     LOAD_TEXTURE("menu_icons");
     LOAD_TEXTURE("rarity");
@@ -52,6 +51,15 @@ void initGame() {
     LOAD_TEXTURE("d307");
     LOAD_TEXTURE("intro_gradient");
     LOAD_TEXTURE("prof_rocky");
+
+    // Load player sprites
+    for (int i = 0; i < 8; i++) {
+        const char *player = TextFormat("player%d", i);
+        shput(
+            g.textures, player,
+            LoadTexture(TextFormat("assets/graphics/characters/%s.png", player))
+        );
+    }
 
     // Sound loading/unloading works just like with textures.
     g.sounds = NULL;

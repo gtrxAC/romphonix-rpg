@@ -21,6 +21,11 @@ void scrIntroRocky7();
 void scrIntroRocky7_1();
 void scrIntroRocky8();
 void scrIntroRocky9();
+void scrIntroRocky10();
+void scrIntroAppearance();
+void drawIntroAppearance();
+void updateIntroAppearance();
+void checkIntroAppearance();
 
 // _____________________________________________________________________________
 //
@@ -137,13 +142,13 @@ void scrIntroRocky3() {
 void scrIntroRocky4() {
     pushTextbox(
         "Big phones, small phones, smart phones, dumb",
-        "phones... As a preservationist, it's my..."
+        "phones... As a preservationist, it's my duty..."
     );
     MENU.nextFunc = scrIntroRocky4_1;
 }
 
 void scrIntroRocky4_1() {
-    pushTextbox("...duty to preserve them all.", "");
+    pushTextbox("to preserve them all.", "");
     MENU.nextFunc = scrIntroRocky5;
 }
 
@@ -166,13 +171,13 @@ void scrIntroRocky6() {
 void scrIntroRocky7() {
     pushTextbox(
         "These phones are more than just phones -",
-        "they're valuable steps that led us to..."
+        "they're valuable steps that led us to where..."
     );
     MENU.nextFunc = scrIntroRocky7_1;
 }
 
 void scrIntroRocky7_1() {
-    pushTextbox("...where we are today.", "");
+    pushTextbox("we are today.", "");
     MENU.nextFunc = scrIntroRocky8;
 }
 
@@ -186,4 +191,65 @@ void scrIntroRocky8() {
 
 void scrIntroRocky9() {
     pushTextbox("That's enough about me. What about you?", "");
+    MENU.nextFunc = scrIntroAppearance;
+}
+
+// _____________________________________________________________________________
+//
+//  Part 5 - Ask for the player's appearance
+// _____________________________________________________________________________
+//
+void scrIntroAppearance() {
+    pushTextbox("What do you look like?");
+    pushMenu(0, NULL, CB_NOTHING);
+    MENU.updateFunc = updateIntroAppearance;
+    MENU.drawFunc = drawIntroAppearance;
+}
+
+void updateIntroAppearance() {
+    // Similar to standard menu update function, except scrolling is done with
+    // left/right instead of up/down. Fixed to 8 menu choices.
+    if (K_LEFT_PRESS() && MENU.choice) MENU.choice--;
+
+    else if (K_RIGHT_PRESS() && MENU.choice < 7) MENU.choice++;
+
+    // if (K_A_PRESS()) checkIntroAppearance();
+}
+
+void drawIntroAppearance() {
+    // Draw the gradient (same as part 4)
+    DrawTexturePro(
+        TEX(intro_gradient), (Rectangle) {0, 0, 1, 64},
+        (Rectangle) {0, 0, 320, 240}, (Vector2) {0, 0}, 0.0f, WHITE
+    );
+
+    // Draw the textbox behind the menu
+    Menu menu = arrpop(g.menus);
+    MENU.drawFunc();
+    arrpush(g.menus, menu);
+
+    // Draw the 8 player appearances
+    for (int i = 0; i < 8; i++) {
+        DrawTextureRec(
+            shget(g.textures, TextFormat("player%d", i)),
+            (Rectangle) {(g.frameCount/4 % 4)*16, 16, 16, 16},
+            (Vector2) {32 + i*32, 120}, WHITE
+        );
+    }
+
+    // Choice indicator
+    DrawTexture(TEX(indicator), 22 + MENU.choice*32, 123, WHITE);
+}
+
+void drawIntroAppearanceConfirm() {
+    drawTextBoxMenu();
+}
+
+void scrIntroAppearanceConfirm() {
+
+    scrTextBoxMenu();
+    MENU.textbox[0] = "You look like this?";
+    arrpush(MENU.choices, "Yes");
+    arrpush(MENU.choices, "No");
+
 }
