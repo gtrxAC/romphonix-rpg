@@ -28,6 +28,11 @@ void updateIntroAppearance();
 void checkIntroAppearance();
 void scrIntroAppearanceConfirm();
 void checkIntroAppearanceConfirm();
+void scrIntroAskName();
+void checkIntroConfirmName();
+void scrIntroEnd2();
+void scrIntroEnd3();
+void scrIntroEnd4();
 
 // _____________________________________________________________________________
 //
@@ -289,7 +294,96 @@ void scrIntroAppearanceConfirm() {
 }
 
 void checkIntroAppearanceConfirm() {
+    int choice = MENU.choice;
     popMenu();
-    if (MENU.choice == 0) {
+    if (choice == 0) {
+        scrIntroEnd();
     }
+}
+
+// _____________________________________________________________________________
+//
+//  Part 7 - Show the player sprite, rest of the intro
+// _____________________________________________________________________________
+//
+// Used by ST_INTRO_END
+void drawIntroEnd() {
+    DrawTexture(
+        shget(g.textures, TextFormat("large_player%d", g.s.appearance)),
+        130, 65, WHITE
+    );
+}
+
+void scrIntroEnd() {
+    g.state = ST_INTRO_END;
+    pushTextbox("I see. And what's your name?", "");
+    MENU.nextFunc = scrIntroAskName;
+}
+
+void scrIntroAskName() {
+    char *defaultName = getenv("USER");  // Linux
+    if (!defaultName) defaultName = getenv("USERNAME");  // Windows
+    if (!defaultName) defaultName = " ";
+    char *name;
+
+    nameEntry:
+        name = tinyfd_inputBox("Name", "What is your name?", defaultName);
+        if (!name) return;
+
+        if (strlen(name) > 15) {
+            tinyfd_messageBox("Error", "Name must be 1-15 characters!", "ok", "error", 0);
+            goto nameEntry;
+        }
+
+    strcpy(g.s.name, name);
+    scrIntroConfirmName();
+}
+
+void scrIntroConfirmName() {
+    scrTextBoxMenu();
+    MENU.nextFunc = checkIntroConfirmName;
+    MENU.textbox[0] = TextFormat("%s? That's your name?", g.s.name);
+    MENU.textbox[1] = "";
+    arrpush(MENU.choices, "Yes");
+    arrpush(MENU.choices, "No");
+}
+
+void checkIntroConfirmName() {
+    int choice = MENU.choice;
+    popMenu();
+    if (choice == 0) {
+        scrIntroEnd1();
+    }
+}
+
+void scrIntroEnd1() {
+    pushTextbox(
+        TextFormat("Nice to meet you, %s!", g.s.name),
+        "Welcome to the team."
+    );
+    MENU.nextFunc = scrIntroEnd2;
+}
+
+void scrIntroEnd2() {
+    pushTextbox("Are you ready to embark on a quest", "of epic proportions?");
+    MENU.nextFunc = scrIntroEnd3;
+}
+
+void scrIntroEnd3() {
+    pushTextbox("Have fun out there! And be sure to drop", "by my lab later.");
+    MENU.nextFunc = scrIntroEnd4;
+}
+
+void scrIntroEnd4() {
+    time_t t = time(NULL);
+    struct tm *tm = localtime(&t);
+    strftime(g.s.startDate, sizeof(g.s.startDate), "%Y-%m-%d", tm);
+
+    g.s.id = GetRandomValue(10000, 99999);
+
+    g.s.curMap = 0;
+    loadMap(0);
+    g.state = ST_INGAME;
+    setSong(g.mapMeta.songName);
+    popMenu();
 }

@@ -41,35 +41,7 @@ void scrMainMenuCheck() {
             break;
 
         case 1: {
-            // TODO: introduction thing
-            char *defaultName = getenv("USER");  // Linux
-            if (!defaultName) defaultName = getenv("USERNAME");  // Windows
-            if (!defaultName) defaultName = " ";
-            char *name;
-
-            nameEntry:
-                name = tinyfd_inputBox("Name", "What is your name?", defaultName);
-                if (!name) return;
-
-                if (strlen(name) > 15) {
-                    tinyfd_messageBox("Error", "Name must be 1-15 characters!", "ok", "error", 0);
-                    goto nameEntry;
-                }
-
-            strcpy(g.s.name, name);
-
-            time_t t = time(NULL);
-            struct tm *tm = localtime(&t);
-            strftime(g.s.startDate, sizeof(g.s.startDate), "%Y-%m-%d", tm);
-
-            g.s.id = GetRandomValue(10000, 99999);
-
-            g.s.curMap = 0;
-            loadMap(0);
-            g.state = ST_INGAME;
-            setSong(g.mapMeta.songName);
             popMenu();
-
             scrIntro();
             break;
         }

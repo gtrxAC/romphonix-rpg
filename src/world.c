@@ -137,7 +137,7 @@ void drawWorld() {
 	);
 
 	DrawTextureRec(
-		TEX(player),
+		shget(g.textures, TextFormat("player%d", g.s.appearance)),
 		(Rectangle) {((16 - g.playerAnim)/4)*16, 16*g.s.playerDir, 16, 16},
 		(Vector2) {152, 112}, WHITE
 	);

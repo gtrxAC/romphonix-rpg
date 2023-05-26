@@ -102,6 +102,7 @@ typedef enum State {
     ST_INTRO_FADE2,
     ST_INTRO_ROCKY,
     ST_INTRO_APPEARANCE,
+    ST_INTRO_END,
     ST_INGAME,
     ST_TRANSITION,  // transition from one map to another
     ST_BATTLE
