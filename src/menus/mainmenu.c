@@ -42,7 +42,7 @@ void scrMainMenuCheck() {
 
         case 1: {
             popMenu();
-            scrIntro();
+            scrIntroFade();
             break;
         }
 

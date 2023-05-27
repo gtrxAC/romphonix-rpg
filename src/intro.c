@@ -9,6 +9,8 @@
 void scrIntroD307_2();
 void scrIntroD307_3();
 void scrIntroD307_4();
+void scrIntroD307_5();
+void scrIntroD307_6();
 void scrIntroFade2();
 void scrIntroRocky();
 void scrIntroRocky2();
@@ -36,70 +38,15 @@ void scrIntroEnd4();
 
 // _____________________________________________________________________________
 //
-//  Part 1 - Fade from blue to black
+//  Part 1 - Fade from black to red gradient
 // _____________________________________________________________________________
 //
-void scrIntro() {
+void scrIntroFade() {
     g.frameCount = 0;
     g.state = ST_INTRO_FADE;
-    // TODO: Music
 }
 
 void drawIntroFade() {
-    ClearBackground((Color) {0, 0, 240 - 2*g.frameCount, 255});
-}
-
-void updateIntroFade() {
-    if (g.frameCount > 120) {
-        scrIntroD307();
-    }
-}
-
-// _____________________________________________________________________________
-//
-//  Part 2 - Samsung D307
-// _____________________________________________________________________________
-//
-void drawIntroD307() {
-    DrawTextureRec(
-        TEX(d307),
-        (Rectangle) {(g.frameCount / 4 % 20)*128, 0, 128, 128},
-        (Vector2) {96, 56}, WHITE
-    );
-}
-
-void scrIntroD307() {
-    g.state = ST_INTRO_D307;
-    pushTextbox("Yes! YES! YESSSSSS!", "");
-    MENU.nextFunc = scrIntroD307_2;
-}
-
-void scrIntroD307_2() {
-    pushTextbox("Finally, it's mine!", "");
-    MENU.nextFunc = scrIntroD307_3;
-}
-
-void scrIntroD307_3() {
-    pushTextbox("The rare! The legendary! The illustrious!", "");
-    MENU.nextFunc = scrIntroD307_4;
-}
-
-void scrIntroD307_4() {
-    pushTextbox("The SAMSUNG SGH-D307!", "");
-    MENU.nextFunc = scrIntroFade2;
-}
-
-// _____________________________________________________________________________
-//
-//  Part 3 - Fade from black to red gradient
-// _____________________________________________________________________________
-//
-void scrIntroFade2() {
-    g.frameCount = 0;
-    g.state = ST_INTRO_FADE2;
-}
-
-void drawIntroFade2() {
     Color tintRed = {230, 41, 55, g.frameCount*2};
     Color tintWhite = {255, 255, 255, g.frameCount*2};
     DrawTexturePro(
@@ -109,7 +56,7 @@ void drawIntroFade2() {
     DrawTexture(TEX(prof_rocky), 124, 48, tintWhite);
 }
 
-void updateIntroFade2() {
+void updateIntroFade() {
     if (g.frameCount > 120) {
         scrIntroRocky();
     }
@@ -117,7 +64,7 @@ void updateIntroFade2() {
 
 // _____________________________________________________________________________
 //
-//  Part 4 - Professor Rocky
+//  Part 2 - Professor Rocky
 // _____________________________________________________________________________
 //
 void drawIntroRocky() {
@@ -204,10 +151,10 @@ void scrIntroRocky9() {
 
 // _____________________________________________________________________________
 //
-//  Part 5 - Ask for the player's appearance
+//  Part 3 - Ask for the player's appearance
 // _____________________________________________________________________________
 //
-// This one is used for everything with ST_INTRO_APPEARANCE (i.e. part 5 and 6)
+// This one is used for everything with ST_INTRO_APPEARANCE (i.e. part 3 and 4)
 void drawIntroAppearanceState() {
     // Draw the gradient (same as part 4 but different color)
     DrawTexturePro(
@@ -259,7 +206,7 @@ void drawIntroAppearance() {
 
 // _____________________________________________________________________________
 //
-//  Part 6 - Confirm the chosen appearance
+//  Part 4 - Confirm the chosen appearance
 // _____________________________________________________________________________
 //
 void drawIntroAppearanceConfirm() {
@@ -295,23 +242,26 @@ void scrIntroAppearanceConfirm() {
 
 void checkIntroAppearanceConfirm() {
     int choice = MENU.choice;
-    popMenu();
+    popMenu();  // confirmation menu
     if (choice == 0) {
+        popMenu();  // appearance selection menu
+        popMenu();  // appearance selection textbox
         scrIntroEnd();
     }
 }
 
 // _____________________________________________________________________________
 //
-//  Part 7 - Show the player sprite, rest of the intro
+//  Part 5 - Show the player sprite, ask for name, rest of the intro
 // _____________________________________________________________________________
 //
 // Used by ST_INTRO_END
 void drawIntroEnd() {
-    DrawTexture(
-        shget(g.textures, TextFormat("large_player%d", g.s.appearance)),
-        130, 65, WHITE
-    );
+    // Don't use textformat here as it overwrites previous textformats used for
+    // textbox text
+    char sprite[16];
+    sprintf(sprite, "large_player%d", g.s.appearance);
+    DrawTexture(shget(g.textures, sprite), 130, 65, WHITE);
 }
 
 void scrIntroEnd() {
@@ -353,6 +303,8 @@ void checkIntroConfirmName() {
     popMenu();
     if (choice == 0) {
         scrIntroEnd1();
+    } else {
+        scrIntroAskName();
     }
 }
 
@@ -370,11 +322,73 @@ void scrIntroEnd2() {
 }
 
 void scrIntroEnd3() {
-    pushTextbox("Have fun out there! And be sure to drop", "by my lab later.");
-    MENU.nextFunc = scrIntroEnd4;
+    pushTextbox("Have fun out there! And be sure to drop by", "my lab later.");
+    MENU.nextFunc = scrIntroFade2;
 }
 
-void scrIntroEnd4() {
+// _____________________________________________________________________________
+//
+//  Part 6 - Fade from blue to black, and a 2 sec timer
+// _____________________________________________________________________________
+//
+void scrIntroFade2() {
+    g.frameCount = 0;
+    g.state = ST_INTRO_FADE2;
+    // TODO: Music
+}
+
+void drawIntroFade2() {
+    int blue = MAX(240 - 4*g.frameCount, 0);
+    ClearBackground((Color) {0, 0, blue, 255});
+}
+
+void updateIntroFade2() {
+    if (g.frameCount > 180) {
+        scrIntroD307();
+    }
+}
+
+// _____________________________________________________________________________
+//
+//  Part 7 - Samsung D307
+// _____________________________________________________________________________
+//
+void drawIntroD307() {
+    DrawTextureRec(
+        TEX(d307),
+        (Rectangle) {(g.frameCount / 6 % 20)*128, 0, 128, 128},
+        (Vector2) {96, 56}, WHITE
+    );
+}
+
+void scrIntroD307() {
+    g.state = ST_INTRO_D307;
+    // TODO: sparkle sound
+    pushTextbox("Yes! YES! YESSSSSS!", "");
+    MENU.nextFunc = scrIntroD307_2;
+}
+
+void scrIntroD307_2() {
+    pushTextbox("Finally, it's mine!", "");
+    MENU.nextFunc = scrIntroD307_3;
+}
+
+void scrIntroD307_3() {
+    pushTextbox("The rare! The legendary! The illustrious!", "");
+    MENU.nextFunc = scrIntroD307_4;
+}
+
+void scrIntroD307_4() {
+    pushTextbox("The SAMSUNG SGH-D307!", "");
+    MENU.nextFunc = scrIntroD307_5;
+}
+
+void scrIntroD307_5() {
+    pushTextbox("Come to me!", "");
+    MENU.nextFunc = scrIntroD307_6;
+}
+
+void scrIntroD307_6() {
     time_t t = time(NULL);
     struct tm *tm = localtime(&t);
     strftime(g.s.startDate, sizeof(g.s.startDate), "%Y-%m-%d", tm);
@@ -385,5 +399,4 @@ void scrIntroEnd4() {
     loadMap(0);
     g.state = ST_INGAME;
     setSong(g.mapMeta.songName);
-    popMenu();
 }
