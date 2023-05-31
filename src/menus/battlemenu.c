@@ -12,8 +12,6 @@
 //
 #include "../common.h"
 
-void scrSwitchPhoneMenu(BattleState);
-
 // _____________________________________________________________________________
 //
 //  Battle menu - init function
@@ -39,22 +37,22 @@ bool scrBattleMenu(bool canRun) {
         return false;
     }
 
-    pushMenu(0, NULL, CB_NOTHING);
+    pushMenu(CB_NOTHING);
     strcpy(MENU.battleTextbox[0], "Battle doesn't have a textbox set!");
     strcpy(MENU.battleTextbox[1], "Battle doesn't have a textbox set!");
     strcpy(MENU.battleTextbox[2], "Battle doesn't have a textbox set!");
 
-    MENU.updateFunc = updateBattleMenu;
-    MENU.drawFunc = drawBattleMenu;
-    MENU.nextFunc = checkBattleMenu;
+    setUpdateFunc(updateBattleMenu);
+    setDrawFunc(drawBattleMenu);
+    setNextFunc(checkBattleMenu);
 
     MENU.battleState = BS_STARTING;
-    arrpush(MENU.choices, "Fight");
-    arrpush(MENU.choices, "Switch");
-    arrpush(MENU.choices, "Items");
+    addChoice("Fight");
+    addChoice("Switch");
+    addChoice("Items");
 
     MENU.canRun = canRun;
-    if (canRun) arrpush(MENU.choices, "Run");
+    if (canRun) addChoice("Run");
     return true;
 }
 
@@ -111,10 +109,10 @@ void setBattleState(BattleState bs) {
         case BS_WAITING: {
             MENU.choice = 0;
             arrfree(MENU.choices);
-            arrpush(MENU.choices, "Fight");
-            arrpush(MENU.choices, "Switch");
-            arrpush(MENU.choices, "Items");
-            if (MENU.canRun) arrpush(MENU.choices, "Run");
+            addChoice("Fight");
+            addChoice("Switch");
+            addChoice("Items");
+            if (MENU.canRun) addChoice("Run");
             break;
         }
 
@@ -123,7 +121,7 @@ void setBattleState(BattleState bs) {
             MENU.choice = 0;
             arrfree(MENU.choices);
             for (int i = 0; i < 4; i++) {
-                arrpush(MENU.choices, SSPECS(PLAYERP.skills[i]).name);
+                addChoice(SSPECS(PLAYERP.skills[i]).name);
             }
             break;
         }

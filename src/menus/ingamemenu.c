@@ -8,25 +8,20 @@
 //
 #include "../common.h"
 
-void drawInGameMenu();
-void scrInGameMenuCheck();
-
 // _____________________________________________________________________________
 //
 //  In-game menu - init function
 // _____________________________________________________________________________
 //
 void scrInGameMenu() {
-    const char *choices[] = {
-        "Collection",
-        "Phones",
-        "Items",
-        g.s.name,
-        "Options",
-    };
-    pushMenu(5, choices, CB_CLOSE);
-    MENU.drawFunc = drawInGameMenu;
-    MENU.nextFunc = scrInGameMenuCheck;
+    pushMenu(CB_CLOSE);
+    addChoice("Collection");
+    addChoice("Phones");
+    addChoice("Items");
+    addChoice(g.s.name);
+    addChoice("Options");
+    setDrawFunc(drawInGameMenu);
+    setNextFunc(scrInGameMenuCheck);
     PlaySound(SOUND(hit));
 }
 
@@ -39,8 +34,8 @@ void drawInGameMenu() {
     drawBox(0, 0, 130, 35 + 33*arrlen(MENU.choices));
 
     for (int i = 0; i < 5; i++) {
-        DrawTextureRec(
-            TEX(menu_icons), (Rectangle) {i*32, 0, 32, 32},
+        drawTextureRec(
+            "menu_icons", (Rectangle) {i*32, 0, 32, 32},
             (Vector2) {5, 5 + 33*i},
             (i == MENU.choice ? WHITE : ColorAlpha(WHITE, 0.5f))
         );
@@ -53,7 +48,7 @@ void drawInGameMenu() {
         );
     }
 
-    drawText(TextFormat("Money: $%d", g.s.money), 10, 178, WHITE);
+    drawText(F("Money: $%d", g.s.money), 10, 178, WHITE);
 }
 
 // _____________________________________________________________________________

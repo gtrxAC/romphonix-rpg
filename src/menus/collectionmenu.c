@@ -12,19 +12,15 @@
 //
 #include "../common.h"
 
-void scrCollectionMenu();
-void updateCollectionMenu();
-void drawCollectionMenu();
-
 // _____________________________________________________________________________
 //
 //  Collection menu - init function
 // _____________________________________________________________________________
 //
 void scrCollectionMenu() {
-    pushMenu(0, NULL, CB_CLOSE);
-    MENU.updateFunc = updateCollectionMenu;
-    MENU.drawFunc = drawCollectionMenu;
+    pushMenu(CB_CLOSE);
+    setUpdateFunc(updateCollectionMenu);
+    setDrawFunc(drawCollectionMenu);
 }
 
 // _____________________________________________________________________________
@@ -76,7 +72,7 @@ void drawCollectionMenu() {
             if (g.s.phonesCaught[i]) color = WHITE;
 
             drawText(
-                g, TextFormat( "%s %s", SPECS(i).brand, SPECS(i).model),
+                g, F( "%s %s", SPECS(i).brand, SPECS(i).model),
                 20, 23 + (i - MENU.scroll)*20, color
             );
         }
@@ -86,7 +82,7 @@ void drawCollectionMenu() {
     }
 
     // Phone list menu indicator (arrow)
-    DrawTexture(TEX(indicator), 6, 23 + 20*(MENU.choice - MENU.scroll), WHITE);
+    drawTexture("indicator", 6, 23 + 20*(MENU.choice - MENU.scroll), WHITE);
 
     // Phone list scrollbar
     DrawRectangle(140, 20 + 1.47f*MENU.scroll, 4, 16, ColorAlpha(WHITE, 0.3f));
@@ -96,10 +92,10 @@ void drawCollectionMenu() {
     PhoneSpecs *selected = &SPECS(MENU.choice);
 
     if (g.s.phonesSeen[MENU.choice]) {
-        DrawTexture(shget(g.textures, selected->sprite), 200, 16, WHITE);
+        drawTexture(selected->sprite, 200, 16, WHITE);
     }
     else {
-        DrawTexture(TEX(unknown_phone), 200, 16, WHITE);
+        drawTexture("unknown_phone", 200, 16, WHITE);
     }
  
     // Description
@@ -108,10 +104,10 @@ void drawCollectionMenu() {
     if (g.s.phonesSeen[MENU.choice]) {
         drawTextRec(selected->description, 148, 100, 168, 144, WHITE);
 
-        drawText(TextFormat("Year: %d", selected->year), 252, 220, WHITE);
+        drawText(F("Year: %d", selected->year), 252, 220, WHITE);
         drawText("Rarity:", 148, 220, WHITE);
-        DrawTextureRec(
-            TEX(rarity), (Rectangle) {0, 12*selected->rarity, 64, 12},
+        drawTextureRec(
+            "rarity", (Rectangle) {0, 12*selected->rarity, 64, 12},
             (Vector2) {190, 220}, WHITE
         );
     }

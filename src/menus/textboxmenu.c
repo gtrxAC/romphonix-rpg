@@ -7,19 +7,15 @@
 //
 #include "../common.h"
 
-void scrTextBoxMenu();
-void drawTextBoxMenu();
-void updateMenu();
-
 // _____________________________________________________________________________
 //
 //  Text box menu - init function
 // _____________________________________________________________________________
 //
-void scrTextBoxMenu() {
-    pushMenu(0, NULL, CB_CLOSE);
-    MENU.updateFunc = updateMenu;
-    MENU.drawFunc = drawTextBoxMenu;
+void pushTextboxMenu() {
+    pushMenu(CB_CONTINUE);
+    setUpdateFunc(updateMenu);
+    setDrawFunc(drawTextBoxMenu);
 }
 
 // _____________________________________________________________________________

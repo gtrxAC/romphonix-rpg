@@ -6,11 +6,6 @@
 // _____________________________________________________________________________
 //
 #include "../common.h"
-#include "itemactionsmenu.h"
-
-void scrPhoneActionsMenu();
-void updatePhoneActionsMenu();
-void checkPhoneActionsMenu();
 
 // _____________________________________________________________________________
 //
@@ -18,13 +13,13 @@ void checkPhoneActionsMenu();
 // _____________________________________________________________________________
 //
 void scrPhoneActionsMenu() {
-    pushMenu(0, NULL, CB_CLOSE);
-    MENU.drawFunc = drawItemActionsMenu;
-    MENU.nextFunc = checkPhoneActionsMenu;
+    pushMenu(CB_CLOSE);
+    setDrawFunc(drawItemActionsMenu);
+    setNextFunc(checkPhoneActionsMenu);
 
-    arrpush(MENU.choices, "Specs");
-    arrpush(MENU.choices, "Move up");
-    arrpush(MENU.choices, "Move down");
+    addChoice("Specs");
+    addChoice("Move up");
+    addChoice("Move down");
 }
 
 // _____________________________________________________________________________

@@ -8,20 +8,15 @@
 //
 #include "../common.h"
 
-void scrPlayerMenu();
-void updatePlayerMenu();
-void drawPlayerMenu();
-void checkPlayerMenu();
-
 // _____________________________________________________________________________
 //
 //  Player info menu - init function
 // _____________________________________________________________________________
 //
 void scrPlayerMenu() {
-    pushMenu(0, NULL, CB_CLOSE);
-    MENU.updateFunc = updatePlayerMenu;
-    MENU.drawFunc = drawPlayerMenu;
+    pushMenu(CB_CLOSE);
+    setUpdateFunc(updatePlayerMenu);
+    setDrawFunc(drawPlayerMenu);
 }
 
 // _____________________________________________________________________________
@@ -60,18 +55,18 @@ void drawPlayerMenu() {
     switch (MENU.pms) {
         case PMS_FRONT: {
             drawBox(48, 64, 224, 112);
-            DrawTexture(TEX(portraits), 52, 68, WHITE);
+            drawTexture("portraits", 52, 68, WHITE);
             drawTextL(g.s.name, 119, 68, WHITE);
-            drawText(TextFormat("ID No. %d", g.s.id), 120, 90, WHITE);
+            drawText(F("ID No. %d", g.s.id), 120, 90, WHITE);
 
             int collection = 0;
             for (int i = 0; i < g.phoneDB->size; i++) {
                 if (g.s.phonesCaught[i]) collection++;
             }
 
-            drawText(TextFormat("Collection: %d/%d", collection, g.phoneDB->size), 120, 104, WHITE);
-            drawText(TextFormat("Date: %s", g.s.startDate), 120, 118, WHITE);
-            drawText(TextFormat("Press L to flip!", g.s.startDate), 108, 154, GRAY);
+            drawText(F("Collection: %d/%d", collection, g.phoneDB->size), 120, 104, WHITE);
+            drawText(F("Date: %s", g.s.startDate), 120, 118, WHITE);
+            drawText(F("Press L to flip!", g.s.startDate), 108, 154, GRAY);
             break;
         }
 
@@ -82,8 +77,8 @@ void drawPlayerMenu() {
 
         case PMS_ANIM_BTF:
         case PMS_ANIM_FTB: {
-            DrawTextureRec(
-                TEX(flipbox),
+            drawTextureRec(
+                "flipbox",
                 (Rectangle) {(g.frameCount/6)*326, 0, 326, 326},
                 (Vector2) {-3, -43}, WHITE
             );

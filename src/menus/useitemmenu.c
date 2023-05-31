@@ -9,25 +9,20 @@
 //
 #include "../common.h"
 
-void scrUseItemMenu(int, int);
-void drawPhonesMenu();
-void exitUseItemMenu();
-void scrCheckUseItemMenu();
-
 // _____________________________________________________________________________
 //
 //  Use item menu - init function
 // _____________________________________________________________________________
 //
 void scrUseItemMenu(int bagPocket, int item) {
-    pushMenu(6, NULL, CB_CLOSE);
-    MENU.drawFunc = drawPhonesMenu;
-    MENU.nextFunc = scrCheckUseItemMenu;
+    pushMenu(CB_CLOSE);
+    setDrawFunc(drawPhonesMenu);
+    setNextFunc(scrCheckUseItemMenu);
     MENU.itemBagPocket = bagPocket;
     MENU.item = item;
 
     // For this menu, we create 6 "dummy" values to let the user scroll freely.
-    for (int i = 0; i < 6; i++) arrput(MENU.choices, "");
+    for (int i = 0; i < 6; i++) addChoice("");
 }
 
 // _____________________________________________________________________________
@@ -48,7 +43,7 @@ void scrCheckUseItemMenu() {
         case IE_HEAL: {
             if (phone->hp == phone->maxHP) {
                 pushTextbox(
-                    g, TextFormat(
+                    g, F(
                         "%s %s is already at full HP!",
                         SPECS(phone->id).brand, SPECS(phone->id).model
                     ), ""
@@ -60,7 +55,7 @@ void scrCheckUseItemMenu() {
                 phone->hp += heal;
                 schedSound(SOUND(heal), 10);
                 pushTextbox(
-                    g, TextFormat(
+                    g, F(
                         "Healed %s %s by %d HP.",
                         SPECS(phone->id).brand, SPECS(phone->id).model, heal
                     ), ""
@@ -74,7 +69,7 @@ void scrCheckUseItemMenu() {
                 phone->hp = phone->maxHP * ISPECS(item->id).effectParameter / 100;
                 schedSound(SOUND(heal), 10);
                 pushTextbox(
-                    g, TextFormat(
+                    g, F(
                         "%s %s has been revived.",
                         SPECS(phone->id).brand, SPECS(phone->id).model
                     ), ""

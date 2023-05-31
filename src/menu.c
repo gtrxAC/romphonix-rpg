@@ -10,19 +10,22 @@ void drawMenu();
 //  stored and can be returned back to.
 // _____________________________________________________________________________
 //
-void pushMenu(int numChoices, const char **choices, CloseBehavior closeBehav) {
+void pushMenu(CloseBehavior cb) {
 	arrput(g.menus, (Menu) {0});
-	MENU.closeBehav = closeBehav;
-	MENU.updateFunc = updateMenu;
-	MENU.drawFunc = drawMenu;
-
-    if (choices != NULL) {
-        for (int i = 0; i < numChoices; i++) {
-            arrput(MENU.choices, choices[i]);
-        }
-    }
-
+	MENU.closeBehav = cb;
+	setUpdateFunc(updateMenu);
+	setDrawFunc(drawMenu);
     MENU.nextFunc = NULL;
+}
+
+// _____________________________________________________________________________
+//
+//  Adds a choice to the current menu.
+// _____________________________________________________________________________
+//
+void addChoice(const char *choice) {
+    // Allocated string is freed with popMenu
+    arrpush(MENU.choices, strdup(choice));
 }
 
 // _____________________________________________________________________________
@@ -42,7 +45,7 @@ void updateMenu() {
         switch (MENU.closeBehav) {
             case CB_NOTHING: break;
 
-            case CB_NEXT_MENU: {
+            case CB_CONTINUE: {
                 MENU.choice = -1;
                 if (MENU.nextFunc) MENU.nextFunc();
                 break;
@@ -82,5 +85,5 @@ void drawMenu() {
         );
     }
 
-    DrawTexture(TEX(indicator), 8, 8 + 14*MENU.choice, WHITE);
+    drawTexture("indicator", 8, 8 + 14*MENU.choice, WHITE);
 }

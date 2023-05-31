@@ -8,54 +8,38 @@
 //
 #include "../common.h"
 
-void scrRepairMenu(Phone *phone, int amount);
-void scrCheckRepairMenu();
-void drawRepairMenu();
-
 // _____________________________________________________________________________
 //
 //  Repair menu - init function
 // _____________________________________________________________________________
 //
 void scrRepairMenu(Phone *phone, int amount) {
-    scrTextBoxMenu();
-    MENU.drawFunc = drawRepairMenu;
-    MENU.nextFunc = scrCheckRepairMenu;
+    pushTextboxMenu();
+    setDrawFunc(drawRepairMenu);
+    setNextFunc(scrCheckRepairMenu);
     MENU.repairPhone = phone;
     MENU.repairAmount = amount;
     
-    if (phone->batteryStatus < COND_GOOD) arrpush(
-        MENU.choices,
-        TextFormat(
-            "Battery (HP): %s -> %s",
-            condToString[phone->batteryStatus],
-            condToString[MIN(phone->batteryStatus + amount, COND_GOOD)]
-        )
-    );
-    if (phone->screenStatus < COND_GOOD) arrpush(
-        MENU.choices,
-        TextFormat(
-            "Screen (AT): %s -> %s",
-            condToString[phone->screenStatus],
-            condToString[MIN(phone->screenStatus + amount, COND_GOOD)]
-        )
-    );
-    if (phone->boardStatus < COND_GOOD) arrpush(
-        MENU.choices,
-        TextFormat(
-            "Board (DF): %s -> %s",
-            condToString[phone->boardStatus],
-            condToString[MIN(phone->boardStatus + amount, COND_GOOD)]
-        )
-    );
-    if (phone->coverStatus < COND_GOOD) arrpush(
-        MENU.choices,
-        TextFormat(
-            "Cover (WT): %s -> %s",
-            condToString[phone->coverStatus],
-            condToString[MIN(phone->coverStatus + amount, COND_GOOD)]
-        )
-    );
+    if (phone->batteryStatus < COND_GOOD) addChoice(F(
+        "Battery (HP): %s -> %s",
+        condToString[phone->batteryStatus],
+        condToString[MIN(phone->batteryStatus + amount, COND_GOOD)]
+    ));
+    if (phone->screenStatus < COND_GOOD) addChoice(F(
+        "Screen (AT): %s -> %s",
+        condToString[phone->screenStatus],
+        condToString[MIN(phone->screenStatus + amount, COND_GOOD)]
+    ));
+    if (phone->boardStatus < COND_GOOD) addChoice(F(
+        "Board (DF): %s -> %s",
+        condToString[phone->boardStatus],
+        condToString[MIN(phone->boardStatus + amount, COND_GOOD)]
+    ));
+    if (phone->coverStatus < COND_GOOD) addChoice(F(
+        "Cover (WT): %s -> %s",
+        condToString[phone->coverStatus],
+        condToString[MIN(phone->coverStatus + amount, COND_GOOD)]
+    ));
 }
 
 // _____________________________________________________________________________

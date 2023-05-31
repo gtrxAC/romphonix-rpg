@@ -24,7 +24,7 @@ void updateTitle() {
 // _____________________________________________________________________________
 //
 void drawTitle() {
-    DrawTexture(TEX(title), 0, 0, WHITE);
+    drawTexture("title", 0, 0, WHITE);
     if (g.frameCount % 60 < 30) {
         int length = MeasureTextEx(g.fonts.dialogue, "Press Any Key", 13, 0).x;
         drawText("Press Any Key", 160 - length/2, 180, WHITE);

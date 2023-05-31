@@ -30,7 +30,7 @@ void initGame() {
 
     // The loaded textures are then used with the TEX macro.
     // For example, a texture loaded with LOAD_TEXTURE("title") is used in
-    // raylib functions with TEX(title) - notice lack of quotation marks.
+    // raylib functions with "title" - notice lack of quotation marks.
     sh_new_strdup(g.textures);
     #define LOAD_TEXTURE(n) shput((g.textures), n, LoadTexture("assets/graphics/" n ".png"))
     LOAD_TEXTURE("title");
@@ -55,12 +55,12 @@ void initGame() {
     // Load player sprites, both overworld and large
     for (int i = 0; i < 8; i++) {
         shput(
-            g.textures, TextFormat("player%d", i),
-            LoadTexture(TextFormat("assets/graphics/characters/player%d.png", i))
+            g.textures, F("player%d", i),
+            LoadTexture(F("assets/graphics/characters/player%d.png", i))
         );
         shput(
-            g.textures, TextFormat("large_player%d", i),
-            LoadTexture(TextFormat("assets/graphics/characters/large/player%d.png", i))
+            g.textures, F("large_player%d", i),
+            LoadTexture(F("assets/graphics/characters/large/player%d.png", i))
         );
     }
 
@@ -92,7 +92,7 @@ void initGame() {
         PhoneSpecs *ph = &SPECS(i);
         shput(
             g.textures, ph->sprite,
-            LoadTexture(TextFormat("assets/graphics/phones/%s.png", ph->sprite))
+            LoadTexture(F("assets/graphics/phones/%s.png", ph->sprite))
         );
     }
 
@@ -101,7 +101,7 @@ void initGame() {
         ItemSpecs *item = &ISPECS(i);
         shput(
             g.textures, item->sprite,
-            LoadTexture(TextFormat("assets/graphics/items/%s.png", item->sprite))
+            LoadTexture(F("assets/graphics/items/%s.png", item->sprite))
         );
     }
 

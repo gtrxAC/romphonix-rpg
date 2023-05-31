@@ -8,22 +8,19 @@
 //
 #include "../common.h"
 
-void scrExitMenu();
-void checkExitMenu();
-
 // _____________________________________________________________________________
 //
 //  Text box menu - init function
 // _____________________________________________________________________________
 //
 void scrExitMenu() {
-    scrTextBoxMenu();
-    MENU.textbox[0] = "What do you want to do?";
-    MENU.textbox[1] = "";
-    arrpush(MENU.choices, "Continue");
-    arrpush(MENU.choices, "Save and Close");
-    arrpush(MENU.choices, "Close without saving");
-    MENU.nextFunc = checkExitMenu;
+    pushTextboxMenu();
+    strcpy(MENU.textbox[0], "What do you want to do?");
+    strcpy(MENU.textbox[1], "");
+    addChoice("Continue");
+    addChoice("Save and Close");
+    addChoice("Close without saving");
+    setNextFunc(checkExitMenu);
 }
 
 // _____________________________________________________________________________

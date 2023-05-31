@@ -6,6 +6,11 @@
 // Shorthand to access the previous menu
 #define LASTMENU (g.menus[arrlen(g.menus) - 2])
 
+// Set functions for menus. This also declares the functions so we don't have to use headers.
+#define setUpdateFunc(fn) { void fn(); MENU.updateFunc = (fn); }
+#define setDrawFunc(fn) { void fn(); MENU.drawFunc = (fn); }
+#define setNextFunc(fn) { void fn(); MENU.nextFunc = (fn); }
+
 typedef enum PlayerMenuState {
     PMS_FRONT,
     PMS_ANIM_FTB,  // front to back
@@ -17,7 +22,7 @@ typedef enum PlayerMenuState {
 // This only applies if a custom update function is not used
 typedef enum CloseBehavior {
     CB_NOTHING,    // Nothing (menu can't be closed)
-    CB_NEXT_MENU,  // MENU.nextFunc is run and this menu's menu choice is set to -1 (used for textboxes / NPC scripting)
+    CB_CONTINUE,   // MENU.nextFunc is run and this menu's menu choice is set to -1 (used for textboxes / NPC scripting)
     CB_CLOSE       // Menu is just closed
 } CloseBehavior;
 
@@ -25,7 +30,7 @@ typedef enum CloseBehavior {
 
 typedef struct Menu {
     unsigned int timer;
-	const char **choices;  // stb_ds dynamic array
+	char **choices;  // stb_ds dynamic array, heap allocated copied strings
 	int choice;
     CloseBehavior closeBehav;
     int scroll;  // scrolling offset for collection menu
@@ -42,7 +47,7 @@ typedef struct Menu {
     union {
         // Textboxes
         struct {
-            const char *textbox[2];
+            char textbox[2][64];
             char textboxDraw[2][64];
             unsigned int textboxTime;
         };

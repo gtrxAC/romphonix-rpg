@@ -10,22 +10,18 @@
 //
 #include "../common.h"
 
-void scrPhonesMenu();
-void drawPhonesMenu();
-void scrCheckPhonesMenu();
-
 // _____________________________________________________________________________
 //
 //  Phones menu - init function
 // _____________________________________________________________________________
 //
 void scrPhonesMenu() {
-    pushMenu(6, NULL, CB_CLOSE);
-    MENU.drawFunc = drawPhonesMenu;
-    MENU.nextFunc = scrCheckPhonesMenu;
+    pushMenu(CB_CLOSE);
+    setDrawFunc(drawPhonesMenu);
+    setNextFunc(scrCheckPhonesMenu);
 
     // For this menu, we create 6 "dummy" values to let the user scroll freely.
-    for (int i = 0; i < 6; i++) arrput(MENU.choices, "");
+    for (int i = 0; i < 6; i++) addChoice("");
 }
 
 // _____________________________________________________________________________
@@ -43,26 +39,26 @@ void drawPhonesMenu() {
 
         // Menu indicator (arrow)
         if (MENU.choice == i) {
-            DrawTexture(TEX(indicator), 6, 14 + i*40, WHITE);
+            drawTexture("indicator", 6, 14 + i*40, WHITE);
         }
 
         if (!g.s.party[i].active) continue;
 
         // Sprite
-        DrawTextureRec(
-            TEX(phone_icons),
+        drawTextureRec(
+            "phone_icons",
             (Rectangle) {(g.frameCount % 40 < 20) * 32, 32*spec->icon, 32, 32},
             (Vector2) {MENU.choice == i ? 24 : 16, 4 + i*40}, WHITE
         );
 
         // Text
         // Note: '$' character in the digits font (drawTextD) says 'Lv.'
-        drawText(TextFormat("%s %s", spec->brand, spec->model), 64, 5 + i*40, WHITE);
-        drawTextD(TextFormat("$ %d", ph->level), 285, 5 + i*40, WHITE);
+        drawText(F("%s %s", spec->brand, spec->model), 64, 5 + i*40, WHITE);
+        drawTextD(F("$ %d", ph->level), 285, 5 + i*40, WHITE);
 
         // Health bar
         drawProgressBar(ph->hp, ph->maxHP, 64, i*40 + 21, 100, GREEN);
-        drawTextD(TextFormat("%d/%d", ph->hp, ph->maxHP), 172, i*40 + 20, WHITE);
+        drawTextD(F("%d/%d", ph->hp, ph->maxHP), 172, i*40 + 20, WHITE);
     }
 }
 

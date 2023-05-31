@@ -48,6 +48,8 @@ typedef struct Game Game;
 #define u16 uint16_t
 #define u32 uint32_t
 
+#define F TextFormat
+
 #define MAP_WIDTH (g.map[0])
 #define MAP_HEIGHT (g.map[1])
 
@@ -241,9 +243,6 @@ typedef struct Game {
     //  Note: music is not included here as it's managed by fluidsynth
     // _________________________________________________________________________
     //
-    // Gets a texture
-    #define TEX(t) (shget(g.textures, #t))
-
     // Hash table of texture name -> texture struct
     // Allows quick creation of textures without having hundreds of variables
     struct { char *key; Texture value; } *textures;
@@ -268,7 +267,5 @@ typedef struct Game {
 } Game;
 
 extern Game g;
-
-#include "script.h"
 
 #endif

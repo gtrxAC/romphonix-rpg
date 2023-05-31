@@ -5,32 +5,36 @@
 //
 #include "common.h"
 
-void drawBox(int x, int y, int width, int height) {
+// _____________________________________________________________________________
+//
+//  Box drawing (blue and light blue)
+// _____________________________________________________________________________
+//
+void drawBoxCommon(Texture texture, int x, int y, int width, int height) {
     NPatchInfo nPatch = {
-        (Rectangle) {0, 0, TEX(textbox).width, TEX(textbox).height},
+        (Rectangle) {0, 0, texture.width, texture.height},
         4, 4, 4, 4, NPATCH_NINE_PATCH
     };
 
     DrawTextureNPatch(
-        TEX(textbox), nPatch,
-        (Rectangle) {x, y, width, height},
+        texture, nPatch, (Rectangle) {x, y, width, height},
         (Vector2) {0, 0}, 0.0f, WHITE
     );
+}
+
+void drawBox(int x, int y, int width, int height) {
+    drawBoxCommon(shget(g.textures, "textbox"), x, y, width, height);
 }
 
 void drawBoxL(int x, int y, int width, int height) {
-    NPatchInfo nPatch = {
-        (Rectangle) {0, 0, TEX(textbox).width, TEX(textbox).height},
-        4, 4, 4, 4, NPATCH_NINE_PATCH
-    };
-
-    DrawTextureNPatch(
-        TEX(textbox_light), nPatch,
-        (Rectangle) {x, y, width, height},
-        (Vector2) {0, 0}, 0.0f, WHITE
-    );
+    drawBoxCommon(shget(g.textures, "textbox_light"), x, y, width, height);
 }
 
+// _____________________________________________________________________________
+//
+//  Text drawing wrappers
+// _____________________________________________________________________________
+//
 void drawText(const char *text, int x, int y, Color color) {
     DrawTextEx(g.fonts.dialogue, text, (Vector2) {x, y}, 13, 0, color);
 }
@@ -57,15 +61,41 @@ int measureTextL(const char *text) {
     return MeasureTextEx(g.fonts.large, text, 23, 1).x;
 }
 
-void drawProgressBar(int value, int max, int x, int y, int width, Color color) {
-    DrawRectangle(x, y, width + 4, 12, BLACK);
-    DrawRectangle(x + 2, y + 2, ((float) value / max) * width, 8, color);
+// _____________________________________________________________________________
+//
+//  Texture drawing wrappers
+// _____________________________________________________________________________
+//
+void drawTexturePro(const char *name, Rectangle source, Rectangle dest, float rotation, Color tint) {
+    if (shgeti(g.textures, name) >= 0) {
+        DrawTexturePro(shget(g.textures, name), source, dest, (Vector2) {0, 0}, rotation, tint);
+    }
+    else {
+        drawText("Missing\ntexture", dest.x, dest.y, RED);
+    }
+}
+
+void drawTextureRec(const char *name, Rectangle source, Vector2 position, Color tint) {
+    drawTexturePro(
+        name, source,
+        (Rectangle) {position.x, position.y, source.width, source.height},
+        0.0f, tint
+    );
+}
+
+void drawTexture(const char *name, int x, int y, Color tint) {
+    if (shgeti(g.textures, name) >= 0) {
+        DrawTexture(shget(g.textures, name), x, y, tint);
+    }
+    else {
+        drawText("Missing\ntexture", x, y, RED);
+    }
 }
 
 // _____________________________________________________________________________
 //
-// DrawTextRec was removed from raylib in 4.0, we need to re-implement it
-// https://github.com/raysan5/raylib/blob/master/examples/text/text_rectangle_bounds.c
+//  DrawTextRec was removed from raylib in 4.0, we need to re-implement it
+//  https://github.com/raysan5/raylib/blob/master/examples/text/text_rectangle_bounds.c
 // _____________________________________________________________________________
 //
 // Draw text using font inside rectangle limits with support for text selection
@@ -227,4 +257,14 @@ void updateSchedSound() {
             PlaySound(g.schedSound);
         }
     }
+}
+
+// _____________________________________________________________________________
+//
+//  Miscellaneous
+// _____________________________________________________________________________
+//
+void drawProgressBar(int value, int max, int x, int y, int width, Color color) {
+    DrawRectangle(x, y, width + 4, 12, BLACK);
+    DrawRectangle(x + 2, y + 2, ((float) value / max) * width, 8, color);
 }

@@ -22,18 +22,18 @@ void drawWorldRT() {
 	BeginTextureMode(g.world);
 	for (int y = 0; y < MAP_HEIGHT; y++) {
 		for (int x = 0; x < MAP_WIDTH; x++) {
-			DrawTextureRec(
-				TEX(tiles_overworld),
+			drawTextureRec(
+				"tiles_overworld",
 				(Rectangle) {MAP(x, y, MAP_BG_X)*16, MAP(x, y, MAP_BG_Y)*16, 16, 16},
 				(Vector2) {x*16, y*16}, WHITE
 			);
-			DrawTextureRec(
-				TEX(tiles_overworld),
+			drawTextureRec(
+				"tiles_overworld",
 				(Rectangle) {MAP(x, y, MAP_FG1_X)*16, MAP(x, y, MAP_FG1_Y)*16, 16, 16},
 				(Vector2) {x*16, y*16}, WHITE
 			);
-			DrawTextureRec(
-				TEX(tiles_overworld),
+			drawTextureRec(
+				"tiles_overworld",
 				(Rectangle) {MAP(x, y, MAP_FG2_X)*16, MAP(x, y, MAP_FG2_Y)*16, 16, 16},
 				(Vector2) {x*16, y*16}, WHITE
 			);
@@ -136,8 +136,8 @@ void drawWorld() {
 		(Vector2) {0, 0}, 0.0f, WHITE
 	);
 
-	DrawTextureRec(
-		shget(g.textures, TextFormat("player%d", g.s.appearance)),
+	drawTextureRec(
+		F("player%d", g.s.appearance),
 		(Rectangle) {((16 - g.playerAnim)/4)*16, 16*g.s.playerDir, 16, 16},
 		(Vector2) {152, 112}, WHITE
 	);

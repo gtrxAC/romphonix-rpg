@@ -17,11 +17,11 @@ void drawTextbox();
 //
 void pushTextbox(const char *line1, const char *line2) {
 	arrput(g.menus, (Menu) {0});
-	MENU.updateFunc = updateTextbox;
-	MENU.drawFunc = drawTextbox;
+	setUpdateFunc(updateTextbox);
+	setDrawFunc(drawTextbox);
 
-	MENU.textbox[0] = line1;
-	MENU.textbox[1] = line2;
+	strcpy(MENU.textbox[0], line1);
+	strcpy(MENU.textbox[1], line2);
 }
 
 // _____________________________________________________________________________
@@ -30,6 +30,9 @@ void pushTextbox(const char *line1, const char *line2) {
 // _____________________________________________________________________________
 //
 void popMenu() {
+	for (int i = 0; i < arrlen(MENU.choices); i++) {
+		free(MENU.choices[i]);
+	}
 	arrfree(MENU.choices);
 	arrpop(g.menus);
 }

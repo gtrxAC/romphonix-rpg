@@ -1,11 +1,6 @@
 #ifndef BATTLE_H
 #define BATTLE_H
 
-bool scrBattleMenu(bool canRun);
-void updateBattleMenu();
-void drawBattleMenu();
-void checkBattleMenu();
-
 // PLAYERP and ENEMYP contain phone properties that will (in the player's case)
 // be permanently saved.
 // MENU.player and MENU.enemy contain temporary properties (see phones.h

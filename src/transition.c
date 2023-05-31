@@ -33,11 +33,11 @@ void drawTransition() {
 	int y = x - 40;
 	int size = 320 - transitionTimer*320;
 
-	DrawTexturePro(
-		TEX(transition), 
+	drawTexturePro(
+		"transition", 
 		(Rectangle) {0, 0, 320, 320},
 		(Rectangle) {x, y, size, size},
-		(Vector2) {0, 0}, 0.0f, WHITE
+		0.0f, WHITE
 	);
 
 	// Draw black rectangles around the area of the screen which is not covered

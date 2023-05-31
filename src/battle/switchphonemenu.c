@@ -8,24 +8,19 @@
 //
 #include "../common.h"
 
-void scrSwitchPhoneMenu(BattleState);
-void setBattleState(BattleState);
-void drawPhonesMenu();
-void scrCheckSwitchPhoneMenu();
-
 // _____________________________________________________________________________
 //
 //  Switch phone menu - init function
 // _____________________________________________________________________________
 //
 void scrSwitchPhoneMenu(BattleState nextState) {
-    pushMenu(6, NULL, CB_CLOSE);
-    MENU.drawFunc = drawPhonesMenu;
-    MENU.nextFunc = scrCheckSwitchPhoneMenu;
+    pushMenu(CB_CLOSE);
+    setDrawFunc(drawPhonesMenu);
+    setNextFunc(scrCheckSwitchPhoneMenu);
     MENU.nextBattleState = nextState;
 
     // For this menu, we create 6 "dummy" values to let the user scroll freely.
-    for (int i = 0; i < 6; i++) arrput(MENU.choices, "");
+    for (int i = 0; i < 6; i++) addChoice("");
 }
 
 // _____________________________________________________________________________

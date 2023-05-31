@@ -5,37 +5,6 @@
 //
 #include "common.h"
 
-// Declarations
-void scrIntroD307_2();
-void scrIntroD307_3();
-void scrIntroD307_4();
-void scrIntroD307_5();
-void scrIntroD307_6();
-void scrIntroFade2();
-void scrIntroRocky();
-void scrIntroRocky2();
-void scrIntroRocky3();
-void scrIntroRocky4();
-void scrIntroRocky4_1();
-void scrIntroRocky5();
-void scrIntroRocky6();
-void scrIntroRocky7();
-void scrIntroRocky7_1();
-void scrIntroRocky8();
-void scrIntroRocky9();
-void scrIntroRocky10();
-void scrIntroAppearance();
-void drawIntroAppearance();
-void updateIntroAppearance();
-void checkIntroAppearance();
-void scrIntroAppearanceConfirm();
-void checkIntroAppearanceConfirm();
-void scrIntroAskName();
-void checkIntroConfirmName();
-void scrIntroEnd2();
-void scrIntroEnd3();
-void scrIntroEnd4();
-
 // _____________________________________________________________________________
 //
 //  Part 1 - Fade from black to red gradient
@@ -49,11 +18,11 @@ void scrIntroFade() {
 void drawIntroFade() {
     Color tintRed = {230, 41, 55, g.frameCount*2};
     Color tintWhite = {255, 255, 255, g.frameCount*2};
-    DrawTexturePro(
-        TEX(gradient), (Rectangle) {0, 0, 1, 64},
-        (Rectangle) {0, 0, 320, 240}, (Vector2) {0, 0}, 0.0f, tintRed
+    drawTexturePro(
+        "gradient", (Rectangle) {0, 0, 1, 64},
+        (Rectangle) {0, 0, 320, 240}, 0.0f, tintRed
     );
-    DrawTexture(TEX(prof_rocky), 124, 48, tintWhite);
+    drawTexture("prof_rocky", 124, 48, tintWhite);
 }
 
 void updateIntroFade() {
@@ -68,22 +37,22 @@ void updateIntroFade() {
 // _____________________________________________________________________________
 //
 void drawIntroRocky() {
-    DrawTexturePro(
-        TEX(gradient), (Rectangle) {0, 0, 1, 64},
-        (Rectangle) {0, 0, 320, 240}, (Vector2) {0, 0}, 0.0f, RED
+    drawTexturePro(
+        "gradient", (Rectangle) {0, 0, 1, 64},
+        (Rectangle) {0, 0, 320, 240}, 0.0f, RED
     );
-    DrawTexture(TEX(prof_rocky), 124, 48, WHITE);
+    drawTexture("prof_rocky", 124, 48, WHITE);
 }
 
 void scrIntroRocky() {
     g.state = ST_INTRO_ROCKY;
     pushTextbox("Hello there! It's so nice to meet you!", "");
-    MENU.nextFunc = scrIntroRocky2;
+    setNextFunc(scrIntroRocky2);
 }
 
 void scrIntroRocky2() {
     pushTextbox("Welcome to the WORLD OF PHONES!", "");
-    MENU.nextFunc = scrIntroRocky3;
+    setNextFunc(scrIntroRocky3);
 }
 
 void scrIntroRocky3() {
@@ -91,7 +60,7 @@ void scrIntroRocky3() {
         "My name is Professor Rocky, and I'm the",
         "authority on phones worldwide."
     );
-    MENU.nextFunc = scrIntroRocky4;
+    setNextFunc(scrIntroRocky4);
 }
 
 void scrIntroRocky4() {
@@ -99,12 +68,12 @@ void scrIntroRocky4() {
         "Big phones, small phones, smart phones, dumb",
         "phones... As a preservationist, it's my duty..."
     );
-    MENU.nextFunc = scrIntroRocky4_1;
+    setNextFunc(scrIntroRocky4_1);
 }
 
 void scrIntroRocky4_1() {
     pushTextbox("to preserve them all.", "");
-    MENU.nextFunc = scrIntroRocky5;
+    setNextFunc(scrIntroRocky5);
 }
 
 void scrIntroRocky5() {
@@ -112,7 +81,7 @@ void scrIntroRocky5() {
         "And as time and technology advance, the",
         "technology of the past is just left to rot."
     );
-    MENU.nextFunc = scrIntroRocky6;
+    setNextFunc(scrIntroRocky6);
 }
 
 void scrIntroRocky6() {
@@ -120,7 +89,7 @@ void scrIntroRocky6() {
         "Even though today some old technology keeps",
         "getting used, our old phones are forgotten."
     );
-    MENU.nextFunc = scrIntroRocky7;
+    setNextFunc(scrIntroRocky7);
 }
 
 void scrIntroRocky7() {
@@ -128,12 +97,12 @@ void scrIntroRocky7() {
         "These phones are more than just phones -",
         "they're valuable steps that led us to where..."
     );
-    MENU.nextFunc = scrIntroRocky7_1;
+    setNextFunc(scrIntroRocky7_1);
 }
 
 void scrIntroRocky7_1() {
     pushTextbox("we are today.", "");
-    MENU.nextFunc = scrIntroRocky8;
+    setNextFunc(scrIntroRocky8);
 }
 
 void scrIntroRocky8() {
@@ -141,12 +110,12 @@ void scrIntroRocky8() {
         "The preservation of them are extremely",
         "important, and that's what I do."
     );
-    MENU.nextFunc = scrIntroRocky9;
+    setNextFunc(scrIntroRocky9);
 }
 
 void scrIntroRocky9() {
     pushTextbox("That's enough about me. What about you?", "");
-    MENU.nextFunc = scrIntroAppearance;
+    setNextFunc(scrIntroAppearance);
 }
 
 // _____________________________________________________________________________
@@ -157,18 +126,18 @@ void scrIntroRocky9() {
 // This one is used for everything with ST_INTRO_APPEARANCE (i.e. part 3 and 4)
 void drawIntroAppearanceState() {
     // Draw the gradient (same as part 4 but different color)
-    DrawTexturePro(
-        TEX(gradient), (Rectangle) {0, 0, 1, 64},
-        (Rectangle) {0, 0, 320, 240}, (Vector2) {0, 0}, 0.0f, BLUE
+    drawTexturePro(
+        "gradient", (Rectangle) {0, 0, 1, 64},
+        (Rectangle) {0, 0, 320, 240}, 0.0f, BLUE
     );
 }
 
 void scrIntroAppearance() {
     g.state = ST_INTRO_APPEARANCE;
     pushTextbox("What do you look like?", "");
-    pushMenu(0, NULL, CB_NOTHING);
-    MENU.updateFunc = updateIntroAppearance;
-    MENU.drawFunc = drawIntroAppearance;
+    pushMenu(CB_NOTHING);
+    setUpdateFunc(updateIntroAppearance);
+    setDrawFunc(drawIntroAppearance);
 }
 
 void updateIntroAppearance() {
@@ -193,15 +162,15 @@ void drawIntroAppearance() {
 
     // Draw the 8 player appearances
     for (int i = 0; i < 8; i++) {
-        DrawTextureRec(
-            shget(g.textures, TextFormat("player%d", i)),
+        drawTextureRec(
+            F("player%d", i),
             (Rectangle) {(g.frameCount/6 % 4)*16, dir*16, 16, 16},
             (Vector2) {36 + i*32, 104}, WHITE
         );
     }
 
     // Choice indicator
-    DrawTexture(TEX(indicator), 24 + MENU.choice*32, 107, WHITE);
+    drawTexture("indicator", 24 + MENU.choice*32, 107, WHITE);
 }
 
 // _____________________________________________________________________________
@@ -216,8 +185,8 @@ void drawIntroAppearanceConfirm() {
 
     // Over 30 frames, transition from the original chosen sprite's size and
     // location to the large sprite's size centered
-    DrawTexturePro(
-        shget(g.textures, TextFormat("large_player%d", LASTMENU.choice)),
+    drawTexturePro(
+        F("large_player%d", LASTMENU.choice),
         (Rectangle) {0, 0, 60, 100},
         (Rectangle) {
             MAX((30.0f - MENU.timer)/30.0f, 0.0f)*(36.0f + LASTMENU.choice*32.0f) + MIN(MENU.timer/30.0f, 1.0f)*130.0f,
@@ -225,19 +194,19 @@ void drawIntroAppearanceConfirm() {
             MIN(16 + 1.46f*MENU.timer, 60),
             MIN(16 + 2.8f*MENU.timer, 100)
         },
-        (Vector2) {0, 0}, 0.0f, WHITE
+        0.0f, WHITE
     );
 }
 
 void scrIntroAppearanceConfirm() {
     g.s.appearance = MENU.choice;
-    scrTextBoxMenu();
-    MENU.drawFunc = drawIntroAppearanceConfirm;
-    MENU.nextFunc = checkIntroAppearanceConfirm;
-    MENU.textbox[0] = "You look like this?";
-    MENU.textbox[1] = "";
-    arrpush(MENU.choices, "Yes");
-    arrpush(MENU.choices, "No");
+    pushTextboxMenu();
+    setDrawFunc(drawIntroAppearanceConfirm);
+    setNextFunc(checkIntroAppearanceConfirm);
+    strcpy(MENU.textbox[0], "You look like this?");
+    strcpy(MENU.textbox[1], "");
+    addChoice("Yes");
+    addChoice("No");
 }
 
 void checkIntroAppearanceConfirm() {
@@ -261,24 +230,24 @@ void drawIntroEnd() {
     // textbox text
     char sprite[16];
     sprintf(sprite, "large_player%d", g.s.appearance);
-    DrawTexture(shget(g.textures, sprite), 130, 65, WHITE);
+    drawTexture(sprite, 130, 65, WHITE);
 }
 
 void scrIntroEnd() {
     g.state = ST_INTRO_END;
     pushTextbox("I see. And what's your name?", "");
-    MENU.nextFunc = scrIntroAskName;
+    setNextFunc(scrIntroAskName);
 }
 
 void scrIntroAskName() {
     char *defaultName = getenv("USER");  // Linux
     if (!defaultName) defaultName = getenv("USERNAME");  // Windows
-    if (!defaultName) defaultName = " ";
+    if (!defaultName) defaultName = "Player";
     char *name;
 
     nameEntry:
         name = tinyfd_inputBox("Name", "What is your name?", defaultName);
-        if (!name) return;
+        if (!name || !strlen(name)) name = defaultName;
 
         if (strlen(name) > 15) {
             tinyfd_messageBox("Error", "Name must be 1-15 characters!", "ok", "error", 0);
@@ -290,12 +259,12 @@ void scrIntroAskName() {
 }
 
 void scrIntroConfirmName() {
-    scrTextBoxMenu();
-    MENU.nextFunc = checkIntroConfirmName;
-    MENU.textbox[0] = TextFormat("%s? That's your name?", g.s.name);
-    MENU.textbox[1] = "";
-    arrpush(MENU.choices, "Yes");
-    arrpush(MENU.choices, "No");
+    pushTextboxMenu();
+    setNextFunc(checkIntroConfirmName);
+    strcpy(MENU.textbox[0], F("%s? That's your name?", g.s.name));
+    strcpy(MENU.textbox[1], "");
+    addChoice("Yes");
+    addChoice("No");
 }
 
 void checkIntroConfirmName() {
@@ -310,20 +279,20 @@ void checkIntroConfirmName() {
 
 void scrIntroEnd1() {
     pushTextbox(
-        TextFormat("Nice to meet you, %s!", g.s.name),
+        F("Nice to meet you, %s!", g.s.name),
         "Welcome to the team."
     );
-    MENU.nextFunc = scrIntroEnd2;
+    setNextFunc(scrIntroEnd2);
 }
 
 void scrIntroEnd2() {
     pushTextbox("Are you ready to embark on a quest", "of epic proportions?");
-    MENU.nextFunc = scrIntroEnd3;
+    setNextFunc(scrIntroEnd3);
 }
 
 void scrIntroEnd3() {
     pushTextbox("Have fun out there! And be sure to drop by", "my lab later.");
-    MENU.nextFunc = scrIntroFade2;
+    setNextFunc(scrIntroFade2);
 }
 
 // _____________________________________________________________________________
@@ -354,8 +323,8 @@ void updateIntroFade2() {
 // _____________________________________________________________________________
 //
 void drawIntroD307() {
-    DrawTextureRec(
-        TEX(d307),
+    drawTextureRec(
+        "d307",
         (Rectangle) {(g.frameCount / 6 % 20)*128, 0, 128, 128},
         (Vector2) {96, 56}, WHITE
     );
@@ -365,27 +334,28 @@ void scrIntroD307() {
     g.state = ST_INTRO_D307;
     // TODO: sparkle sound
     pushTextbox("Yes! YES! YESSSSSS!", "");
-    MENU.nextFunc = scrIntroD307_2;
+    setNextFunc(scrIntroD307_2);
 }
 
 void scrIntroD307_2() {
     pushTextbox("Finally, it's mine!", "");
-    MENU.nextFunc = scrIntroD307_3;
+    setNextFunc(scrIntroD307_3);
 }
 
 void scrIntroD307_3() {
     pushTextbox("The rare! The legendary! The illustrious!", "");
-    MENU.nextFunc = scrIntroD307_4;
+    setNextFunc(scrIntroD307_4);
 }
 
 void scrIntroD307_4() {
     pushTextbox("The SAMSUNG SGH-D307!", "");
-    MENU.nextFunc = scrIntroD307_5;
+    setNextFunc(scrIntroD307_5);
 }
 
 void scrIntroD307_5() {
     pushTextbox("Come to me!", "");
-    MENU.nextFunc = scrIntroD307_6;
+    setNextFunc(scrIntroD307_6);
+    // TODO: continue the cutscene
 }
 
 void scrIntroD307_6() {

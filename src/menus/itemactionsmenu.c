@@ -12,26 +12,19 @@
 //
 #include "../common.h"
 
-void scrItemActionsMenu();
-void updateItemActionsMenu();
-void drawItemActionsMenu();
-void checkItemActionsMenu();
-
-void scrUseItemMenu(int, int);
-
 // _____________________________________________________________________________
 //
 //  Item actions menu - init function
 // _____________________________________________________________________________
 //
 void scrItemActionsMenu() {
-    pushMenu(0, NULL, CB_CLOSE);
-    MENU.drawFunc = drawItemActionsMenu;
-    MENU.nextFunc = checkItemActionsMenu;
+    pushMenu(CB_CLOSE);
+    setDrawFunc(drawItemActionsMenu);
+    setNextFunc(checkItemActionsMenu);
 
-    arrpush(MENU.choices, "Use");
-    arrpush(MENU.choices, "Give");
-    arrpush(MENU.choices, "Toss");
+    addChoice("Use");
+    addChoice("Give");
+    addChoice("Toss");
 }
 
 // _____________________________________________________________________________
@@ -75,7 +68,7 @@ void drawItemActionsMenu() {
         );
     }
 
-    DrawTexture(TEX(indicator), baseX + 8, baseY + 8 + 14*MENU.choice, WHITE);
+    drawTexture("indicator", baseX + 8, baseY + 8 + 14*MENU.choice, WHITE);
 }
 
 // _____________________________________________________________________________

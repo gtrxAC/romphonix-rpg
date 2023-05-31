@@ -117,7 +117,7 @@ void checkBindings() {
             MENU.enemyName = "Enemy";
             strcpy(
                 MENU.battleTextbox[0],
-                TextFormat("A wild %s %s appeared!", SPECS(id).brand, SPECS(id).model)
+                F("A wild %s %s appeared!", SPECS(id).brand, SPECS(id).model)
             );
             MENU.battleTextbox[1][0] = '\0';
             MENU.battleTextbox[2][0] = '\0';

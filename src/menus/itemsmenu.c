@@ -9,12 +9,6 @@
 // _____________________________________________________________________________
 //
 #include "../common.h"
-#include "itemactionsmenu.h"
-
-void scrItemsMenu();
-void updateItemsMenu();
-void drawItemsMenu();
-void checkItemsMenu();
 
 // _____________________________________________________________________________
 //
@@ -22,9 +16,9 @@ void checkItemsMenu();
 // _____________________________________________________________________________
 //
 void scrItemsMenu() {
-    pushMenu(0, NULL, CB_CLOSE);
-    MENU.updateFunc = updateItemsMenu;
-    MENU.drawFunc = drawItemsMenu;
+    pushMenu(CB_CLOSE);
+    setUpdateFunc(updateItemsMenu);
+    setDrawFunc(drawItemsMenu);
     MENU.bagChoice = 1;  // start in the middle pocket (items)
 }
 
@@ -86,15 +80,15 @@ void drawItemsMenu() {
 
     // Bag sprite window (center left), bag texture
     drawBox(0, 20, 140, 110);
-    DrawTextureRec(
-        TEX(bag),
+    drawTextureRec(
+        "bag",
         (Rectangle) {MENU.bagChoice*96, 0, 96, 96},
         (Vector2) {22, 27}, WHITE
     );
 
     // Selected item sprite (below the bag sprite)
     if (arrlen(CURPOCKET)) {
-        DrawTexture(shget(g.textures, ISPECS(CURPOCKET[MENU.choice].id).sprite), 102, 87, WHITE);
+        drawTexture(ISPECS(CURPOCKET[MENU.choice].id).sprite, 102, 87, WHITE);
     }
     
     // Item description window (bottom left)
@@ -118,14 +112,14 @@ void drawItemsMenu() {
 
         // Item count
         drawTextD(
-            g, TextFormat("* %d", CURPOCKET[i].count),
+            g, F("* %d", CURPOCKET[i].count),
             284, 6 + (i - MENU.scroll)*20, WHITE
         );
     }
 
     // Item list menu indicator/arrow
     if (arrlen(CURPOCKET)) {
-        DrawTexture(TEX(indicator), 146, 6 + 20*(MENU.choice - MENU.scroll), WHITE);
+        drawTexture("indicator", 146, 6 + 20*(MENU.choice - MENU.scroll), WHITE);
     } else {
         // Centered "No items" text if pocket is empty
         int textLen = measureText("You have no items.");

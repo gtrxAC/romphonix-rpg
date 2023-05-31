@@ -8,21 +8,17 @@
 //
 #include "../common.h"
 
-void scrSettingsMenu();
-void updateSettingsMenu();
-void drawSettingsMenu();
-
 // _____________________________________________________________________________
 //
 //  Settings menu - init function
 // _____________________________________________________________________________
 //
 void scrSettingsMenu() {
-    pushMenu(0, NULL, CB_CLOSE);
-    MENU.updateFunc = updateSettingsMenu;
-    MENU.drawFunc = drawSettingsMenu;
-    arrpush(MENU.choices, "Music volume");
-    arrpush(MENU.choices, "Sound effect volume");
+    pushMenu(CB_CLOSE);
+    setUpdateFunc(updateSettingsMenu);
+    setDrawFunc(drawSettingsMenu);
+    addChoice("Music volume");
+    addChoice("Sound effect volume");
 }
 
 // _____________________________________________________________________________
@@ -86,14 +82,14 @@ void drawSettingsMenu() {
             13, 0, WHITE
         );
     }
-    DrawTexture(TEX(indicator), 8, 8 + 14*MENU.choice, WHITE);
+    drawTexture("indicator", 8, 8 + 14*MENU.choice, WHITE);
 
     // Draw values (right aligned)
-    const char *volStr = TextFormat("%d / 20", g.settings.musicVolume);
+    const char *volStr = F("%d / 20", g.settings.musicVolume);
     int width = measureText(volStr);
     drawText(volStr, 312 - width, 8, WHITE);
 
-    volStr = TextFormat("%d / 20", g.settings.sfxVolume);
+    volStr = F("%d / 20", g.settings.sfxVolume);
     width = measureText(volStr);
     drawText(volStr, 312 - width, 22, WHITE);
 
