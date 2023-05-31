@@ -41,9 +41,9 @@ void drawInGameMenu() {
         );
     }
 
-    for (int i = 0; i < arrlen(MENU.choices) && MENU.choices[i]; i++) {
+    for (int i = 0; i < arrlen(MENU.choices); i++) {
         drawText(
-            g, MENU.choices[i], 42, 16 + 33*i,
+            MENU.choices[i], 42, 16 + 33*i,
             (i == MENU.choice ? WHITE : LIGHTGRAY)
         );
     }

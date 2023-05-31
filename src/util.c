@@ -71,7 +71,7 @@ void drawTexturePro(const char *name, Rectangle source, Rectangle dest, float ro
         DrawTexturePro(shget(g.textures, name), source, dest, (Vector2) {0, 0}, rotation, tint);
     }
     else {
-        drawText("Missing\ntexture", dest.x, dest.y, RED);
+        drawText(F("Missing\ntexture\n'%s'", name), dest.x, dest.y, RED);
     }
 }
 
@@ -88,7 +88,7 @@ void drawTexture(const char *name, int x, int y, Color tint) {
         DrawTexture(shget(g.textures, name), x, y, tint);
     }
     else {
-        drawText("Missing\ntexture", x, y, RED);
+        drawText(F("Missing\ntexture\n'%s'", name), x, y, RED);
     }
 }
 

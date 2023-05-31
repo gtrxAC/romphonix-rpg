@@ -297,7 +297,7 @@ void scrIntroEnd3() {
 
 // _____________________________________________________________________________
 //
-//  Part 6 - Fade from blue to black, and a 2 sec timer
+//  Part 6 - Fade from blue to black, and a 1 sec timer
 // _____________________________________________________________________________
 //
 void scrIntroFade2() {
@@ -307,12 +307,14 @@ void scrIntroFade2() {
 }
 
 void drawIntroFade2() {
-    int blue = MAX(240 - 4*g.frameCount, 0);
-    ClearBackground((Color) {0, 0, blue, 255});
+    if (g.frameCount < 60) {
+        int blue = MAX(240 - 4*g.frameCount, 0);
+        ClearBackground((Color) {0, 0, blue, 255});
+    }
 }
 
 void updateIntroFade2() {
-    if (g.frameCount > 180) {
+    if (g.frameCount > 120) {
         scrIntroD307();
     }
 }
