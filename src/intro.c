@@ -11,6 +11,7 @@
 // _____________________________________________________________________________
 //
 void scrIntroFade() {
+    setSong("assets/sounds/music/null.mid");
     g.frameCount = 0;
     g.state = ST_INTRO_FADE;
 }
@@ -28,6 +29,9 @@ void drawIntroFade() {
 void updateIntroFade() {
     if (g.frameCount > 120) {
         scrIntroRocky();
+    }
+    if (g.frameCount == 60) {
+        setSong("assets/sounds/music/rpxintro2.mid");
     }
 }
 
@@ -303,7 +307,7 @@ void scrIntroEnd3() {
 void scrIntroFade2() {
     g.frameCount = 0;
     g.state = ST_INTRO_FADE2;
-    // TODO: Music
+    setSong("assets/sounds/music/null.mid");
 }
 
 void drawIntroFade2() {
@@ -334,7 +338,7 @@ void drawIntroD307() {
 
 void scrIntroD307() {
     g.state = ST_INTRO_D307;
-    // TODO: sparkle sound
+    setSong("assets/sounds/music/rpxintro1.mid");
     pushTextbox("Yes! YES! YESSSSSS!", "");
     setNextFunc(scrIntroD307_2);
 }

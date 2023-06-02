@@ -115,9 +115,11 @@ void drawBattleMenu() {
     drawStatusEffects(ENEMYP, MENU.enemy, 287);
 
     // Player phone sprite
+    drawTexture("shadow", 48, 150, WHITE);
     drawTexture(SPECS(PLAYERP.id).sprite, 48, 96, WHITE);
 
     // Enemy phone sprite
+    drawTexture("shadow", 208, 150, WHITE);
     drawTexture(SPECS(ENEMYP.id).sprite, 208, 96, WHITE);
 
     // debug

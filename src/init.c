@@ -51,6 +51,7 @@ void initGame() {
     LOAD_TEXTURE("d307");
     LOAD_TEXTURE("gradient");
     LOAD_TEXTURE("prof_rocky");
+    LOAD_TEXTURE("shadow");
 
     // Load player sprites, both overworld and large
     for (int i = 0; i < 8; i++) {
