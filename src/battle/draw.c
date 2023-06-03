@@ -51,7 +51,7 @@ void drawStatusEffects(Phone phone, BattlePhone bPhone, int x) {
 // _____________________________________________________________________________
 //
 void drawBattleMenu() {
-    drawTexture("battle_bg", 0, 0, WHITE);
+    drawTexture(g.mapMeta.battleBackground, 0, 0, WHITE);
 
     if (MENU.battleState == BS_WAITING || MENU.battleState == BS_WAITING_MOVE) {
         // Left panel (options)
@@ -103,9 +103,7 @@ void drawBattleMenu() {
     drawText(MENU.enemyName, 170, 10, LIGHTGRAY);
     drawTextD(F("$ %d", ENEMYP.level), 280, 10, WHITE);
 
-    brandModel = F(
-        "%s %s", SPECS(ENEMYP.id).brand, SPECS(ENEMYP.id).model
-    );
+    brandModel = F("%s %s", SPECS(ENEMYP.id).brand, SPECS(ENEMYP.id).model);
     drawText(brandModel, 170, 25, WHITE);
     drawProgressBar(ENEMYP.hp, ENEMYP.maxHP, 170, 42, 80, GREEN);
     drawTextD(F("%d/%d", ENEMYP.hp, ENEMYP.maxHP), 258, 42, WHITE);
@@ -114,12 +112,14 @@ void drawBattleMenu() {
     // Enemy statuses
     drawStatusEffects(ENEMYP, MENU.enemy, 287);
 
-    // Player phone sprite
-    drawTexture("shadow", 48, 150, WHITE);
-    drawTexture(SPECS(PLAYERP.id).sprite, 48, 96, WHITE);
+    // Phone shadows (except for cave background)
+    if (strcmp(g.mapMeta.battleBackground, "battle/cave")) {
+        drawTexture("shadow", 48, 150, WHITE);
+        drawTexture("shadow", 208, 150, WHITE);
+    }
 
-    // Enemy phone sprite
-    drawTexture("shadow", 208, 150, WHITE);
+    // Phone sprites
+    drawTexture(SPECS(PLAYERP.id).sprite, 48, 96, WHITE);
     drawTexture(SPECS(ENEMYP.id).sprite, 208, 96, WHITE);
 
     // debug

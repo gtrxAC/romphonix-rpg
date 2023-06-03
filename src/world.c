@@ -1,5 +1,4 @@
 #include "common.h"
-// #include "menu.h"
 
 bool canMove(int dX, int dY) {
 	int newX = g.s.playerX + dX;

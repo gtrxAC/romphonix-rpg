@@ -63,10 +63,10 @@ int main() {
             // the same for all menus, so they won't have to be implemented
             // separately for each menu
             if (K_UP_PRESS() || K_DOWN_PRESS() || K_LEFT_PRESS() || K_RIGHT_PRESS()) {
-                PlaySound(SOUND(scroll));
+                playSound("scroll");
             }
-            if (K_A_PRESS()) PlaySound(SOUND(select));
-            if (K_B_PRESS()) PlaySound(SOUND(back));
+            if (K_A_PRESS()) playSound("select");
+            if (K_B_PRESS()) playSound("back");
 
             MENU.updateFunc();
             MENU.timer++;

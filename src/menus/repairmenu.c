@@ -71,17 +71,17 @@ void scrCheckRepairMenu() {
     }
 
     else {
-        if (strncmp(MENU.choices[MENU.choice], "Battery", 7)) {
+        if (!strncmp(MENU.choices[MENU.choice], "Battery", 7)) {
             MENU.repairPhone->batteryStatus = MIN(
                 MENU.repairPhone->batteryStatus + MENU.repairAmount, COND_GOOD
             );
         }
-        if (strncmp(MENU.choices[MENU.choice], "Screen", 6)) {
+        if (!strncmp(MENU.choices[MENU.choice], "Screen", 6)) {
             MENU.repairPhone->screenStatus = MIN(
                 MENU.repairPhone->screenStatus + MENU.repairAmount, COND_GOOD
             );
         }
-        if (strncmp(MENU.choices[MENU.choice], "Board", 5)) {
+        if (!strncmp(MENU.choices[MENU.choice], "Board", 5)) {
             MENU.repairPhone->boardStatus = MIN(
                 MENU.repairPhone->boardStatus + MENU.repairAmount, COND_GOOD
             );
@@ -98,7 +98,7 @@ void scrCheckRepairMenu() {
 
         // excessive spaces to create a little bit of a pause
         pushTextbox(
-            g, "Condition improved!                    ",
+            "Condition improved!                    ",
             "Oh, and your screwdriver broke..."
         );
     }

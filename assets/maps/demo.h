@@ -19,7 +19,7 @@
 
 // Step scripts
 void scrDemoDoor() {
-    PlaySound(SOUND(door));
+    playSound("door");
     changeMap(1, 5, 8);
 }
 
@@ -55,6 +55,9 @@ Map mapDemo = {
 
     // Path to the song used by the map, also looking from the root
     "assets/sounds/music/shakey_snakey.mid",
+
+    // The battle background image used in this map. (assets/graphics/)
+    "battle/field",
 
     // List of step script functions (executed when player steps on a tile)
     // Each tile has a step/interact script value from 0-255, 0 means no script

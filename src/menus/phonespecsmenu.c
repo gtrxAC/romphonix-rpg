@@ -58,10 +58,10 @@ void drawPhoneSpecsMenu() {
 
 	// Top right box (name, battery, level, exp)
 	drawBox(72, 0, 248, 72);
-    drawText(F("%s %s", PHONESPECS.brand, PHONESPECS.model), 80, 10, WHITE);
-    drawTextD(F("$ %d", PHONE->level), 285, 9, WHITE);
-    drawText(F("Battery: %d%%", (int) ((float) PHONE->hp/PHONE->maxHP)*100), 80, 29, WHITE);
-    drawText(F("EXP: %d/%d", PHONE->exp, PHONE->maxExp), 80, 48, WHITE);
+    drawTextL(F("%s %s", PHONESPECS.brand, PHONESPECS.model), 80, 11, WHITE);
+    drawTextD(F("$ %d", PHONE->level), 285, 8, WHITE);
+    drawText(F("Battery: %d%%", (int) ((float) PHONE->hp/PHONE->maxHP)*100), 80, 37, WHITE);
+    drawText(F("EXP: %d/%d", PHONE->exp, PHONE->maxExp), 80, 52, WHITE);
 
 	// Middle box (stats and status)
 	drawBox(0, 72, 320, 80);
@@ -72,45 +72,45 @@ void drawPhoneSpecsMenu() {
 
 	if (PHONE->batteryStatus != COND_OK) {
 		drawText(
-			g, F("x %.1f", condMultipliers[PHONE->batteryStatus]),
+			F("x %.1f", condMultipliers[PHONE->batteryStatus]),
 			65, 82, (condMultipliers[PHONE->batteryStatus]) > 1.0f ? GREEN : RED
 		);
 	}
 	drawText(
-		g, F("Battery Status:  %s", condToString[PHONE->batteryStatus]),
+		F("Battery Status:  %s", condToString[PHONE->batteryStatus]),
 		120, 82, WHITE
 	);
 
 	if (PHONE->screenStatus != COND_OK) {
 		drawText(
-			g, F("x %.1f", condMultipliers[PHONE->screenStatus]),
+			F("x %.1f", condMultipliers[PHONE->screenStatus]),
 			65, 98, (condMultipliers[PHONE->screenStatus]) > 1.0f ? GREEN : RED
 		);
 	}
 	drawText(
-		g, F("Screen Status:  %s", condToString[PHONE->screenStatus]),
+		F("Screen Status:  %s", condToString[PHONE->screenStatus]),
 		120, 98, WHITE
 	);
 
 	if (PHONE->boardStatus != COND_OK) {
 		drawText(
-			g, F("x %.1f", condMultipliers[PHONE->boardStatus]),
+			F("x %.1f", condMultipliers[PHONE->boardStatus]),
 			65, 114, (condMultipliers[PHONE->boardStatus]) > 1.0f ? GREEN : RED
 		);
 	}
 	drawText(
-		g, F("Board Status:  %s", condToString[PHONE->boardStatus]),
+		F("Board Status:  %s", condToString[PHONE->boardStatus]),
 		120, 114, WHITE
 	);
 
 	if (PHONE->coverStatus != COND_OK) {
 		drawText(
-			g, F("x %.1f", weightCondMultipliers[PHONE->coverStatus]),
+			F("x %.1f", weightCondMultipliers[PHONE->coverStatus]),
 			65, 130, (weightCondMultipliers[PHONE->coverStatus]) > 1.0f ? RED : GREEN
 		);
 	}
 	drawText(
-		g, F("Cover Status:  %s", condToString[PHONE->coverStatus]),
+		F("Cover Status:  %s", condToString[PHONE->coverStatus]),
 		120, 130, WHITE
 	);
 
@@ -125,7 +125,7 @@ void drawPhoneSpecsMenu() {
 	// Bottom right box (skill info)
 	#define SKILL (g.skillDB->skills[PHONE->skills[MENU.choice]])
 	drawBox(160, 152, 160, 88);
-	drawTextRec(SKILL.description, 164, 156, 152, 80, WHITE);
+	drawTextRec(SKILL.description, 165, 156, 152, 80, WHITE);
 
 	switch (SKILL.effects[0].effect) {
 		case SE_DAMAGE:

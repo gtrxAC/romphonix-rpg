@@ -27,10 +27,7 @@ void initGame() {
     // Textures are loaded with the LOAD_TEXTURE macro, defined here.
     // They load from the assets/graphics folder, with file extension PNG which
     // does not need to be specified when using the macro.
-
-    // The loaded textures are then used with the TEX macro.
-    // For example, a texture loaded with LOAD_TEXTURE("title") is used in
-    // raylib functions with "title" - notice lack of quotation marks.
+    // The loaded textures are then used with the drawTexture family of functions.
     sh_new_strdup(g.textures);
     #define LOAD_TEXTURE(n) shput((g.textures), n, LoadTexture("assets/graphics/" n ".png"))
     LOAD_TEXTURE("title");
@@ -52,6 +49,9 @@ void initGame() {
     LOAD_TEXTURE("gradient");
     LOAD_TEXTURE("prof_rocky");
     LOAD_TEXTURE("shadow");
+    LOAD_TEXTURE("battle/field");
+    LOAD_TEXTURE("battle/building");
+    LOAD_TEXTURE("battle/cave");
 
     // Load player sprites, both overworld and large
     for (int i = 0; i < 8; i++) {
@@ -66,6 +66,7 @@ void initGame() {
     }
 
     // Sound loading/unloading works just like with textures.
+    // Use playSound() or schedSound() to play them.
     g.sounds = NULL;
     #define LOAD_SOUND(n) shput((g.sounds), n, LoadSound("assets/sounds/sfx/" n ".wav"))
     LOAD_SOUND("select");

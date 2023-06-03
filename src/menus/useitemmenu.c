@@ -43,7 +43,7 @@ void scrCheckUseItemMenu() {
         case IE_HEAL: {
             if (phone->hp == phone->maxHP) {
                 pushTextbox(
-                    g, F(
+                    F(
                         "%s %s is already at full HP!",
                         SPECS(phone->id).brand, SPECS(phone->id).model
                     ), ""
@@ -53,9 +53,9 @@ void scrCheckUseItemMenu() {
             else {
                 int heal = MIN(ISPECS(item->id).effectParameter, phone->maxHP - phone->hp);
                 phone->hp += heal;
-                schedSound(SOUND(heal), 10);
+                schedSound("heal", 10);
                 pushTextbox(
-                    g, F(
+                    F(
                         "Healed %s %s by %d HP.",
                         SPECS(phone->id).brand, SPECS(phone->id).model, heal
                     ), ""
@@ -67,9 +67,9 @@ void scrCheckUseItemMenu() {
         case IE_REVIVE: {
             if (phone->hp <= 0) {
                 phone->hp = phone->maxHP * ISPECS(item->id).effectParameter / 100;
-                schedSound(SOUND(heal), 10);
+                schedSound("heal", 10);
                 pushTextbox(
-                    g, F(
+                    F(
                         "%s %s has been revived.",
                         SPECS(phone->id).brand, SPECS(phone->id).model
                     ), ""

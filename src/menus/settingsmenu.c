@@ -58,8 +58,8 @@ void updateSettingsMenu() {
                 g.settings.sfxVolume += delta;
             }
             SetMasterVolume((float) g.settings.sfxVolume / 20);
-            StopSound(SOUND(scroll));
-            schedSound(SOUND(select), 2);
+            stopSound("scroll");
+            schedSound("select", 2);
             break;
         }
     }

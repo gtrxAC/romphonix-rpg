@@ -1,22 +1,19 @@
 # ROMphonix RPG
-A phone collecting RPG! (in development)
+A phone collecting RPG! (in early development)
 
-[Codebase structure](STRUCTURE.md)
+* [Discord](https://discord.gg/qQ2yCmynCK)
+* [Development Wiki](https://github.com/gtrxAC/romphonix-rpg/wiki)
+* [Project wall](https://github.com/users/gtrxAC/projects/1)
 
-<hr>
+<div style="display: flex; gap: 1em; margin-bottom: 1em;">
+    <img src="assets/screenshots/intro.png" width="320px" height="240px">
+    <img src="assets/screenshots/battle.png" width="320px" height="240px">
+</div>
+<div style="display: flex; gap: 1em; margin-bottom: 1em;">
+    <img src="assets/screenshots/collection.png" width="320px" height="240px">
+    <img src="assets/screenshots/intro2.png" width="320px" height="240px">
+</div>
 
->## **How to help?**
->This game is still in early development, so **your help is appreciated**.
->
->If you want to help, here are some easy ways:
->* [Submit phones](https://forms.gle/pNYc8qudVosWcPSf6) to be featured in the game (submissions closing soon)
->* Draw [sprites](assets/graphics/phones/) for the [phones](assets/data/phones.json).
->* Compose [music](assets/sounds/music/) for the game.
->* Join our [Discord](https://discord.gg/qQ2yCmynCK) to discuss the game's development (ROMphonix RPG #discussion channel)
->
->If you do any of these, your name will be featured in the game's credits!
-
-<hr>
 
 ## Download
 * [GitHub (need account)](https://github.com/gtrxAC/romphonix-rpg/releases)

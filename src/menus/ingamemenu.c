@@ -22,7 +22,7 @@ void scrInGameMenu() {
     addChoice("Options");
     setDrawFunc(drawInGameMenu);
     setNextFunc(scrInGameMenuCheck);
-    PlaySound(SOUND(hit));
+    playSound("hit");
 }
 
 // _____________________________________________________________________________

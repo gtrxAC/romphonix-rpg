@@ -72,7 +72,7 @@ void drawCollectionMenu() {
             if (g.s.phonesCaught[i]) color = WHITE;
 
             drawText(
-                g, F( "%s %s", SPECS(i).brand, SPECS(i).model),
+                F("%s %s", SPECS(i).brand, SPECS(i).model),
                 20, 23 + (i - MENU.scroll)*20, color
             );
         }
@@ -102,7 +102,7 @@ void drawCollectionMenu() {
     drawBox(144, 96, 176, 144);
 
     if (g.s.phonesSeen[MENU.choice]) {
-        drawTextRec(selected->description, 148, 100, 168, 144, WHITE);
+        drawTextRec(selected->description, 149, 101, 166, 142, WHITE);
 
         drawText(F("Year: %d", selected->year), 252, 220, WHITE);
         drawText("Rarity:", 148, 220, WHITE);
@@ -112,6 +112,6 @@ void drawCollectionMenu() {
         );
     }
     else {
-        drawTextRec("Not much is known about this phone yet.", 148, 100, 168, 144, WHITE);
+        drawTextRec("Not much is known about this phone yet.", 149, 101, 166, 142, WHITE);
     }
 }

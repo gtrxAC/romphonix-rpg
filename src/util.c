@@ -240,13 +240,21 @@ void drawTextRec(const char *text, int x, int y, int width, int height, Color co
 
 // _____________________________________________________________________________
 //
-//  Sound scheduling system
+//  Sound wrapper and scheduling system
 //  Allows playing one sound shortly after another by using a timer. Only
 //  one scheduled sound can exist at a time.
 // _____________________________________________________________________________
 //
-void schedSound(Sound sound, int frames) {
-    g.schedSound = sound;
+void playSound(const char *name) {
+    PlaySound(shget(g.sounds, name));
+}
+
+void stopSound(const char *name) {
+    StopSound(shget(g.sounds, name));
+}
+
+void schedSound(const char *name, int frames) {
+    g.schedSound = shget(g.sounds, name);
     g.schedSoundTimer = frames;
 }
 

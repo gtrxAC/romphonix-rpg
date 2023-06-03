@@ -106,13 +106,13 @@ void drawItemsMenu() {
     ) {
         // Item name
         drawText(
-            g, ISPECS(CURPOCKET[i].id).name,
+            ISPECS(CURPOCKET[i].id).name,
             160, 6 + (i - MENU.scroll)*20, WHITE
         );
 
         // Item count
         drawTextD(
-            g, F("* %d", CURPOCKET[i].count),
+            F("* %d", CURPOCKET[i].count),
             284, 6 + (i - MENU.scroll)*20, WHITE
         );
     }

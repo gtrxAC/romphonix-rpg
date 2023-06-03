@@ -1,3 +1,11 @@
+// _____________________________________________________________________________
+//
+//  ROMphonix RPG - common.h
+//
+//  Contains common definitions used by many parts of the game. Included by
+//  basically every source file and includes many other headers.
+// _____________________________________________________________________________
+//
 #ifndef COMMON_H
 #define COMMON_H
 
@@ -126,23 +134,7 @@ typedef struct Synth {
     bool loaded;
 } Synth;
 
-typedef enum ScriptType {
-    SC_TEXTBOX,
-    SC_MENU
-} ScriptType;
-
-// Other map attributes like width, height, and data are in the game state,
-// loaded when the map is actually in use.
-// Amount of step and interact scripts can be increased up to 256, but this
-// means more memory is used by each map.
-typedef struct Map {
-    const char *name;
-    const char *fileName;
-    const char *songName;
-    void (*stepScripts[64])();
-    void (*interactScripts[64])();
-} Map;
-
+#include "maps.h"
 #include "phones.h"
 
 // _____________________________________________________________________________
@@ -201,20 +193,19 @@ typedef struct Game {
     // Internal counter that ticks every frame and can be reset by certain actions.
     unsigned int frameCount;
 
-    // Sound scheduling (util.c)
+    // Audio related (synth and sound scheduling - see synth.c and util.c)
+    Synth syn;
+    bool audioStarted;
     Sound schedSound;
     int schedSoundTimer;
 
     // Current game "state", basically which screen the player is on
     State state;
 
-    // Rendering/audio stuff
+    // Rendering stuff
     RenderTexture rt;
 	RenderTexture world;
     bool worldDrawn;
-
-    Synth syn;
-    bool audioStarted;
 
     // Map stuff
     Map *maps;  // metadata for all maps
@@ -253,17 +244,7 @@ typedef struct Game {
         Font digits;
     } fonts;
 
-    // Gets a sound
-    #define SOUND(t) (shget(g.sounds, #t))
-
     struct { char *key; Sound value; } *sounds;
-
-    // _________________________________________________________________________
-    //
-    //  Scripting related variables
-    // _________________________________________________________________________
-    //
-    // ScriptType scriptType;
 } Game;
 
 extern Game g;
