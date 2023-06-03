@@ -123,4 +123,13 @@ void checkBindings() {
             MENU.battleTextbox[2][0] = '\0';
         }
     }
+
+    // T: reload a texture (useful for testing art w/o restarting game)
+    if (IsKeyPressed(KEY_T)) {
+        char *name = tinyfd_inputBox("Texture reload", "What texture name do you want to reload? (see LOAD_TEXTUREs in init.c)", " ");
+        if (!name) return;
+
+        UnloadTexture(shget(g.textures, name));
+        shput(g.textures, name, LoadTexture(F("assets/graphics/%s.png", name)));
+    }
 }
