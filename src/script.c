@@ -81,10 +81,14 @@ int randomPhone() {
 //
 void updateTextbox() {
 	if (K_A_PRESS()) {
-		void (*func)() = MENU.nextFunc;
-		popMenu();
-		if (func) func();
-		else g.state = ST_INGAME;
+		if (MENU.textboxTime < strlen(MENU.textbox[0]) + strlen(MENU.textbox[1])) {
+			MENU.textboxTime = 128;
+		} else {
+			void (*func)() = MENU.nextFunc;
+			popMenu();
+			if (func) func();
+			else g.state = ST_INGAME;
+		}
 	}
 }
 
@@ -103,24 +107,17 @@ void drawTextbox() {
 	// part of the text is drawn, we use separate text buffers and a
 	// timer to manage this.
 	int line1Len = MIN(MENU.textboxTime, 63);
-	int line2Len = MIN(MENU.textboxTime - strlen(MENU.textbox[0]), 63);
-	if (line2Len == 63 && line1Len < 63) line2Len = 0;  // quick and hacky bugfix
-	
-	strncpy(MENU.textboxDraw[0], MENU.textbox[0], line1Len);
-	strncpy(MENU.textboxDraw[1], MENU.textbox[1], line2Len);
-	MENU.textboxDraw[0][line1Len] = 0;
-	MENU.textboxDraw[1][line2Len] = 0;
+	int line2Len = MIN(MAX(MENU.textboxTime - strlen(MENU.textbox[0]), 0), 63);
 
-	DrawTextEx(
-		g.fonts.dialogue, MENU.textboxDraw[0],
-		(Vector2) {18, 232 - 14*lineCount},
-		13, 0, WHITE
-	);
-	if (lineCount == 2) DrawTextEx(
-		g.fonts.dialogue, MENU.textboxDraw[1],
-		(Vector2) {18, 218},
-		13, 0, WHITE
-	);
+	char textboxDraw[2][64] = {0};
+
+	strncpy(textboxDraw[0], MENU.textbox[0], line1Len);
+	drawText(textboxDraw[0], 18, 232 - 14*lineCount, WHITE);
+
+	if (lineCount > 1) {
+		strncpy(textboxDraw[1], MENU.textbox[1], line2Len);
+		drawText(textboxDraw[1], 18, 218, WHITE);
+	}
 
 	MENU.textboxTime++;
 }

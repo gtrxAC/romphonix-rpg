@@ -76,9 +76,23 @@ void drawBattleMenu() {
     else {
         // Battle menu contains a one line text box (without a typewriter effect)
         drawBox(0, 176, 320, 64);
-        drawText(MENU.battleTextbox[0], 8, 184, WHITE);
-        drawText(MENU.battleTextbox[1], 8, 202, WHITE);
-        drawText(MENU.battleTextbox[2], 8, 220, WHITE);
+
+        // Typewriter effect - based on the drawTextbox code but with three lines
+        int line1Len = MIN(MENU.battleTextboxTimer, 63);
+        int line2Len = MIN(
+            MAX(MENU.battleTextboxTimer - strlen(MENU.battleTextbox[0]) - 20, 0), 63);
+        int line3Len = MIN(
+            MAX(MENU.battleTextboxTimer - strlen(MENU.battleTextbox[0]) - strlen(MENU.battleTextbox[1]) - 20, 0), 63
+        );
+
+        char textboxDraw[3][64] = {0};
+        strncpy(textboxDraw[0], MENU.battleTextbox[0], line1Len);
+        strncpy(textboxDraw[1], MENU.battleTextbox[1], line2Len);
+        strncpy(textboxDraw[2], MENU.battleTextbox[2], line3Len);
+        drawText(textboxDraw[0], 8, 184, WHITE);
+        drawText(textboxDraw[1], 8, 202, WHITE);
+        drawText(textboxDraw[2], 8, 220, WHITE);
+        MENU.battleTextboxTimer++;
     }
 
     // Player status bar
@@ -122,6 +136,18 @@ void drawBattleMenu() {
     drawTexture(SPECS(PLAYERP.id).sprite, 48, 96, WHITE);
     drawTexture(SPECS(ENEMYP.id).sprite, 208, 96, WHITE);
 
+    // Attack animation (each anim frame lasts 3 frames, frames are 64×64,
+    // animation timer is set by doMove function)
+    int animLength = shget(g.textures, MENU.attackAnim).width / 64 * 3;
+
+    if (MENU.attackAnimTimer >= 0 && MENU.attackAnimTimer < animLength && strlen(MENU.attackAnim)) {
+        drawTextureRec(
+            MENU.attackAnim, (Rectangle) {(MENU.attackAnimTimer / 3)*64, 0, 64, 64},
+            (Vector2) {48 + 160*MENU.attackAnimTarget, 96}, WHITE
+        );
+    }
+    MENU.attackAnimTimer++;
+
     // debug
-    DrawText(F("%d", MENU.battleState), 0, 0, 10, YELLOW);
+    DrawText(F("%d, animtime %d, target %d", MENU.battleState, MENU.attackAnimTimer, MENU.attackAnimTarget), 0, 0, 10, YELLOW);
 }

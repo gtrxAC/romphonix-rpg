@@ -103,6 +103,7 @@ void updateStatusTimers(int *textboxSlot, Phone *phone, BattlePhone *bPhone) {
 // _____________________________________________________________________________
 //
 void setBattleState(BattleState bs) {
+    MENU.battleTextboxTimer = 0;
     MENU.battleState = bs;
 
     switch (bs) {
@@ -130,7 +131,7 @@ void setBattleState(BattleState bs) {
             // for now, enemy always does random skill
             SkillSpecs skill = SSPECS(ENEMYP.skills[GetRandomValue(0, 3)]);
             sprintf(
-                MENU.battleTextbox[0], "%s %s uses %s...",
+                MENU.battleTextbox[0], "Enemy %s %s uses %s...",
                 SPECS(ENEMYP.id).brand, SPECS(ENEMYP.id).model, skill.name
             );
             MENU.battleTextbox[1][0] = '\0';

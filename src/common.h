@@ -73,8 +73,8 @@ typedef struct Game Game;
 #define SSPECS(id) (g.skillDB->skills[id])
 
 // Math stuff
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
+#define MIN(a, b) (((double) a) < ((double) b) ? (a) : (b))
+#define MAX(a, b) (((double) a) > ((double) b) ? (a) : (b))
 
 #undef GRAY
 #define GRAY (Color) { 255, 255, 255, 224 }

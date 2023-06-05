@@ -48,8 +48,7 @@ typedef struct Menu {
         // Textboxes
         struct {
             char textbox[2][64];
-            char textboxDraw[2][64];
-            unsigned int textboxTime;
+            int textboxTime;
         };
         // Bag (items) menu
         struct {
@@ -71,6 +70,8 @@ typedef struct Menu {
         // Battle menu
         struct {
             char battleTextbox[3][64];
+            int battleTextboxTimer;
+
             const char *enemyName;
             int enemyActive;  // active phone index of the enemyParty
             int active;
@@ -79,6 +80,11 @@ typedef struct Menu {
             bool canRun;  // is a wild battle?
             int movedFirst;  // did the player move first this turn?
             int playerMove;  // what move did the player choose this turn
+
+            // Attack animation
+            char attackAnim[64];
+            int attackAnimTarget;  // 0 = player, 1 = enemy
+            int attackAnimTimer;
 
             BattlePhone player;
             BattlePhone enemy;

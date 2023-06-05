@@ -66,7 +66,7 @@ int getDamage(Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhon
         case COND_GOOD: result *= 1.1f; break;
     }
 
-    schedSound("hit", 8);
+    schedSound("hit", 40);
 
     return MIN((int) result, victim->hp);
 }
@@ -79,119 +79,131 @@ int getDamage(Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhon
 void doMove(Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone *victimB, SkillSpecs skill) {
     if (attackerB->confusedTurns && GetRandomValue(0, 100) < 40) {
         strcpy(MENU.battleTextbox[1], "But it failed due to confusion!");
-        schedSound("miss", 8);
+        schedSound("miss", 40);
     }
-    else for (int i = 0; i < 2; i++) {
-        // Chance to miss
-        // If the first/primary effect of the skill misses, the secondary
-        // effect is not even processed (returns from function)
-        if (GetRandomValue(0, 100) >= skill.effects[i].chance) {
-            if (i == 0) {
-                strcpy(MENU.battleTextbox[1], "But it missed!");
-                schedSound("miss", 8);
+    else {
+        for (int i = 0; i < 2; i++) {
+            // Chance to miss
+            // If the first/primary effect of the skill misses, the secondary
+            // effect is not even processed (returns from function)
+            if (GetRandomValue(1, 100) > skill.effects[i].chance) {
+                if (i == 0) {
+                    strcpy(MENU.battleTextbox[1], "But it missed!");
+                    schedSound("miss", 40);
+                }
+                return;
             }
-            return;
+
+            // Set up attack animation
+            // Animation can be cancelled by setting MENU.attackAnim[0] = 0;
+            strcpy(MENU.attackAnim, skill.animation);
+            MENU.attackAnimTarget = skill.animationTarget;
+            if (attacker == &ENEMYP) MENU.attackAnimTarget = !MENU.attackAnimTarget;
+            MENU.attackAnimTimer = -40;  // once it reaches 0, anim will play
+
+            switch (skill.effects[i].effect) {
+                case SE_NONE: {
+                    if (i == 0) strcpy(MENU.battleTextbox[1], "No effect!");
+                    break;
+                }
+
+                case SE_DRAIN: {
+                    int damage = getDamage(
+                        attacker, victim, attackerB, victimB,
+                        skill.effects[i].parameter, skill.type
+                    );
+                    victim->hp -= damage;
+                    attacker->hp = MIN(attacker->hp + damage, attacker->maxHP);
+                    sprintf(
+                        MENU.battleTextbox[i + 1],
+                        "Absorbed %d HP from %s %s!",
+                        damage, SPECS(victim->id).brand, SPECS(victim->id).model
+                    );
+                    break;
+                }
+
+                case SE_DAMAGE: {
+                    int damage = getDamage(
+                        attacker, victim, attackerB, victimB,
+                        skill.effects[i].parameter, skill.type
+                    );
+                    victim->hp -= damage;
+                    sprintf(
+                        MENU.battleTextbox[i + 1],
+                        "%s %s took %d damage!",
+                        SPECS(victim->id).brand, SPECS(victim->id).model, damage
+                    );
+                    break;
+                }
+
+                case SE_CONFUSE: {
+                    if (victimB->confusedTurns) {
+                        sprintf(
+                            MENU.battleTextbox[i + 1],
+                            "%s %s is already confused!",
+                            SPECS(victim->id).brand, SPECS(victim->id).model
+                        );
+                        MENU.attackAnim[0] = 0;
+                    }
+                    else {
+                        victimB->confusedTurns = GetRandomValue(3, 6);
+                        sprintf(
+                            MENU.battleTextbox[i + 1],
+                            "%s %s is now confused!",
+                            SPECS(victim->id).brand, SPECS(victim->id).model
+                        );
+                        // TODO: confuse sound
+                    }
+                    break;
+                }
+
+                case SE_ATK_UP: {
+                    if (attackerB->atkUpAmount < 3) {
+                        attackerB->atkUpAmount++;
+                        attackerB->atkUpTurns = skill.effects[i].parameter + 1;
+                        sprintf(
+                            MENU.battleTextbox[i + 1],
+                            "%s %s has boosted its attack!",
+                            SPECS(attacker->id).brand, SPECS(attacker->id).model
+                        );
+                        schedSound("stat_up", 40 + i*20);
+                    }
+                    else {
+                        sprintf(
+                            MENU.battleTextbox[i + 1],
+                            "%s %s's attack is already maxed out...",
+                            SPECS(attacker->id).brand, SPECS(attacker->id).model
+                        );
+                        MENU.attackAnim[0] = 0;
+                    }
+                    break;
+                }
+
+                case SE_DEF_UP: {
+                    if (attackerB->defUpAmount < 3) {
+                        attackerB->defUpAmount++;
+                        attackerB->defUpTurns = skill.effects[i].parameter + 1;
+                        sprintf(
+                            MENU.battleTextbox[i + 1],
+                            "%s %s has boosted its defense!",
+                            SPECS(attacker->id).brand, SPECS(attacker->id).model
+                        );
+                        schedSound("stat_up", 40 + i*20);
+                    }
+                    else {
+                        sprintf(
+                            MENU.battleTextbox[i + 1],
+                            "%s %s's defense is already maxed out...",
+                            SPECS(attacker->id).brand, SPECS(attacker->id).model
+                        );
+                        MENU.attackAnim[0] = 0;
+                    }
+                    break;
+                }
+            }
         }
-
-        switch (skill.effects[i].effect) {
-            case SE_NONE: {
-                if (i == 0) strcpy(MENU.battleTextbox[1], "No effect!");
-                break;
-            }
-
-            case SE_DRAIN: {
-                int damage = getDamage(
-                    attacker, victim, attackerB, victimB,
-                    skill.effects[i].parameter, skill.type
-                );
-                victim->hp -= damage;
-                attacker->hp = MIN(attacker->hp + damage, attacker->maxHP);
-                sprintf(
-                    MENU.battleTextbox[i + 1],
-                    "Absorbed %d HP from %s %s!",
-                    damage, SPECS(victim->id).brand, SPECS(victim->id).model
-                );
-                break;
-            }
-
-            case SE_DAMAGE: {
-                int damage = getDamage(
-                    attacker, victim, attackerB, victimB,
-                    skill.effects[i].parameter, skill.type
-                );
-                victim->hp -= damage;
-                sprintf(
-                    MENU.battleTextbox[i + 1],
-                    "%s %s took %d damage!",
-                    SPECS(victim->id).brand, SPECS(victim->id).model, damage
-                );
-                break;
-            }
-
-            case SE_CONFUSE: {
-                if (victimB->confusedTurns) {
-                    sprintf(
-                        MENU.battleTextbox[i + 1],
-                        "%s %s is already confused!",
-                        SPECS(victim->id).brand, SPECS(victim->id).model
-                    );
-                }
-                else {
-                    victimB->confusedTurns = GetRandomValue(3, 6);
-                    sprintf(
-                        MENU.battleTextbox[i + 1],
-                        "%s %s is now confused!",
-                        SPECS(victim->id).brand, SPECS(victim->id).model
-                    );
-                    // TODO: confuse sound
-                }
-                break;
-            }
-
-            case SE_ATK_UP: {
-                if (attackerB->atkUpAmount < 3) {
-                    attackerB->atkUpAmount++;
-                    attackerB->atkUpTurns = skill.effects[i].parameter + 1;
-                    sprintf(
-                        MENU.battleTextbox[i + 1],
-                        "%s %s has boosted their attack!",
-                        SPECS(attacker->id).brand, SPECS(attacker->id).model
-                    );
-                    schedSound("stat_up", 8 + i*8);
-                }
-                else {
-                    sprintf(
-                        MENU.battleTextbox[i + 1],
-                        "%s %s's attack is already maxed out...",
-                        SPECS(attacker->id).brand, SPECS(attacker->id).model
-                    );
-                }
-                break;
-            }
-
-            case SE_DEF_UP: {
-                if (attackerB->defUpAmount < 3) {
-                    attackerB->defUpAmount++;
-                    attackerB->defUpTurns = skill.effects[i].parameter + 1;
-                    sprintf(
-                        MENU.battleTextbox[i + 1],
-                        "%s %s has boosted their defense!",
-                        SPECS(attacker->id).brand, SPECS(attacker->id).model
-                    );
-                    schedSound("stat_up", 8 + i*8);
-                }
-                else {
-                    sprintf(
-                        MENU.battleTextbox[i + 1],
-                        "%s %s's defense is already maxed out...",
-                        SPECS(attacker->id).brand, SPECS(attacker->id).model
-                    );
-                }
-                break;
-            }
-        }
+        
+        if (PLAYERP.hp < 0) PLAYERP.hp = 0;
+        if (ENEMYP.hp < 0) ENEMYP.hp = 0;
     }
-    
-    if (PLAYERP.hp < 0) PLAYERP.hp = 0;
-    if (ENEMYP.hp < 0) ENEMYP.hp = 0;
 }

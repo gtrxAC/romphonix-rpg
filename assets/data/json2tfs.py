@@ -85,6 +85,11 @@ skillEffects = {
     "def_up": 5
 }
 
+animationTargets = {
+    "self": 0,
+    "enemy": 1
+}
+
 def appendEffect(eff):
     if 'parameter' not in eff: eff['parameter'] = 0
     if 'chance' not in eff: eff['chance'] = 100
@@ -113,6 +118,7 @@ with open('skills.json') as file:
 
         appendStr(s['learnByPhones'], 256)
         appendStr(s['animation'], 64)
+        append32(animationTargets[s['animationTarget']])
         
 with open('skills.tfs', 'wb') as outfile:
     outfile.write(out)

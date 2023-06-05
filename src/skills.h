@@ -38,6 +38,7 @@ typedef struct SkillSpecs {
 
     char learnByPhones[256];
     char animation[64];
+    int animationTarget; // 0 = self, 1 = enemy
 } SkillSpecs;
 
 typedef struct SkillDatabase {

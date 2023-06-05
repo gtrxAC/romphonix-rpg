@@ -15,8 +15,11 @@ void updateBattleMenu() {
     }
     // For any other state, the menu only updates when the confirm button is
     // pressed.
-    else if (K_A_PRESS() || K_B_PRESS()) {
-        switch (MENU.battleState) {
+    else if ((K_A_PRESS() || K_B_PRESS())) {
+        if (MENU.battleTextboxTimer < 50) {
+            MENU.battleTextboxTimer = 1000;
+        }
+        else switch (MENU.battleState) {
             case BS_STARTING: setBattleState(BS_WAITING); break;
 
             case BS_PLAYER_TURN: {
