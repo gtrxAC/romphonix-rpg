@@ -136,13 +136,13 @@ void drawBattleMenu() {
     drawTexture(SPECS(PLAYERP.id).sprite, 48, 96, WHITE);
     drawTexture(SPECS(ENEMYP.id).sprite, 208, 96, WHITE);
 
-    // Attack animation (each anim frame lasts 3 frames, frames are 64×64,
+    // Attack animation (each anim frame lasts 4 frames, frames are 64×64,
     // animation timer is set by doMove function)
-    int animLength = shget(g.textures, MENU.attackAnim).width / 64 * 3;
+    int animLength = shget(g.textures, MENU.attackAnim).width / 64 * 4;
 
     if (MENU.attackAnimTimer >= 0 && MENU.attackAnimTimer < animLength && strlen(MENU.attackAnim)) {
         drawTextureRec(
-            MENU.attackAnim, (Rectangle) {(MENU.attackAnimTimer / 3)*64, 0, 64, 64},
+            MENU.attackAnim, (Rectangle) {(MENU.attackAnimTimer / 4)*64, 0, 64, 64},
             (Vector2) {48 + 160*MENU.attackAnimTarget, 96}, WHITE
         );
     }

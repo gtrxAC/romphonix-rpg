@@ -53,6 +53,8 @@ void initGame() {
     LOAD_TEXTURE("battle/building");
     LOAD_TEXTURE("battle/cave");
     LOAD_TEXTURE("skills/default");
+    LOAD_TEXTURE("skills/stat_up");
+    LOAD_TEXTURE("skills/stat_down");
 
     // Load player sprites, both overworld and large
     for (int i = 0; i < 8; i++) {

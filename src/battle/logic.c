@@ -171,7 +171,7 @@ void doMove(Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone 
                     else {
                         sprintf(
                             MENU.battleTextbox[i + 1],
-                            "%s %s's attack is already maxed out...",
+                            "But its attack is already maxed out...",
                             SPECS(attacker->id).brand, SPECS(attacker->id).model
                         );
                         MENU.attackAnim[0] = 0;
@@ -193,7 +193,7 @@ void doMove(Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone 
                     else {
                         sprintf(
                             MENU.battleTextbox[i + 1],
-                            "%s %s's defense is already maxed out...",
+                            "But its defense is already maxed out...",
                             SPECS(attacker->id).brand, SPECS(attacker->id).model
                         );
                         MENU.attackAnim[0] = 0;
