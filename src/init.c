@@ -55,6 +55,7 @@ void initGame() {
     LOAD_TEXTURE("skills/default");
     LOAD_TEXTURE("skills/stat_up");
     LOAD_TEXTURE("skills/stat_down");
+    LOAD_TEXTURE("checkerboard");
 
     // Load player sprites, both overworld and large
     for (int i = 0; i < 8; i++) {

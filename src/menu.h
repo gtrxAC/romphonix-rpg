@@ -34,6 +34,7 @@ typedef struct Menu {
 	int choice;
     CloseBehavior closeBehav;
     int scroll;  // scrolling offset for collection menu
+    bool drawPrevious;  // should previous menus (lower in the menu stack) be drawn behind?
     
     // For menus or textboxes that use custom update/draw/check functions.
     // - Update functions check the user's keyboard input and act accordingly (e.g. move cursor up/down)

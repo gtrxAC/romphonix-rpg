@@ -94,7 +94,7 @@ void drawItemsMenu() {
     // Item description window (bottom left)
     drawBox(0, 130, 140, 110);
     if (arrlen(CURPOCKET)) {
-        drawTextRec(ISPECS(CURPOCKET[MENU.choice].id).description, 4, 134, 132, 102, WHITE);
+        drawTextRec(ISPECS(CURPOCKET[MENU.choice].id).description, 5, 134, 130, 102, WHITE);
     }
 
     // Item list (right)
@@ -120,9 +120,10 @@ void drawItemsMenu() {
     // Item list menu indicator/arrow
     if (arrlen(CURPOCKET)) {
         drawTexture("indicator", 146, 6 + 20*(MENU.choice - MENU.scroll), WHITE);
-    } else {
+    }
+    else {
         // Centered "No items" text if pocket is empty
-        int textLen = measureText("You have no items.");
-        drawText("You have no items.", 230 - textLen/2, 114, WHITE);
+        int textLen = measureText("This pocket is empty.");
+        drawText("This pocket is empty.", 230 - textLen/2, 114, WHITE);
     }
 }

@@ -91,6 +91,7 @@ void drawCollectionMenu() {
     drawBox(144, 0, 176, 96);
     PhoneSpecs *selected = &SPECS(MENU.choice);
 
+    drawTexture("shadow", 200, 70, WHITE);
     if (g.s.phonesSeen[MENU.choice]) {
         drawTexture(selected->sprite, 200, 16, WHITE);
     }

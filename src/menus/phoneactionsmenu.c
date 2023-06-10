@@ -16,6 +16,7 @@ void scrPhoneActionsMenu() {
     pushMenu(CB_CLOSE);
     setDrawFunc(drawItemActionsMenu);
     setNextFunc(checkPhoneActionsMenu);
+    MENU.drawPrevious = true;
 
     addChoice("Specs");
     addChoice("Move up");
@@ -32,7 +33,7 @@ void checkPhoneActionsMenu() {
         case -1: popMenu(); break;
 
         case 0: {
-            // The phone specs menu init function takes a second argument,
+            // The phone specs menu init function takes an argument,
             // the phone whose specs to show.
             scrPhoneSpecsMenu(&g.s.party[LASTMENU.choice]);
             break;

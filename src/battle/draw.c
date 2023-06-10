@@ -106,8 +106,8 @@ void drawBattleMenu() {
         "%s %s", SPECS(PLAYERP.id).brand, SPECS(PLAYERP.id).model
     );
     drawText(brandModel, 10, 25, WHITE);
-    drawProgressBar(PLAYERP.hp, PLAYERP.maxHP, 10, 42, 80, GREEN);
-    drawTextD(F("%d/%d", PLAYERP.hp, PLAYERP.maxHP), 98, 42, WHITE);
+    drawProgressBar(MENU.player.shownHP, PLAYERP.maxHP, 10, 42, 80, GREEN);
+    drawTextD(F("%d/%d", MENU.player.shownHP, PLAYERP.maxHP), 98, 42, WHITE);
 
     // Player statuses
     drawStatusEffects(PLAYERP, MENU.player, 2);
@@ -119,8 +119,8 @@ void drawBattleMenu() {
 
     brandModel = F("%s %s", SPECS(ENEMYP.id).brand, SPECS(ENEMYP.id).model);
     drawText(brandModel, 170, 25, WHITE);
-    drawProgressBar(ENEMYP.hp, ENEMYP.maxHP, 170, 42, 80, GREEN);
-    drawTextD(F("%d/%d", ENEMYP.hp, ENEMYP.maxHP), 258, 42, WHITE);
+    drawProgressBar(MENU.enemy.shownHP, ENEMYP.maxHP, 170, 42, 80, GREEN);
+    drawTextD(F("%d/%d", MENU.enemy.shownHP, ENEMYP.maxHP), 258, 42, WHITE);
     drawTextD(F("$ %d", PLAYERP.level), 120, 10, WHITE);
 
     // Enemy statuses
@@ -147,7 +147,4 @@ void drawBattleMenu() {
         );
     }
     MENU.attackAnimTimer++;
-
-    // debug
-    DrawText(F("%d, animtime %d, target %d", MENU.battleState, MENU.attackAnimTimer, MENU.attackAnimTarget), 0, 0, 10, YELLOW);
 }

@@ -29,6 +29,7 @@ typedef struct BattlePhone {
     int atkUpAmount;  // can be negative if the stat was decreased
     int defUpTurns;
     int defUpAmount;
+    int shownHP;
 } BattlePhone;
 
 // Sprite Y locations of assets/graphics/status.png

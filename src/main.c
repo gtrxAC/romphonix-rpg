@@ -96,8 +96,19 @@ int main() {
             case ST_INGAME: drawWorld(); break;
             case ST_TRANSITION: drawWorld(); drawTransition(); break;
         }
-        // Draw menus
-        for (int i = 0; i < arrlen(g.menus); i++) MENU.drawFunc();
+        // Draw previous menus if the menu has that flag set
+        if (arrlen(g.menus) > 1 && MENU.drawPrevious) {
+            for (int i = 0; i < arrlen(g.menus) - 1; i++) {
+                Menu menu = g.menus[i];
+                arrpush(g.menus, menu);
+                MENU.drawFunc();
+                g.menus[i] = arrlast(g.menus);
+                arrpop(g.menus);
+            }
+        }
+
+        // Draw current menu
+        if (arrlen(g.menus)) MENU.drawFunc();
         EndTextureMode();
 
         // Draw render texture on screen

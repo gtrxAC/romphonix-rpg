@@ -6,6 +6,22 @@
 // _____________________________________________________________________________
 //
 void updateBattleMenu() {
+    // Update health bar animation (up to 2 steps per frame), only after the hit animation
+    int animLength = shget(g.textures, MENU.attackAnim).width / 64 * 4;
+    
+    if (MENU.attackAnimTimer >= 0 && strlen(MENU.attackAnim) && MENU.attackAnimTimer > animLength) {
+        for (int i = 0; i < 2; i++) {
+            if (MENU.enemy.shownHP < ENEMYP.hp) MENU.enemy.shownHP++;
+            if (MENU.enemy.shownHP > ENEMYP.hp) MENU.enemy.shownHP--;
+            if (MENU.player.shownHP < PLAYERP.hp) MENU.player.shownHP++;
+            if (MENU.player.shownHP > PLAYERP.hp) MENU.player.shownHP--;
+        }
+    }
+    if (MENU.battleState == BS_STARTING) {
+        MENU.enemy.shownHP = ENEMYP.hp;
+        MENU.player.shownHP = PLAYERP.hp;
+    }
+
     if (MENU.battleState == BS_WAITING || MENU.battleState == BS_WAITING_MOVE) {
         // Command menu is just a standard menu
         updateMenu();

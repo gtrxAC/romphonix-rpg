@@ -142,6 +142,7 @@ void scrIntroAppearance() {
     pushMenu(CB_NOTHING);
     setUpdateFunc(updateIntroAppearance);
     setDrawFunc(drawIntroAppearance);
+    MENU.drawPrevious = true;
 }
 
 void updateIntroAppearance() {
@@ -155,11 +156,6 @@ void updateIntroAppearance() {
 }
 
 void drawIntroAppearance() {
-    // Draw the textbox behind the menu
-    Menu menu = arrpop(g.menus);
-    MENU.drawFunc();
-    arrpush(g.menus, menu);
-
     // Player appearance rotation
     Direction clockwise[] = {DIR_UP, DIR_RIGHT, DIR_DOWN, DIR_LEFT};
     Direction dir = clockwise[g.frameCount/30 % 4];

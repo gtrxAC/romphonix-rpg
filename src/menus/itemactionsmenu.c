@@ -21,6 +21,7 @@ void scrItemActionsMenu() {
     pushMenu(CB_CLOSE);
     setDrawFunc(drawItemActionsMenu);
     setNextFunc(checkItemActionsMenu);
+    MENU.drawPrevious = true;
 
     addChoice("Use");
     addChoice("Give");
@@ -34,16 +35,13 @@ void scrItemActionsMenu() {
 // _____________________________________________________________________________
 //
 void drawItemActionsMenu() {
-    // Draw the previous (items) menu first
-    // We can't use LASTMENU macro here because the draw function expects the
-    // items menu to be at the top, so we need to temporarily pop the actions
-    // menu. A bit inefficient, but it works.
-    Menu menu = arrpop(g.menus);
-    MENU.drawFunc();
-    arrput(g.menus, menu);
-
-    // Darken it slightly by drawing a transparent black rectangle
-    DrawRectangle(0, 0, 320, 240, ColorAlpha(BLACK, 0.3f));
+    // Darken the previous menu by drawing a black checkerboard over it
+    for (int y = 0; y < 240; y += 80) {
+        for (int x = 0; x < 320; x += 80) {
+            drawTexture("checkerboard", x, y, BLACK);
+            drawTexture("checkerboard", x + 1, y, ColorAlpha(BLACK, 0.5f));
+        }
+    }
 
     // Code based on standard drawMenu function, but draws on the bottom right
     // instead of the top left.
