@@ -7,6 +7,22 @@
 		"sprite": "Memory_Card",
 		"pocket": "cards"
 	},
+	{
+		"name": "` Test",
+		"description": "A memory card containing the skill \"Siphon\" which can be inserted into a phone.",
+		"effect": "skill",
+		"effectParameter": 5,
+		"sprite": "Memory_Card",
+		"pocket": "cards"
+	},
+	{
+		"name": "` Test2",
+		"description": "A memory card containing the skill \"Siphon\" which can be inserted into a phone.",
+		"effect": "skill",
+		"effectParameter": 6,
+		"sprite": "Memory_Card",
+		"pocket": "cards"
+	},
 
 	{
 		"name": "Upgrade",

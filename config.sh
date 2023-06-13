@@ -20,7 +20,7 @@ SRC="src/*.c src/*/*.c"
 
 # Using functions before they are declared is against best practices but it
 # shouldn't break anything, and it will make our lives a lot easier
-[[ -z "$FLAGS" ]] && FLAGS="-Wno-implicit-function-declaration"
+[[ -z "$FLAGS" ]] && FLAGS="-Wno-implicit-function-declaration -Wno-lto-type-mismatch"
 
 # Compiler flags for release and debug mode
 # To set debug mode, run: DEBUG=1 ./build.sh

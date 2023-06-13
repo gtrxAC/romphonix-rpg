@@ -86,6 +86,11 @@ void scrCheckUseItemMenu() {
             scrRepairMenu(phone, ISPECS(item->id).effectParameter);
             break;
         }
+
+        case IE_SKILL: {
+            scrTeachSkillMenu(phone, ISPECS(item->id).effectParameter);
+            break;
+        }
     }
     
     // Decrease the item count and remove the item's entry if count dropped to 0

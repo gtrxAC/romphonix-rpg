@@ -68,6 +68,12 @@ typedef struct Menu {
             int repairAmount;
         };
 
+        // Teach skill menu
+        struct {
+            Phone *teachPhone;
+            int teachSkillID;
+        };
+
         // Battle menu
         struct {
             char battleTextbox[3][64];

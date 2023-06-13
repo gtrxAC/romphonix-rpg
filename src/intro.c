@@ -5,6 +5,13 @@
 //
 #include "common.h"
 
+void scrIntroRocky();
+void scrIntroAppearanceConfirm();
+void scrIntroEnd();
+void scrIntroConfirmName();
+void scrIntroEnd1();
+void scrIntroD307();
+
 // _____________________________________________________________________________
 //
 //  Part 1 - Fade from black to red gradient

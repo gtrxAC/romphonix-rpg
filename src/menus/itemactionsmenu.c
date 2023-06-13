@@ -86,8 +86,8 @@ void checkItemActionsMenu() {
                 // Effects which are applied to a phone
                 case IE_HEAL:
                 case IE_REVIVE:
-                case IE_UPGRADE:
-                case IE_REPAIR: {
+                case IE_REPAIR:
+                case IE_SKILL: {
                     scrUseItemMenu(MENU.bagChoice, MENU.choice);
                     break;
                 }

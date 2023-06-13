@@ -5,8 +5,6 @@
 //  Update title
 // _____________________________________________________________________________
 //
-void scrMainMenu();
-
 void updateTitle() {
     if (
         K_UP_PRESS() || K_DOWN_PRESS() || K_LEFT_PRESS() || K_RIGHT_PRESS() ||

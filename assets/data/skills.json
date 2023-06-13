@@ -67,5 +67,33 @@
 		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
 		"animation": "skills/stat_up",
 		"animationTarget": "self"
+	},
+	{
+		"name": "TestMemCard",
+		"description": "Testing memory cards.",
+		"skillType": "battery",
+		"effects": [
+			{
+				"type": "atk_up",
+				"parameter": 5
+			}
+		],
+		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+		"animation": "skills/stat_up",
+		"animationTarget": "self"
+	},
+	{
+		"name": "TestMemCard2",
+		"description": "Testing memory cards.",
+		"skillType": "battery",
+		"effects": [
+			{
+				"type": "atk_up",
+				"parameter": 5
+			}
+		],
+		"learnByPhones": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+		"animation": "skills/stat_up",
+		"animationTarget": "self"
 	}
 ]

@@ -10,7 +10,8 @@ typedef enum ItemEffect {
     IE_REVIVE,  // Revives a phone with X% health
     IE_UPGRADE,  // Upgrades a phone's specs (screen, battery, cover, or board) X times
     IE_REPAIR,  // Upgrades a phone's status (screen status, batt status, etc) X times
-    IE_COMBINE  // Combines two phones into one with better specs (X is unused)
+    IE_COMBINE,  // Combines two phones into one with better specs (X is unused)
+    IE_SKILL  // Teaches skill ID X to a phone (memory card)
 } ItemEffect;
 
 // General information about an item, not specific to an item the user has in their bag

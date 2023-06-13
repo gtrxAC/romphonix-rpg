@@ -138,7 +138,7 @@ itemEffects = {
     "upgrade": 2,
     "repair": 3,
     "combine": 4,
-    "skill": 4
+    "skill": 5
 }
 
 bagPockets = {
