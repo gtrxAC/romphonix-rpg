@@ -38,7 +38,7 @@ icons = {
 
 out = bytearray()
 
-with open('phones.json') as file:
+with open('assets/data/phones.json') as file:
     phones = json.loads(file.read())
     append32(len(phones))
     for i in phones:
@@ -57,7 +57,7 @@ with open('phones.json') as file:
         append32(i['baseExp'])
         append32(icons[i['icon']])
         
-with open('phones.tfs', 'wb') as outfile:
+with open('assets/data/phones.tfs', 'wb') as outfile:
     outfile.write(out)
     outfile.close()
 
@@ -98,7 +98,7 @@ def appendEffect(eff):
     append32(eff['parameter'])
     append32(eff['chance'])
 
-with open('skills.json') as file:
+with open('assets/data/skills.json') as file:
     skills = json.loads(file.read())
     append32(len(skills))
     for s in skills:
@@ -120,7 +120,7 @@ with open('skills.json') as file:
         appendStr(s['animation'], 64)
         append32(animationTargets[s['animationTarget']])
         
-with open('skills.tfs', 'wb') as outfile:
+with open('assets/data/skills.tfs', 'wb') as outfile:
     outfile.write(out)
     outfile.close()
 
@@ -147,7 +147,7 @@ bagPockets = {
     "healing": 2
 }
 
-with open('items.json') as file:
+with open('assets/data/items.json') as file:
     items = json.loads(file.read())
     append32(len(items))
     for i in items:
@@ -158,6 +158,6 @@ with open('items.json') as file:
         appendStr(i['sprite'], 32)
         append32(bagPockets[i['pocket']])
         
-with open('items.tfs', 'wb') as outfile:
+with open('assets/data/items.tfs', 'wb') as outfile:
     outfile.write(out)
     outfile.close()

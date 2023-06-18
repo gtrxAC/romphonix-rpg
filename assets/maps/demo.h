@@ -23,10 +23,6 @@ void scrDemoDoor() {
     changeMap(1, 5, 8);
 }
 
-void scrDemoGrass() {
-
-}
-
 // Interact scripts
 void scrDemoSign() {
     pushTextbox("This is a sign!", "");
@@ -39,7 +35,6 @@ void scrDemoMailbox() {
 void scrDemoClock() {
     pushTextbox("The time is... I don't know, I don't care", "enough to check.");
 }
-
 
 // _____________________________________________________________________________
 //
@@ -64,8 +59,8 @@ Map mapDemo = {
     // These can be edited in the map editor by pressing 5 or 6.
     // The first one in this list is executed for any tile that has a value of 1
     {
+        scrWildEncounter,
         scrDemoDoor,
-        scrDemoGrass
     },
 
     // Same but for interact scripts (executed when player interacts with the tile)
@@ -73,6 +68,18 @@ Map mapDemo = {
         scrDemoSign,
         scrDemoMailbox,
         scrDemoClock
+    },
+
+    // Chance to encounter a wild phone when scrWildEncounter is run in this
+    // map. This is X out of 255.
+    25,
+
+    // Wild encounter table used by this map. The table should have up to 16
+    // pairs of values. The first value of a pair is the phone ID and the second
+    // value is the weight value of how often that phone should appear compared
+    // to other phones.
+    {
+        {1, 1}, {2, 3}
     }
 };
 

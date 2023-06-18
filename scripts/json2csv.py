@@ -1,7 +1,7 @@
 import json
 
-with open('phones.json') as file:
-    with open('phones.csv', 'w') as csv:
+with open('assets/data/phones.json') as file:
+    with open('assets/data/phones.csv', 'w') as csv:
         def writeCol(s):
             csv.write(str(s) + ',')
 

@@ -48,12 +48,25 @@ Map mapDemoRoom = {
     // These can be edited in the map editor by pressing 5 or 6.
     // The first one in this list is executed for any tile that has a value of 1
     {
+        scrWildEncounter,
         scrDemoRoomDoor
     },
 
     // Same but for interact scripts (executed when player interacts with the tile)
     {
         0
+    },
+
+    // Chance to encounter a wild phone when scrWildEncounter is run in this
+    // map. This is X out of 255.
+    25,
+
+    // Wild encounter table used by this map. The table should have up to 16
+    // pairs of values. The first value of a pair is the phone ID and the second
+    // value is the weight value of how often that phone should appear compared
+    // to other phones.
+    {
+        {3, 1}, {4, 1}
     }
 };
 

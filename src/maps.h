@@ -14,6 +14,8 @@ typedef struct Map {
     const char *battleBackground;
     void (*stepScripts[64])();
     void (*interactScripts[64])();
+    char encounterChance;
+    int encounterTable[16][2];
 } Map;
 
 #endif

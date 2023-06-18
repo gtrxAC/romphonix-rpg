@@ -125,3 +125,45 @@ void drawTextbox() {
 void scrNoScript() {
 	pushTextbox("No function assigned to this script index!", "");
 }
+
+void scrWildEncounter() {
+	if (GetRandomValue(0, 255) > g.mapMeta.encounterChance) return;
+
+	int *pool = NULL; // stb_ds dynarray
+
+	// Fill the encounter pool with values from the table
+	for (int i = 0; i < 16; i++) {
+		for (int j = 0; j < g.mapMeta.encounterTable[i][1]; j++) {
+			arrpush(pool, g.mapMeta.encounterTable[i][0]);
+		}
+	}
+
+	// Pick a random value from the pool and create a battle
+	if (scrBattleMenu(true)) {
+		setSong("assets/sounds/music/jht9392remix.mid");
+		int id = pool[GetRandomValue(0, arrlen(pool) - 1)];
+		Phone phone = {
+			true, id,
+			100, 100, 100,
+			g.s.party[0].level + GetRandomValue(-5, 5), 0, 0, SPECS(id).baseExp,
+			SPECS(id).attack, SPECS(id).defense, SPECS(id).weight,
+			{
+				GetRandomValue(1, g.skillDB->size - 1), GetRandomValue(1, g.skillDB->size - 1), 
+				GetRandomValue(1, g.skillDB->size - 1), GetRandomValue(1, g.skillDB->size - 1), 
+			},
+			GetRandomValue(0, 3), GetRandomValue(0, 3),
+			GetRandomValue(0, 3), GetRandomValue(0, 3)
+		};
+		MENU.enemyActive = 0;
+		MENU.enemyParty[0] = phone;
+		MENU.enemyName = "Enemy";
+		strcpy(
+			MENU.battleTextbox[0],
+			F("You found a wild %s %s!", SPECS(id).brand, SPECS(id).model)
+		);
+		MENU.battleTextbox[1][0] = '\0';
+		MENU.battleTextbox[2][0] = '\0';
+	}
+
+	arrfree(pool);
+}

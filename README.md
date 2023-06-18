@@ -14,7 +14,6 @@ A phone collecting RPG! (in early development)
     <img src="assets/screenshots/intro2.png" width="320px" height="240px">
 </div>
 
-
 ## Download
 * [GitHub (need account)](https://github.com/gtrxAC/romphonix-rpg/releases)
 * [nightly.link (no account)](https://nightly.link/gtrxAC/romphonix-rpg/workflows/main/main)
@@ -24,14 +23,15 @@ A phone collecting RPG! (in early development)
 2. Follow the below instructions for the platform you want to build for.
 
 ### Desktop
-2. Run `./setup.sh` to set up the project.
-3. Run `./build.sh` to compile the project.
+1. Run `make setup` to set up the project.
+2. Run `make` to compile the project.
 
 ### Web
-1. Run `TARGET=Web ./setup.sh` to set up the project. You will need about 1 GB of free space.
-2. Run `TARGET=Web ./build.sh` to compile the project.
+Web (WASM) is not properly supported yet. Dependencies like FluidSynth and tinyfiledialogs will have to be recompiled or substituted for Web. The build system has untested support for Web with the emscripten toolkit.
+1. Run `make setup PLATFORM=Web` to set up the project. You will need about 1 GB of free space.
+2. Run `make PLATFORM=Web` to compile the project.
 
 ### Compiling for Windows from Linux
 1. Install `mingw-w64` using your package manager.
-2. Run `TARGET=Windows_NT ./setup.sh` to set up the project.
-3. Run `TARGET=Windows_NT ./build.sh` to compile the project.
+2. Run `make setup PLATFORM=Windows_NT` to set up the project.
+3. Run `make PLATFORM=Windows_NT` to compile the project.

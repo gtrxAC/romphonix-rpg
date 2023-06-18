@@ -12,24 +12,24 @@ jobs:
         run: |
           sudo apt update
           sudo apt install mingw-w64
-          ./setup.sh
-          TARGET=Windows_NT ./setup.sh
+          make setup
+          make setup PLATFORM=Windows_NT
           
       - name: Build project
         run: |
-          ./build.sh
-          TARGET=Windows_NT ./build.sh
+          make
+          make PLATFORM=Windows_NT
 
       - uses: actions/upload-artifact@v3.0.0
         with:
           name: romphonix-linux
           path: |
-            romphonix
+            bin/romphonix
             rpxmap
             
       - uses: actions/upload-artifact@v3.0.0
         with:
           name: romphonix-windows
           path: |
-            windows/romphonix.exe
+            bin/romphonix.exe
             rpxmap.exe

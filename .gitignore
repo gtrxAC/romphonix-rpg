@@ -8,10 +8,12 @@ include/raylib.h
 lib/*/*raylib*
 raylib
 
-# Executable files
+# Object and executable files
+bin/*.so
+bin/*.so*
+build/
 romphonix
 *.exe
-*.so.*
 *.apk
 *.keystore
 
@@ -39,3 +41,4 @@ rpxmap
 assets/data/phones.tfs
 assets/data/items.tfs
 assets/data/skills.tfs
+src/functions.h

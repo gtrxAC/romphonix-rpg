@@ -169,7 +169,8 @@ int main() {
         if (IsKeyPressed(KEY_G)) grid = !grid;
 
         if (IsKeyPressed(KEY_O)) {
-            char *file = tinyfd_openFileDialog("Open map", workDir, 0, NULL, NULL, 0);
+            char const *filter[1] = {"*.rpx"};
+            char *file = tinyfd_openFileDialog("Open map", workDir, 1, filter, "ROMphonix RPG maps", 0);
             if (file) {
                 if (map) free(map);
                 int unused;
@@ -179,7 +180,8 @@ int main() {
         }
 
         if (IsKeyPressed(KEY_S)) {
-            char *file = tinyfd_saveFileDialog("Save map", workDir, 0, NULL, NULL);
+            char const *filter[1] = {"*.rpx"};
+            char *file = tinyfd_saveFileDialog("Save map", workDir, 1, filter, "ROMphonix RPG maps");
             if (file) SaveFileData(file, map, 2 + MAP_WIDTH*MAP_HEIGHT*TILE_LENGTH);
         }
 
