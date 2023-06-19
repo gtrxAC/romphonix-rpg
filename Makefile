@@ -88,7 +88,7 @@ else
 ifneq ($(DEBUG),)
 	gdb $(TARGET)
 else
-	./$(TARGET)
+	LD_LIBRARY_PATH=bin ./$(TARGET)
 endif
 endif
 

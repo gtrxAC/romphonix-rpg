@@ -77,7 +77,7 @@ void scrIntroRocky3() {
 void scrIntroRocky4() {
     pushTextbox(
         "Big phones, small phones, smart phones, dumb",
-        "phones... As a preservationist, it's my duty..."
+        "phones... As a preservationist, it's my duty   \x7f"
     );
     setNextFunc(scrIntroRocky4_1);
 }
@@ -106,25 +106,20 @@ void scrIntroRocky6() {
 void scrIntroRocky7() {
     pushTextbox(
         "These phones are more than just phones -",
-        "they're valuable steps that led us to where..."
+        "they're valuable steps that led us to where \x7f"
     );
     setNextFunc(scrIntroRocky7_1);
 }
 
 void scrIntroRocky7_1() {
-    pushTextbox("we are today.", "");
+    pushTextbox(
+        "we are today. Preserving them is extremely",
+        "important, and that's what I do."
+    );
     setNextFunc(scrIntroRocky8);
 }
 
 void scrIntroRocky8() {
-    pushTextbox(
-        "The preservation of them are extremely",
-        "important, and that's what I do."
-    );
-    setNextFunc(scrIntroRocky9);
-}
-
-void scrIntroRocky9() {
     pushTextbox("That's enough about me. What about you?", "");
     setNextFunc(scrIntroAppearance);
 }

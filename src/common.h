@@ -130,6 +130,7 @@ typedef struct Synth {
     fluid_synth_t *synth;
     fluid_audio_driver_t *driver;
     fluid_player_t *player;
+    fluid_player_t *oldPlayer;
     int sfont_id;
     bool loaded;
 } Synth;

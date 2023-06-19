@@ -13,8 +13,8 @@ void initSynth() {
         return;
     }
 
-    fluid_settings_setint(g.syn.settings, "synth.threadsafe-api", 0);
-    fluid_settings_setint(g.syn.settings, "player.reset-synth", 0);
+    fluid_settings_setint(g.syn.settings, "synth.threadsafe-api", 1);
+    fluid_settings_setint(g.syn.settings, "player.reset-synth", 1);
 
     g.syn.synth = new_fluid_synth(g.syn.settings);
     if (!g.syn.synth) {
@@ -63,13 +63,15 @@ void setSong(const char *path) {
     // Ignore music changes if the synth failed to open
     if (!g.syn.loaded) return;
 
-    // Delete old player
-    // https://github.com/aburch/simutrans/blob/master/src/simutrans/music/fluidsynth.cc
+    // Put the current player aside (we keep one previous player because
+    // deleting the player immediately will sometimes crash)
     if (g.syn.player) {
         fluid_player_stop(g.syn.player);
         fluid_player_join(g.syn.player);
         fluid_synth_all_notes_off(g.syn.synth, -1);
-        delete_fluid_player(g.syn.player);
+
+        if (g.syn.oldPlayer) delete_fluid_player(g.syn.oldPlayer);
+        g.syn.oldPlayer = g.syn.player;
     }
 
     fluid_synth_system_reset(g.syn.synth);
