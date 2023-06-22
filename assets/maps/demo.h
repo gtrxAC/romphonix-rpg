@@ -49,7 +49,7 @@ Map mapDemo = {
     "assets/maps/demo.rpx",
 
     // Path to the song used by the map, also looking from the root
-    "assets/sounds/music/shakey_snakey.mid",
+    "assets/sounds/music/sneakmission.mid",
 
     // The battle background image used in this map. (assets/graphics/)
     "battle/field",

@@ -140,7 +140,7 @@ void scrWildEncounter() {
 
 	// Pick a random value from the pool and create a battle
 	if (scrBattleMenu(true)) {
-		setSong("assets/sounds/music/jht9392remix.mid");
+		setSong("assets/sounds/music/battle1.mid");
 		int id = pool[GetRandomValue(0, arrlen(pool) - 1)];
 		Phone phone = {
 			true, id,
