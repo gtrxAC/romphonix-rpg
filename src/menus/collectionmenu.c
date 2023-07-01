@@ -106,10 +106,10 @@ void drawCollectionMenu() {
         drawTextRec(selected->description, 149, 101, 166, 142, WHITE);
 
         drawText(F("Year: %d", selected->year), 252, 220, WHITE);
-        drawText("Rarity:", 148, 220, WHITE);
+        drawText("Rarity:", 149, 220, WHITE);
         drawTextureRec(
             "rarity", (Rectangle) {0, 12*selected->rarity, 64, 12},
-            (Vector2) {190, 220}, WHITE
+            (Vector2) {191, 220}, WHITE
         );
     }
     else {

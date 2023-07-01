@@ -43,6 +43,10 @@ void drawTextL(const char *text, int x, int y, Color color) {
     DrawTextEx(g.fonts.large, text, (Vector2) {x, y}, 23, 1, color);
 }
 
+void drawTextT(const char *text, int x, int y, Color color) {
+    DrawTextEx(g.fonts.thin, text, (Vector2) {x, y}, 23, 1, color);
+}
+
 void drawTextD(const char *text, int x, int y, Color color) {
     // Draw an outline around the text
     for (int dx = -1; dx <= 1; dx++) {
@@ -235,7 +239,7 @@ static void DrawTextRec(Font font, const char *text, Rectangle rec, float fontSi
 }
 
 void drawTextRec(const char *text, int x, int y, int width, int height, Color color) {
-    DrawTextRec(g.fonts.dialogue, text, (Rectangle) {x, y, width, height}, 13, 0, true, color);
+    DrawTextRec(g.fonts.thin, text, (Rectangle) {x, y, width, height}, 13, 0, true, color);
 }
 
 // _____________________________________________________________________________

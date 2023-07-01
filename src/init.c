@@ -23,6 +23,7 @@ void initGame() {
     g.fonts.dialogue = LoadFont("assets/fonts/dialogue.png");
     g.fonts.large = LoadFont("assets/fonts/large.png");
     g.fonts.digits = LoadFont("assets/fonts/digits.png");
+    g.fonts.thin = LoadFont("assets/fonts/thin.png");
 
     // Textures are loaded with the LOAD_TEXTURE macro, defined here.
     // They load from the assets/graphics folder, with file extension PNG which

@@ -836,7 +836,7 @@
         "brokenChance": 5,
         "baseExp": 5,
         "icon": "new_candybar",
-        "description": "A cheap basic Motorola phone with long battery life.",
+        "description": "A cheap and basic Motorola phone with long battery life.",
         "sprite": "Motorola_C139"
     },
     {
@@ -2081,7 +2081,7 @@
         "brokenChance": 3,
         "baseExp": 8,
         "icon": "p900",
-        "description": "A flagship smartphone by Sony Ericsson with Wi-Fi support.",
+        "description": "A flagship smartphone by Sony Ericsson, successor of the P900, adding features like Wi-Fi.",
         "sprite": "Sony_Ericsson_P990"
     },
     {
@@ -2216,7 +2216,7 @@
         "brokenChance": 6,
         "baseExp": 6,
         "icon": "new_candybar",
-        "description": "A candybar phone by a Spanish company called Vitelcom.",
+        "description": "A candybar phone by a Spanish company called Vitelcom. It was only available on Movistar Spain.",
         "sprite": "Vitelcom_TSM30"
     },
     {
@@ -2231,7 +2231,7 @@
         "brokenChance": 5,
         "baseExp": 7,
         "icon": "new_candybar",
-        "description": "A candybar phone by a Spanish company called Vitelcom.",
+        "description": "A candybar phone by the Spanish company Vitelcom. Supports the obscure app format ExEn.",
         "sprite": "Vitelcom_TSM5"
     },
     {

@@ -243,6 +243,7 @@ typedef struct Game {
         Font dialogue;
         Font large;
         Font digits;
+        Font thin;
     } fonts;
 
     struct { char *key; Sound value; } *sounds;

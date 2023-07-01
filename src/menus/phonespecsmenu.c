@@ -116,7 +116,7 @@ void drawPhoneSpecsMenu() {
 
 	// Bottom left box (skill list)
 	// This list can be scrolled through and the skill's info shows on the right
-	drawBox(0, 152, 160, 88);
+	drawBox(0, 152, 140, 88);
 	for (int i = 0; i < arrlen(MENU.choices); i++) {
 		drawText(MENU.choices[i], 22, 162 + 18*i, WHITE);
 	}
@@ -124,18 +124,18 @@ void drawPhoneSpecsMenu() {
 
 	// Bottom right box (skill info)
 	#define SKILL (g.skillDB->skills[PHONE->skills[MENU.choice]])
-	drawBox(160, 152, 160, 88);
-	drawTextRec(SKILL.description, 165, 156, 152, 80, WHITE);
+	drawBox(140, 152, 180, 88);
+	drawTextRec(SKILL.description, 145, 156, 152, 80, WHITE);
 
 	switch (SKILL.effects[0].effect) {
 		case SE_DAMAGE:
 		case SE_DRAIN:
-			drawText(F("Damage: %d", SKILL.effects[0].parameter), 165, 205, WHITE);
+			drawText(F("Damage: %d", SKILL.effects[0].parameter), 145, 205, WHITE);
 			break;
 
 		case SE_CONFUSE:
-			drawText(F("Chance: %d", SKILL.effects[0].parameter), 165, 205, WHITE);
+			drawText(F("Chance: %d", SKILL.effects[0].parameter), 145, 205, WHITE);
 			break;
 	}
-	drawText(F("Type: %s", skillTypes[SKILL.type]), 165, 220, WHITE);
+	drawText(F("Type: %s", skillTypes[SKILL.type]), 145, 220, WHITE);
 }

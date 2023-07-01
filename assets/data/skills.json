@@ -10,7 +10,7 @@
 	},
 	{
 		"name": "Siphon",
-		"description": "Drain the battery of the opposing phone.",
+		"description": "Drains the battery of the opposing phone.",
 		"skillType": "battery",
 		"effects": [
 			{
@@ -24,7 +24,7 @@
 	},
 	{
 		"name": "Mosaic",
-		"description": "Attack with a chance of confusion.",
+		"description": "Shows a hallucinating pattern on screen that may confuse.",
 		"skillType": "screen",
 		"effects": [
 			{
@@ -42,7 +42,7 @@
 	},
 	{
 		"name": "Power Save",
-		"description": "Save battery life to increase defense.",
+		"description": "Saves battery life to increase defense.",
 		"skillType": "battery",
 		"effects": [
 			{
@@ -56,7 +56,7 @@
 	},
 	{
 		"name": "Optimise",
-		"description": "Optimise performance to increase attack.",
+		"description": "Optimises performance to increase attack.",
 		"skillType": "battery",
 		"effects": [
 			{

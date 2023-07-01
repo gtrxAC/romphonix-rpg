@@ -2,7 +2,11 @@ import json
 
 def appendStr(string, length):
     global out
-    out += bytes(string, 'ascii')
+    # -1 because null terminator
+    if len(string) > length - 1:
+        raise ValueError(f"String '{string}' is too long, must be up to {length - 1} characters. Try to make the text {len(string) - length - 1} characters shorter, or if you really need to, increase the length of the string in json2tfs.py and in the structure in the appropriate src/*.h file.")
+    
+    out += bytes(string, 'latin-1')
     for i in range(length - len(string)): out.append(0)
 
 def append32(value):

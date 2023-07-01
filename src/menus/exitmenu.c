@@ -15,12 +15,27 @@
 //
 void scrExitMenu() {
     pushTextboxMenu();
+    MENU.drawPrevious = true;
     strcpy(MENU.textbox[0], "What do you want to do?");
     strcpy(MENU.textbox[1], "");
     addChoice("Continue");
     addChoice("Save and Close");
     addChoice("Close without saving");
     setNextFunc(checkExitMenu);
+}
+
+void drawExitMenu() {
+    // Darken the previous menu by drawing a black checkerboard over it
+    for (int y = 0; y < 240; y += 80) {
+        for (int x = 0; x < 320; x += 80) {
+            drawTexture("checkerboard", x, y, BLACK);
+            drawTexture("checkerboard", x + 1, y, ColorAlpha(BLACK, 0.5f));
+        }
+    }
+
+    // Standard behavior of text box menu
+    drawTextbox();
+    drawMenu();
 }
 
 // _____________________________________________________________________________
