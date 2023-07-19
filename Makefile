@@ -104,7 +104,9 @@ ifeq ($(PLATFORM),Linux)
 endif
 
 directories:
-	mkdir -p $(patsubst src/%/,$(BUILD)/%/,$(wildcard src/*/)) $(BUILD)/mapeditor
+# We use $(shell find) instead of $(wildcard) because we only want to find
+# folders, but the latter also gives us files on Windows
+	mkdir -p $(patsubst src/%/,$(BUILD)/%/,$(shell find src/*/ -type d)) $(BUILD)/mapeditor
 
 json2tfs: $(wildcard assets/data/*.json)
 	python scripts/json2tfs.py
