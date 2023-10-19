@@ -19,10 +19,18 @@ static const char *skillTypes[4] = {
 typedef enum SkillEffect {
     SE_NONE,  // Does nothing (e.g. the secondary effect if the skill only has one effect)
     SE_DAMAGE,  // Does X damage to the enemy (X being the effect parameter)
+    SE_SELF_DAMAGE,  // Does X damage to player
+    SE_HEAL,  // Gives X health to player
     SE_DRAIN,  // Drains X health from the enemy and gives it to the user
     SE_CONFUSE,  // Confuses the enemy with a X% chance
-    SE_ATK_UP,  // Increases the user's attack by X levels
-    SE_DEF_UP  // Increases the user's defense by X levels
+    SE_ATK_UP,  // Increases the user's attack for X turns
+    SE_DEF_UP,  // Increases the user's defense for X turns
+    SE_ACCURACY_UP,  // Increases the player's accuracy for X turns
+    SE_ACCURACY_DOWN,  // Decreases enemy's accuracy for X turns
+
+    // Effects exclusive to specific skills
+    SE_STOMP,  // Deals damage based on body weight
+    SE_FLEX_RIP,  // Deals increased damage to flip/slider phones
 } SkillEffect;
 
 typedef struct SkillSpecs {

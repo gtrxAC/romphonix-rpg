@@ -74,7 +74,7 @@ void drawBattleMenu() {
         }
     }
     else {
-        // Battle menu contains a one line text box (without a typewriter effect)
+        // Battle menu contains a three line text box
         drawBox(0, 176, 320, 64);
 
         // Typewriter effect - based on the drawTextbox code but with three lines
@@ -92,6 +92,11 @@ void drawBattleMenu() {
         drawText(textboxDraw[0], 8, 184, WHITE);
         drawText(textboxDraw[1], 8, 202, WHITE);
         drawText(textboxDraw[2], 8, 220, WHITE);
+
+        // Show an arrow icon at the bottom right when the typewriter anim has finished
+        int textboxLen = strlen(MENU.battleTextbox[0]) + strlen(MENU.battleTextbox[1]) + strlen(MENU.battleTextbox[2]) + 20;
+        if (MENU.battleTextboxTimer >= textboxLen) drawText("\x7f", 304, 224, WHITE);
+
         MENU.battleTextboxTimer++;
     }
 

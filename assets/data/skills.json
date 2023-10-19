@@ -69,31 +69,124 @@
 		"animationTarget": "self"
 	},
 	{
-		"name": "TestMemCard",
-		"description": "Testing memory cards.",
+		"name": "Battery Swap",
+		"description": "Recovers the phone's HP by inserting backup AA batteries.",
 		"skillType": "battery",
 		"effects": [
 			{
-				"type": "atk_up",
+				"type": "heal",
+				"parameter": 100
+			}
+		],
+		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+		"animation": "unknown_phone",
+		"animationTarget": "self"
+	},
+	{
+		"name": "Battery Swap",
+		"description": "Recovers the phone's HP by inserting backup AA batteries.",
+		"skillType": "battery",
+		"effects": [
+			{
+				"type": "heal",
+				"parameter": 100
+			}
+		],
+		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+		"animation": "unknown_phone",
+		"animationTarget": "self"
+	},
+	{
+		"name": "Clamshell",
+		"description": "Attacks by shutting the phone's clamshell.",
+		"skillType": "battery",
+		"effects": [
+			{
+				"type": "damage",
+				"parameter": 35,
+				"chance": 95
+			}
+		],
+		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+		"animation": "skills/default",
+		"animationTarget": "enemy"
+	},
+	{
+		"name": "Buzzer",
+		"description": "Plays a noise through the speaker, deals recoil damage.",
+		"skillType": "battery",
+		"effects": [
+			{
+				"type": "damage",
+				"parameter": 40
+			},
+			{
+				"type": "self_damage",
 				"parameter": 5
 			}
 		],
 		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
-		"animation": "skills/stat_up",
-		"animationTarget": "self"
+		"animation": "skills/default",
+		"animationTarget": "enemy"
 	},
 	{
-		"name": "TestMemCard2",
-		"description": "Testing memory cards.",
+		"name": "Stomp",
+		"description": "Jumps on the enemy to deal damage based on body weight.",
 		"skillType": "battery",
 		"effects": [
 			{
-				"type": "atk_up",
+				"type": "stomp",
+				"chance": 90
+			}
+		],
+		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+		"animation": "skills/default",
+		"animationTarget": "enemy"
+	},
+	{
+		"name": "Infra Blast",
+		"description": "Blasts an IR signal that does damage and reduces accuracy.",
+		"skillType": "battery",
+		"effects": [
+			{
+				"type": "damage",
+				"parameter": 20
+			},
+			{
+				"type": "accuracy_down",
 				"parameter": 5
 			}
 		],
-		"learnByPhones": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-		"animation": "skills/stat_up",
-		"animationTarget": "self"
+		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+		"animation": "skills/default",
+		"animationTarget": "enemy"
+	},
+	{
+		"name": "Flex Rip",
+		"description": "Deals increased damage to flip and slider phones.",
+		"skillType": "battery",
+		"effects": [
+			{
+				"type": "flex_rip",
+				"parameter": 20
+			}
+		],
+		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+		"animation": "skills/default",
+		"animationTarget": "enemy"
+	},
+	{
+		"name": "Locate",
+		"description": "Locates the enemy using GPS to increase accuracy.",
+		"skillType": "battery",
+		"effects": [
+			{
+				"type": "accuracy_up",
+				"parameter": 5
+			}
+		],
+		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+		"animation": "skills/default",
+		"animationTarget": "enemy"
 	}
 ]

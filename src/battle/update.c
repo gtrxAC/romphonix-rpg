@@ -30,56 +30,57 @@ void updateBattleMenu() {
         }   
     }
     // For any other state, the menu only updates when the confirm button is
-    // pressed.
+    // pressed. To prevent spamming the confirm button, it only works when the
+    // textbox typewriter and health bar animations have finished
     else if ((K_A_PRESS() || K_B_PRESS())) {
-        if (MENU.battleTextboxTimer < 50) {
-            MENU.battleTextboxTimer = 1000;
-        }
-        else switch (MENU.battleState) {
-            case BS_STARTING: setBattleState(BS_WAITING); break;
+        int textboxLen = strlen(MENU.battleTextbox[0]) + strlen(MENU.battleTextbox[1]) + strlen(MENU.battleTextbox[2]) + 20;
+        if (MENU.battleTextboxTimer >= textboxLen && MENU.player.shownHP == PLAYERP.hp && MENU.enemy.shownHP == ENEMYP.hp) {
+            switch (MENU.battleState) {
+                case BS_STARTING: setBattleState(BS_WAITING); break;
 
-            case BS_PLAYER_TURN: {
-                if (PLAYERP.hp <= 0) {
-                    PLAYERP.hp = 0;
-                    setBattleState(BS_LOST);
+                case BS_PLAYER_TURN: {
+                    if (PLAYERP.hp <= 0) {
+                        PLAYERP.hp = 0;
+                        setBattleState(BS_LOST);
+                    }
+                    else if (ENEMYP.hp <= 0) {
+                        ENEMYP.hp = 0;
+                        setBattleState(BS_WON);
+                    }
+                    else {
+                        if (MENU.movedFirst) setBattleState(BS_ENEMY_TURN);
+                        else setBattleState(BS_AFTER_TURN);
+                    }
+                    break;
                 }
-                else if (ENEMYP.hp <= 0) {
-                    ENEMYP.hp = 0;
-                    setBattleState(BS_WON);
+                
+                case BS_ENEMY_TURN: {
+                    if (PLAYERP.hp <= 0) {
+                        PLAYERP.hp = 0;
+                        setBattleState(BS_LOST);
+                    }
+                    else if (ENEMYP.hp <= 0) {
+                        ENEMYP.hp = 0;
+                        setBattleState(BS_WON);
+                    }
+                    else {
+                        if (!MENU.movedFirst) setBattleState(BS_PLAYER_TURN);
+                        else setBattleState(BS_AFTER_TURN);
+                    }
+                    break;
                 }
-                else {
-                    if (MENU.movedFirst) setBattleState(BS_ENEMY_TURN);
-                    else setBattleState(BS_AFTER_TURN);
-                }
-                break;
-            }
-            
-            case BS_ENEMY_TURN: {
-                if (PLAYERP.hp <= 0) {
-                    PLAYERP.hp = 0;
-                    setBattleState(BS_LOST);
-                }
-                else if (ENEMYP.hp <= 0) {
-                    ENEMYP.hp = 0;
-                    setBattleState(BS_WON);
-                }
-                else {
-                    if (!MENU.movedFirst) setBattleState(BS_PLAYER_TURN);
-                    else setBattleState(BS_AFTER_TURN);
-                }
-                break;
-            }
 
-            case BS_AFTER_TURN: {
-                setBattleState(BS_WAITING);
-                break;
-            }
+                case BS_AFTER_TURN: {
+                    setBattleState(BS_WAITING);
+                    break;
+                }
 
-            case BS_RUN: case BS_WON: case BS_LOST: {
-                popMenu();
-                setSong(g.mapMeta.songName);
-                break;
-            } 
+                case BS_RUN: case BS_WON: case BS_LOST: {
+                    popMenu();
+                    setSong(g.mapMeta.songName);
+                    break;
+                } 
+            }
         }
     }
 }

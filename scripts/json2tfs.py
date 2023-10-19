@@ -83,10 +83,16 @@ skillTypes = {
 skillEffects = {
     "none": 0,
     "damage": 1,
-    "drain": 2,
-    "confuse": 3,
-    "atk_up": 4,
-    "def_up": 5
+    "self_damage": 2,
+    "heal": 3,
+    "drain": 4,
+    "confuse": 5,
+    "atk_up": 6,
+    "def_up": 7,
+    "accuracy_up": 8,
+    "accuracy_down": 9,
+    "stomp": 10,
+    "flex_rip": 11,
 }
 
 animationTargets = {
