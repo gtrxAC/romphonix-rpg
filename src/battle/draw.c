@@ -8,41 +8,21 @@
 void drawStatusEffects(Phone phone, BattlePhone bPhone, int x) {
     int battleStatusY = 66;
 
-    if (bPhone.confusedTurns) {
-        drawTextureRec(
-            "status", (Rectangle) {0, BE_CONF, 31, 13},
-            (Vector2) {x, battleStatusY}, WHITE
-        );
-        battleStatusY += 15;
+    #define DRAW_STATUS(y) { \
+        drawTextureRec( \
+            "status", (Rectangle) {0, y, 31, 13}, \
+            (Vector2) {x, battleStatusY}, WHITE \
+        ); \
+        battleStatusY += 15; \
     }
-    if (bPhone.atkUpTurns && bPhone.atkUpAmount > 0) {
-        drawTextureRec(
-            "status", (Rectangle) {0, BE_ATKUP, 31, 13},
-            (Vector2) {x, battleStatusY}, WHITE
-        );
-        battleStatusY += 15;
-    }
-    if (bPhone.atkUpTurns && bPhone.atkUpAmount < 0) {
-        drawTextureRec(
-            "status", (Rectangle) {0, BE_ATKDOWN, 31, 13},
-            (Vector2) {x, battleStatusY}, WHITE
-        );
-        battleStatusY += 15;
-    }
-    if (bPhone.defUpTurns && bPhone.defUpAmount > 0) {
-        drawTextureRec(
-            "status", (Rectangle) {0, BE_DEFUP, 31, 13},
-            (Vector2) {x, battleStatusY}, WHITE
-        );
-        battleStatusY += 15;
-    }
-    if (bPhone.defUpTurns && bPhone.defUpAmount < 0) {
-        drawTextureRec(
-            "status", (Rectangle) {0, BE_DEFDOWN, 31, 13},
-            (Vector2) {x, battleStatusY}, WHITE
-        );
-        battleStatusY += 15;
-    }
+
+    if (bPhone.confusedTurns) DRAW_STATUS(BE_CONF);
+    if (bPhone.atkUpTurns && bPhone.atkUpAmount > 0) DRAW_STATUS(BE_ATKUP);
+    if (bPhone.atkUpTurns && bPhone.atkUpAmount < 0) DRAW_STATUS(BE_ATKDOWN);
+    if (bPhone.defUpTurns && bPhone.defUpAmount > 0) DRAW_STATUS(BE_DEFUP);
+    if (bPhone.defUpTurns && bPhone.defUpAmount < 0) DRAW_STATUS(BE_DEFDOWN);
+    if (bPhone.accuracyUpTurns && bPhone.accuracyUpAmount > 0) DRAW_STATUS(BE_ACCUP);
+    if (bPhone.accuracyUpTurns && bPhone.accuracyUpAmount < 0) DRAW_STATUS(BE_ACCDOWN);
 }
 
 // _____________________________________________________________________________

@@ -36,11 +36,13 @@ typedef struct BattlePhone {
 
 // Sprite Y locations of assets/graphics/status.png
 typedef enum BattleEffects {
-    BE_CONF,
+    BE_CONF = 0,
     BE_ATKUP = 13,
     BE_ATKDOWN = 26,
     BE_DEFUP = 39,
-    BE_DEFDOWN = 52
+    BE_DEFDOWN = 52,
+    BE_ACCUP = 65,
+    BE_ACCDOWN = 78
 } BattleEffects;
 
 #endif
