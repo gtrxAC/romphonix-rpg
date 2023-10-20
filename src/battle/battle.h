@@ -29,6 +29,8 @@ typedef struct BattlePhone {
     int atkUpAmount;  // can be negative if the stat was decreased
     int defUpTurns;
     int defUpAmount;
+    int accuracyUpTurns;
+    int accuracyUpAmount;
     int shownHP;
 } BattlePhone;
 

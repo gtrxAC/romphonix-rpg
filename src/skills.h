@@ -16,16 +16,18 @@ static const char *skillTypes[4] = {
     "Screen", "Board", "Cover", "Battery"
 };
 
+// Skill effects
+// These are implemented in battle/logic.c - doMove()
 typedef enum SkillEffect {
     SE_NONE,  // Does nothing (e.g. the secondary effect if the skill only has one effect)
     SE_DAMAGE,  // Does X damage to the enemy (X being the effect parameter)
-    SE_SELF_DAMAGE,  // Does X damage to player
-    SE_HEAL,  // Gives X health to player
+    SE_SELF_DAMAGE,  // Does X damage to the user
+    SE_HEAL,  // Gives X health to the user
     SE_DRAIN,  // Drains X health from the enemy and gives it to the user
     SE_CONFUSE,  // Confuses the enemy with a X% chance
     SE_ATK_UP,  // Increases the user's attack for X turns
     SE_DEF_UP,  // Increases the user's defense for X turns
-    SE_ACCURACY_UP,  // Increases the player's accuracy for X turns
+    SE_ACCURACY_UP,  // Increases the user's accuracy for X turns
     SE_ACCURACY_DOWN,  // Decreases enemy's accuracy for X turns
 
     // Effects exclusive to specific skills

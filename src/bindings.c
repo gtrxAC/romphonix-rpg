@@ -59,9 +59,9 @@ void checkBindings() {
                 }
 
                 g.s.party[i].skills[0] = 1;
-                g.s.party[i].skills[1] = 2;
-                g.s.party[i].skills[2] = 3;
-                g.s.party[i].skills[3] = 4;
+                g.s.party[i].skills[1] = 10;
+                g.s.party[i].skills[2] = 11;
+                g.s.party[i].skills[3] = 12;
 
                 got = true;
                 return;

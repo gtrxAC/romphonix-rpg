@@ -55,7 +55,7 @@ void drawPlayerMenu() {
     switch (MENU.pms) {
         case PMS_FRONT: {
             drawBox(48, 64, 224, 112);
-            drawTexture("portraits", 52, 68, WHITE);
+            drawTexture(F("large_player%d", g.s.appearance), 64, 70, WHITE);
             drawTextL(g.s.name, 119, 68, WHITE);
             drawText(F("ID No. %d", g.s.id), 120, 90, WHITE);
 

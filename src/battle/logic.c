@@ -107,6 +107,45 @@ void doMove(Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone 
                     break;
                 }
 
+                case SE_DAMAGE: {
+                    int damage = getDamage(
+                        attacker, victim, attackerB, victimB,
+                        skill.effects[i].parameter, skill.type
+                    );
+                    victim->hp -= damage;
+                    sprintf(
+                        MENU.battleTextbox[i + 1],
+                        "%s %s took %d damage!",
+                        SPECS(victim->id).brand, SPECS(victim->id).model, damage
+                    );
+                    break;
+                }
+
+                case SE_SELF_DAMAGE: {
+                    int damage = getDamage(
+                        attacker, attacker, attackerB, attackerB,
+                        skill.effects[i].parameter, skill.type
+                    );
+                    attacker->hp -= damage;
+                    sprintf(
+                        MENU.battleTextbox[i + 1],
+                        "%s %s dealt %d damage to itself!",
+                        SPECS(attacker->id).brand, SPECS(attacker->id).model, damage
+                    );
+                    break;
+                }
+
+                case SE_HEAL: {
+                    int amount = skill.effects[i].parameter;
+                    attacker->hp = MIN(attacker->hp + amount, attacker->maxHP);
+                    sprintf(
+                        MENU.battleTextbox[i + 1],
+                        "%s %s healed by %d HP!",
+                        SPECS(attacker->id).brand, SPECS(attacker->id).model, amount
+                    );
+                    break;
+                }
+                
                 case SE_DRAIN: {
                     int damage = getDamage(
                         attacker, victim, attackerB, victimB,
@@ -118,20 +157,6 @@ void doMove(Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone 
                         MENU.battleTextbox[i + 1],
                         "Absorbed %d HP from %s %s!",
                         damage, SPECS(victim->id).brand, SPECS(victim->id).model
-                    );
-                    break;
-                }
-
-                case SE_DAMAGE: {
-                    int damage = getDamage(
-                        attacker, victim, attackerB, victimB,
-                        skill.effects[i].parameter, skill.type
-                    );
-                    victim->hp -= damage;
-                    sprintf(
-                        MENU.battleTextbox[i + 1],
-                        "%s %s took %d damage!",
-                        SPECS(victim->id).brand, SPECS(victim->id).model, damage
                     );
                     break;
                 }
@@ -196,6 +221,89 @@ void doMove(Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone 
                         );
                         MENU.attackAnim[0] = 0;
                     }
+                    break;
+                }
+
+                case SE_ACCURACY_UP: {
+                    if (attackerB->accuracyUpAmount < 3) {
+                        attackerB->accuracyUpAmount += 1;
+                        attackerB->accuracyUpTurns = skill.effects[i].parameter + 1;
+                        sprintf(
+                            MENU.battleTextbox[i + 1],
+                            "%s %s has boosted its accuracy!",
+                            SPECS(attacker->id).brand, SPECS(attacker->id).model
+                        );
+                        schedSound("stat_up", 40 + i*20);
+                    } else {
+                        sprintf(
+                            MENU.battleTextbox[i + 1],
+                            "But its accuracy is already maxed out..."
+                        );
+                        MENU.attackAnim[0] = 0;
+                    }
+                    break;
+                }
+                
+                case SE_ACCURACY_DOWN: {
+                    if (victimB->accuracyUpAmount < 3) {
+                        victimB->accuracyUpAmount -= 1;
+                        victimB->accuracyUpTurns = skill.effects[i].parameter + 1;
+                        sprintf(
+                            MENU.battleTextbox[i + 1],
+                            "%s %s's accuracy fell!",
+                            SPECS(victim->id).brand, SPECS(victim->id).model
+                        );
+                        schedSound("stat_down", 40 + i*20);
+                    } else {
+                        sprintf(
+                            MENU.battleTextbox[i + 1],
+                            "But its accuracy can't go any lower..."
+                        );
+                        MENU.attackAnim[0] = 0;
+                    }
+                    break;
+                }
+
+                case SE_FLEX_RIP: {
+                    int damage = getDamage(
+                        attacker, victim, attackerB, victimB,
+                        skill.effects[i].parameter, skill.type
+                    );
+                    if (
+                        SPECS(victim->id).icon == IC_SLIDER ||
+                        SPECS(victim->id).icon == IC_FLIP ||
+                        SPECS(victim->id).icon == IC_COMMUNICATOR
+                    ) {
+                        damage *= 2;
+                    }
+                    if (damage > victim->hp) damage = victim->hp;
+                    victim->hp -= damage;
+                    sprintf(
+                        MENU.battleTextbox[i + 1],
+                        "%s %s took %d damage!",
+                        SPECS(victim->id).brand, SPECS(victim->id).model, damage
+                    );
+                    break;
+                }
+
+                case SE_STOMP: {
+                    int damage = getDamage(
+                        attacker, victim, attackerB, victimB,
+                        skill.effects[i].parameter, skill.type
+                    );
+                    damage = (float) damage * ((float) attacker->weight / victim->weight);
+                    if (damage > victim->hp) damage = victim->hp;
+                    victim->hp -= damage;
+                    sprintf(
+                        MENU.battleTextbox[i + 1],
+                        "%s %s took %d damage!",
+                        SPECS(victim->id).brand, SPECS(victim->id).model, damage
+                    );
+                    break;
+                }
+
+                default: {
+                    strcpy(MENU.battleTextbox[i + 1], "This skill effect is not implemented!!");
                     break;
                 }
             }

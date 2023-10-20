@@ -232,7 +232,7 @@ void drawIntroEnd() {
     // textbox text
     char sprite[16];
     sprintf(sprite, "large_player%d", g.s.appearance);
-    drawTexture(sprite, 130, 65, WHITE);
+    drawTexturePro(sprite, (Rectangle) {0, 0, 40, 64}, (Rectangle) {120, 50, 80, 128}, 0.0f, WHITE);
 }
 
 void scrIntroEnd() {

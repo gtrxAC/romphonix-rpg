@@ -136,6 +136,7 @@
 		"effects": [
 			{
 				"type": "stomp",
+				"parameter": 20,
 				"chance": 90
 			}
 		],
@@ -186,7 +187,7 @@
 			}
 		],
 		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
-		"animation": "skills/default",
+		"animation": "skills/locate",
 		"animationTarget": "enemy"
 	}
 ]
