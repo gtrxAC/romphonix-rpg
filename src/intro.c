@@ -189,12 +189,12 @@ void drawIntroAppearanceConfirm() {
     // location to the large sprite's size centered
     drawTexturePro(
         F("large_player%d", LASTMENU.choice),
-        (Rectangle) {0, 0, 60, 100},
+        (Rectangle) {0, 0, 40, 64},
         (Rectangle) {
-            MAX((30.0f - MENU.timer)/30.0f, 0.0f)*(36.0f + LASTMENU.choice*32.0f) + MIN(MENU.timer/30.0f, 1.0f)*130.0f,
-            MAX((30.0f - MENU.timer)/30.0f, 0.0f)*107.0f + MIN(MENU.timer/30.0f, 1.0f)*65.0f,
-            MIN(16 + 1.46f*MENU.timer, 60),
-            MIN(16 + 2.8f*MENU.timer, 100)
+            MAX((30.0f - MENU.timer)/30.0f, 0.0f)*(36.0f + LASTMENU.choice*32.0f) + MIN(MENU.timer/30.0f, 1.0f)*120.0f,
+            MAX((30.0f - MENU.timer)/30.0f, 0.0f)*107.0f + MIN(MENU.timer/30.0f, 1.0f)*50.0f,
+            MIN(16 + 2.13f*MENU.timer, 80),
+            MIN(16 + 3.73f*MENU.timer, 128)
         },
         0.0f, WHITE
     );
