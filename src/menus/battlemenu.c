@@ -165,6 +165,28 @@ void setBattleState(BattleState bs) {
             break;
         }
 
+        case BS_PLAYER_DIED: {
+            g.frameCount = 0; // start death animation
+            sprintf(
+                MENU.battleTextbox[0], "Your %s %s went down!",
+                SPECS(PLAYERP.id).brand, SPECS(PLAYERP.id).model
+            );
+            strcpy(MENU.battleTextbox[1], "");
+            strcpy(MENU.battleTextbox[2], "");
+            break;
+        }
+
+        case BS_ENEMY_DIED: {
+            g.frameCount = 0; // start death animation
+            sprintf(
+                MENU.battleTextbox[0], "Enemy %s %s went down!",
+                SPECS(ENEMYP.id).brand, SPECS(ENEMYP.id).model
+            );
+            strcpy(MENU.battleTextbox[1], "idk something about XP");
+            strcpy(MENU.battleTextbox[2], "");
+            break;
+        }
+
         case BS_WON: {
             setSong("assets/sounds/music/thtune.mid");
             strcpy(MENU.battleTextbox[0], "you won, congrats i guess???");

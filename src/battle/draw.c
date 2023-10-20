@@ -117,9 +117,33 @@ void drawBattleMenu() {
         drawTexture("shadow", 208, 150, WHITE);
     }
 
-    // Phone sprites
-    drawTexture(SPECS(PLAYERP.id).sprite, 48, 96, WHITE);
-    drawTexture(SPECS(ENEMYP.id).sprite, 208, 96, WHITE);
+    // Player phone sprite
+    if (MENU.battleState == BS_PLAYER_DIED) {
+        // Death animation
+        float animTime = MIN((float) g.frameCount / 30.0f, 1.0f);
+        drawTexturePro(
+            SPECS(PLAYERP.id).sprite, (Rectangle) {0, 0, 64, 64},
+            (Rectangle) {48.0f - 16.0f*animTime, 96.0f + 64.0f*animTime, 64.0f + 32.0f*animTime, 64.0f - 64.0f*animTime},
+            0.0f, WHITE
+        );
+    }
+    else {
+        drawTexture(SPECS(PLAYERP.id).sprite, 48, 96, WHITE);
+    }
+
+    // Enemy phone sprite
+    if (MENU.battleState == BS_ENEMY_DIED) {
+        // Death animation
+        float animTime = MIN((float) g.frameCount / 30.0f, 1.0f);
+        drawTexturePro(
+            SPECS(ENEMYP.id).sprite, (Rectangle) {0, 0, 64, 64},
+            (Rectangle) {208.0f - 16.0f*animTime, 96.0f + 64.0f*animTime, 64.0f + 32.0f*animTime, 64.0f - 64.0f*animTime},
+            0.0f, WHITE
+        );
+    }
+    else {
+        drawTexture(SPECS(ENEMYP.id).sprite, 208, 96, WHITE);
+    }
 
     // Attack animation (each anim frame lasts 4 frames, frames are 64×64,
     // animation timer is set by doMove function)

@@ -41,11 +41,11 @@ void updateBattleMenu() {
                 case BS_PLAYER_TURN: {
                     if (PLAYERP.hp <= 0) {
                         PLAYERP.hp = 0;
-                        setBattleState(BS_LOST);
+                        setBattleState(BS_PLAYER_DIED);
                     }
                     else if (ENEMYP.hp <= 0) {
                         ENEMYP.hp = 0;
-                        setBattleState(BS_WON);
+                        setBattleState(BS_ENEMY_DIED);
                     }
                     else {
                         if (MENU.movedFirst) setBattleState(BS_ENEMY_TURN);
@@ -57,11 +57,11 @@ void updateBattleMenu() {
                 case BS_ENEMY_TURN: {
                     if (PLAYERP.hp <= 0) {
                         PLAYERP.hp = 0;
-                        setBattleState(BS_LOST);
+                        setBattleState(BS_PLAYER_DIED);
                     }
                     else if (ENEMYP.hp <= 0) {
                         ENEMYP.hp = 0;
-                        setBattleState(BS_WON);
+                        setBattleState(BS_ENEMY_DIED);
                     }
                     else {
                         if (!MENU.movedFirst) setBattleState(BS_PLAYER_TURN);
@@ -75,11 +75,26 @@ void updateBattleMenu() {
                     break;
                 }
 
+                case BS_PLAYER_DIED: {
+                    setBattleState(BS_LOST);
+                    break;
+                }
+
+                case BS_ENEMY_DIED: {
+                    setBattleState(BS_WON);
+                    break;
+                }
+
                 case BS_RUN: case BS_WON: case BS_LOST: {
                     popMenu();
                     setSong(g.mapMeta.songName);
                     break;
                 } 
+
+                default: {
+                    sprintf(MENU.battleTextbox[0], "Don't know what to do next! state %s", MENU.battleState);
+                    break;
+                }
             }
         }
     }

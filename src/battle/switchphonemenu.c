@@ -32,6 +32,7 @@ void scrCheckSwitchPhoneMenu() {
     if (g.s.party[MENU.choice].active && g.s.party[MENU.choice].hp) {
         LASTMENU.active = MENU.choice;
         LASTMENU.player = (BattlePhone) {0}; // reset any stat changes
+        LASTMENU.player.shownHP = g.s.party[MENU.choice].hp;
 
         // make the game think that the player has already moved
         // (if player uses the turn to switch phones, they dont get to attack

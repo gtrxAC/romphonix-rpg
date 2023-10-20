@@ -16,9 +16,11 @@ typedef enum BattleState {
     BS_PLAYER_TURN,
     BS_ENEMY_TURN,
     BS_AFTER_TURN,  // check status effects every turn after both players have moved
+    BS_PLAYER_DIED,
+    BS_ENEMY_DIED,
     BS_RUN,  // Run from wild battle (always succeeds)
     BS_WON,
-    BS_LOST
+    BS_LOST  // If player has phones remaining, show a menu for choosing the next one. Otherwise the battle is lost.
 } BattleState;
 
 // Data of a phone while it's in battle (this gets cleared when the battle ends,
