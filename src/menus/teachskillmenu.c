@@ -34,10 +34,10 @@ void scrTeachSkillMenu(Phone *phone, int skillID) {
     pushTextboxMenu();
     setNextFunc(checkTeachSkillMenu);
 
-    strcpy(MENU.textbox[0], "This phone already knows 4 skills.");
+    strcpy(MENU.textbox[0], "This phone already knows 4 skills. Which one");
     strcpy(
         MENU.textbox[1],
-        F("Which skill do you want to replace with %s?", SSPECS(skillID).name)
+        F("do you want to replace with %s?", SSPECS(skillID).name)
     );
 
     for (int i = 0; i < 4; i++) addChoice(SSPECS(phone->skills[i]).name);

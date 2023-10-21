@@ -83,20 +83,6 @@
 		"animationTarget": "self"
 	},
 	{
-		"name": "Battery Swap",
-		"description": "Recovers the phone's HP by inserting backup AA batteries.",
-		"skillType": "battery",
-		"effects": [
-			{
-				"type": "heal",
-				"parameter": 100
-			}
-		],
-		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
-		"animation": "unknown_phone",
-		"animationTarget": "self"
-	},
-	{
 		"name": "Clamshell",
 		"description": "Attacks by shutting the phone's clamshell.",
 		"skillType": "battery",

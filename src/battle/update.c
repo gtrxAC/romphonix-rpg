@@ -109,7 +109,7 @@ void updateBattleMenu() {
                 } 
 
                 default: {
-                    sprintf(MENU.battleTextbox[0], "Don't know what to do next! state %s", MENU.battleState);
+                    sprintf(MENU.battleTextbox[0], "Don't know what to do next! state %d", MENU.battleState);
                     break;
                 }
             }

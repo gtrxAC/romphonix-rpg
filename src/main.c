@@ -42,15 +42,15 @@ int main() {
     // _________________________________________________________________________
     //
     while (!g.shouldClose) {
-        // If the close button is pressed, show a menu asking what to do, if it
-        // isn't already being shown. In the title or title menu, close without
-        // asking.
+        // If the close button is pressed, show a menu asking what to do. In the
+        // title or title menu, close without asking.
         if (WindowShouldClose()) {
             if (g.state == ST_TITLE || g.state == ST_MAINMENU) {
                 g.shouldClose = true;
             }
-            else if (!arrlen(g.menus) || !MENU.textbox[0] || strcmp(MENU.textbox[0], "What do you want to do?")) {
-                scrExitMenu();
+            else {
+                g.shouldClose = tinyfd_messageBox("Exit",
+                    "Are you sure you want to exit? Make sure you have saved the game from the menu.", "yesno", "info", 1);
             }
         }
 
