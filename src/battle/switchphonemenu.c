@@ -13,11 +13,10 @@
 //  Switch phone menu - init function
 // _____________________________________________________________________________
 //
-void scrSwitchPhoneMenu(BattleState nextState) {
+void scrSwitchPhoneMenu() {
     pushMenu(CB_CLOSE);
     setDrawFunc(drawPhonesMenu);
     setNextFunc(scrCheckSwitchPhoneMenu);
-    MENU.nextBattleState = nextState;
 
     // For this menu, we create 6 "dummy" values to let the user scroll freely.
     for (int i = 0; i < 6; i++) addChoice("");
@@ -30,19 +29,18 @@ void scrSwitchPhoneMenu(BattleState nextState) {
 //
 void scrCheckSwitchPhoneMenu() {
     if (g.s.party[MENU.choice].active && g.s.party[MENU.choice].hp) {
-        LASTMENU.active = MENU.choice;
-        LASTMENU.player = (BattlePhone) {0}; // reset any stat changes
-        LASTMENU.player.shownHP = g.s.party[MENU.choice].hp;
+        LASTMENU.nextActive = MENU.choice;
 
         // make the game think that the player has already moved
         // (if player uses the turn to switch phones, they dont get to attack
         // that turn)
-        if (MENU.nextBattleState == BS_ENEMY_TURN) {
-            LASTMENU.movedFirst = true;
-        }
-
-        BattleState nextBS = MENU.nextBattleState;
         popMenu();
-        setBattleState(nextBS);
+        if (MENU.nextBattleState == BS_ENEMY_TURN) {
+            MENU.movedFirst = true;
+            setBattleState(BS_RETURNING);
+        }
+        else {
+            setBattleState(BS_SENDING_OUT);
+        }
     }
 }

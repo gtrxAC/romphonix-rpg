@@ -24,9 +24,10 @@
 bool scrBattleMenu(bool canRun) {
     // Choose the player's active phone (first phone that has remaining HP)
     bool found = false;
+    int active;
     for (int i = 0; i < 6; i++) {
         if (g.s.party[i].active && g.s.party[i].hp > 0) {
-            MENU.active = i;
+            active = i;
             found = true;
             break;
         }
@@ -41,6 +42,8 @@ bool scrBattleMenu(bool canRun) {
     strcpy(MENU.battleTextbox[0], "Battle doesn't have a textbox set!");
     strcpy(MENU.battleTextbox[1], "Battle doesn't have a textbox set!");
     strcpy(MENU.battleTextbox[2], "Battle doesn't have a textbox set!");
+
+    MENU.nextActive = active;  // BS_SENDING_OUT animation will set nextActive to active
 
     setUpdateFunc(updateBattleMenu);
     setDrawFunc(drawBattleMenu);
@@ -114,6 +117,32 @@ void setBattleState(BattleState bs) {
             addChoice("Switch");
             addChoice("Items");
             if (MENU.canRun) addChoice("Run");
+            break;
+        }
+
+        case BS_SENDING_OUT: {
+            MENU.active = MENU.nextActive;
+            MENU.player = (BattlePhone) {0}; // reset any stat changes
+            MENU.player.shownHP = PLAYERP.hp;
+
+            sprintf(
+                MENU.battleTextbox[0], "Go, %s %s!",
+                SPECS(PLAYERP.id).brand, SPECS(PLAYERP.id).model
+            );
+            strcpy(MENU.battleTextbox[1], "");
+            strcpy(MENU.battleTextbox[2], "");
+            g.frameCount = 0;  // Start animation
+            break;
+        }
+
+        case BS_RETURNING: {
+            sprintf(
+                MENU.battleTextbox[0], "Come back, %s %s!",
+                SPECS(PLAYERP.id).brand, SPECS(PLAYERP.id).model
+            );
+            strcpy(MENU.battleTextbox[1], "");
+            strcpy(MENU.battleTextbox[2], "");
+            g.frameCount = 0;  // Start animation
             break;
         }
 
@@ -204,7 +233,8 @@ void setBattleState(BattleState bs) {
                 }
             }
             if (havePhones) {
-                scrSwitchPhoneMenu(BS_WAITING);
+                MENU.nextBattleState = BS_WAITING;
+                scrSwitchPhoneMenu();
             }
             else {
                 strcpy(MENU.battleTextbox[0], "LOL you lose the battle and ran out");
@@ -233,7 +263,8 @@ void checkBattleMenu() {
                 }
 
                 case 1: { // Switch
-                    scrSwitchPhoneMenu(BS_ENEMY_TURN);
+                    MENU.nextBattleState = BS_ENEMY_TURN;
+                    scrSwitchPhoneMenu();
                     break;
                 }
                 

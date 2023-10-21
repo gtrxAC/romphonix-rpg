@@ -80,55 +80,121 @@ void drawBattleMenu() {
         MENU.battleTextboxTimer++;
     }
 
-    // Player status bar
-    drawBox(4, 4, 152, 58);
-    drawText(g.s.name, 10, 10, LIGHTGRAY);
+    // Player status bar (don't show before phone has been sent out)
+    if (MENU.battleState != BS_STARTING && MENU.battleState != BS_SENDING_OUT) {
+        drawBox(4, 4, 152, 58);
+        drawText(g.s.name, 10, 10, LIGHTGRAY);
+        drawTextD(F("$ %d", PLAYERP.level), 120, 10, WHITE);
 
-    // Note: '$' character in the digits font (drawTextD) says 'Lv.'
-    drawTextD(F("$ %d", PLAYERP.level), 120, 10, WHITE);
+        // Note: '$' character in the digits font (drawTextD) says 'Lv.'
+        drawTextD(F("$ %d", PLAYERP.level), 120, 10, WHITE);
 
-    const char *brandModel = F(
-        "%s %s", SPECS(PLAYERP.id).brand, SPECS(PLAYERP.id).model
-    );
-    drawText(brandModel, 10, 25, WHITE);
-    drawProgressBar(MENU.player.shownHP, PLAYERP.maxHP, 10, 42, 80, GREEN);
-    drawTextD(F("%d/%d", MENU.player.shownHP, PLAYERP.maxHP), 98, 42, WHITE);
+        drawText(F("%s %s", SPECS(PLAYERP.id).brand, SPECS(PLAYERP.id).model), 10, 25, WHITE);
+        drawProgressBar(MENU.player.shownHP, PLAYERP.maxHP, 10, 42, 80, GREEN);
+        drawTextD(F("%d/%d", MENU.player.shownHP, PLAYERP.maxHP), 98, 42, WHITE);
 
-    // Player statuses
-    drawStatusEffects(PLAYERP, MENU.player, 2);
+        // Player statuses
+        drawStatusEffects(PLAYERP, MENU.player, 2);
+    }
 
     // Enemy status bar
     drawBox(164, 4, 152, 58);
     drawText(MENU.enemyName, 170, 10, LIGHTGRAY);
     drawTextD(F("$ %d", ENEMYP.level), 280, 10, WHITE);
 
-    brandModel = F("%s %s", SPECS(ENEMYP.id).brand, SPECS(ENEMYP.id).model);
-    drawText(brandModel, 170, 25, WHITE);
+    drawText(F("%s %s", SPECS(ENEMYP.id).brand, SPECS(ENEMYP.id).model), 170, 25, WHITE);
     drawProgressBar(MENU.enemy.shownHP, ENEMYP.maxHP, 170, 42, 80, GREEN);
     drawTextD(F("%d/%d", MENU.enemy.shownHP, ENEMYP.maxHP), 258, 42, WHITE);
-    drawTextD(F("$ %d", PLAYERP.level), 120, 10, WHITE);
 
     // Enemy statuses
     drawStatusEffects(ENEMYP, MENU.enemy, 287);
 
     // Phone shadows (except for cave background)
     if (strcmp(g.mapMeta.battleBackground, "battle/cave")) {
-        drawTexture("shadow", 48, 150, WHITE);
+        // Player phone's shadow will expand when sending out, and retract when returning a phone
+        switch (MENU.battleState) {
+            case BS_STARTING: break;  // don't draw shadow, phone not sent out yet
+
+            case BS_SENDING_OUT: {
+                float animTime = MIN((float) g.frameCount / 60.0f, 1.0f);
+                drawTexturePro( 
+                    "shadow", (Rectangle) {0, 0, 64, 20},
+                    (Rectangle) {80.0f - 32.0f*animTime, 160.0f - 10.0f*animTime, 64.0f*animTime, 20.0f*animTime},
+                    0.0f, WHITE
+                );
+                break;
+            }
+            
+            case BS_RETURNING: {
+                float animTime = MAX(1.0f - (float) g.frameCount / 60.0f, 0.0f);
+                drawTexturePro(
+                    "shadow", (Rectangle) {0, 0, 64, 20},
+                    (Rectangle) {80.0f - 32.0f*animTime, 160.0f - 10.0f*animTime, 64.0f*animTime, 20.0f*animTime},
+                    0.0f, WHITE
+                );
+                break;
+            }
+
+            default:
+                drawTexture("shadow", 48, 150, WHITE);
+                break;
+        }
+
+        // Enemy shadow
         drawTexture("shadow", 208, 150, WHITE);
     }
 
     // Player phone sprite
-    if (MENU.battleState == BS_PLAYER_DIED) {
-        // Death animation
-        float animTime = MIN((float) g.frameCount / 30.0f, 1.0f);
-        drawTexturePro(
-            SPECS(PLAYERP.id).sprite, (Rectangle) {0, 0, 64, 64},
-            (Rectangle) {48.0f - 16.0f*animTime, 96.0f + 64.0f*animTime, 64.0f + 32.0f*animTime, 64.0f - 64.0f*animTime},
-            0.0f, WHITE
-        );
-    }
-    else {
-        drawTexture(SPECS(PLAYERP.id).sprite, 48, 96, WHITE);
+    switch (MENU.battleState) {
+        case BS_STARTING: break; // Don't draw player phone, it hasn't been sent out yet
+
+        case BS_PLAYER_DIED: {
+            float animTime = MIN((float) g.frameCount / 30.0f, 1.0f);
+            drawTexturePro(
+                SPECS(PLAYERP.id).sprite, (Rectangle) {0, 0, 64, 64},
+                (Rectangle) {48.0f - 16.0f*animTime, 96.0f + 64.0f*animTime, 64.0f + 32.0f*animTime, 64.0f - 64.0f*animTime},
+                0.0f, WHITE
+            );
+            break;
+        }
+
+        case BS_SENDING_OUT: {
+            // First 15 frames: phone not shown
+            // Middle 30 frames: animation
+            // Last 15 frames: phone shown like normal
+            if (g.frameCount > 15 && g.frameCount < 45) {
+                float animTime = MIN((float) (g.frameCount - 15) / 30.0f, 1.0f);
+                drawTexturePro(
+                    SPECS(PLAYERP.id).sprite, (Rectangle) {0, 0, 64, 64},
+                    (Rectangle) {48.0f*animTime, 64.0f + 32.0f*animTime, 8.0f + 56.0f*animTime, 8.0f + 56.0f*animTime},
+                    0.0f, WHITE
+                );
+            }
+            else if (g.frameCount >= 45) {
+                drawTexture(SPECS(PLAYERP.id).sprite, 48, 96, WHITE);
+            }
+            break;
+        }
+
+        case BS_RETURNING: {
+            // Same as SENDING_OUT but backwards
+            if (g.frameCount > 15 && g.frameCount < 45) {
+                float animTime = MAX(1.0f - (float) (g.frameCount - 15) / 30.0f, 0.0f);
+                drawTexturePro(
+                    SPECS(PLAYERP.id).sprite, (Rectangle) {0, 0, 64, 64},
+                    (Rectangle) {48.0f*animTime, 64.0f + 32.0f*animTime, 8.0f + 56.0f*animTime, 8.0f + 56.0f*animTime},
+                    0.0f, WHITE
+                );
+            }
+            else if (g.frameCount <= 15) {
+                drawTexture(SPECS(PLAYERP.id).sprite, 48, 96, WHITE);
+            }
+            break;
+        }
+
+        default:
+            drawTexture(SPECS(PLAYERP.id).sprite, 48, 96, WHITE);
+            break;
     }
 
     // Enemy phone sprite

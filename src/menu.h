@@ -82,6 +82,7 @@ typedef struct Menu {
             const char *enemyName;
             int enemyActive;  // active phone index of the enemyParty
             int active;
+            int nextActive;  // next active phone (when switching phones), old one needs to be kept for the duration of the BS_RETURNING animation
             Phone enemyParty[6];
             BattleState battleState;
             bool canRun;  // is a wild battle?
@@ -95,10 +96,11 @@ typedef struct Menu {
 
             BattlePhone player;
             BattlePhone enemy;
+            
+            // Which battle state to switch to after the player switches their phone
+            // (switch animation is played first)
+            BattleState nextBattleState;
         };
-
-        // Switch phone menu (in battle)
-        BattleState nextBattleState;
 
         // Use item menu (select which phone the item is to be used on)
         struct {
