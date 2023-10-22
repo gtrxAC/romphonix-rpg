@@ -37,6 +37,10 @@ void updateBattleMenu() {
     if (MENU.battleState == BS_RETURNING && g.frameCount > 60) {
         setBattleState(BS_SENDING_OUT);
     }
+    // Same for BS_ENEMY_SENDING_OUT (in NPC battles), go to SENDING_OUT
+    if (MENU.battleState == BS_ENEMY_SENDING_OUT && g.frameCount > 60) {
+        setBattleState(BS_SENDING_OUT);
+    }
 
     if (MENU.battleState == BS_WAITING || MENU.battleState == BS_WAITING_MOVE) {
         // Command menu is just a standard menu
@@ -52,8 +56,16 @@ void updateBattleMenu() {
         int textboxLen = strlen(MENU.battleTextbox[0]) + strlen(MENU.battleTextbox[1]) + strlen(MENU.battleTextbox[2]) + 20;
         if (MENU.battleTextboxTimer >= textboxLen && MENU.player.shownHP == PLAYERP.hp && MENU.enemy.shownHP == ENEMYP.hp) {
             switch (MENU.battleState) {
-                case BS_STARTING: setBattleState(BS_SENDING_OUT); break;
-                case BS_SENDING_OUT: case BS_RETURNING: break;
+                case BS_STARTING: {
+                    if (MENU.canRun) {
+                        setBattleState(BS_SENDING_OUT);
+                    }
+                    else {
+                        setBattleState(BS_ENEMY_SENDING_OUT);
+                    }
+                    break;
+                }
+                case BS_SENDING_OUT: case BS_ENEMY_SENDING_OUT: case BS_RETURNING: break;
 
                 case BS_PLAYER_TURN: {
                     if (PLAYERP.hp <= 0) {

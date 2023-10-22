@@ -291,7 +291,7 @@ void doMove(Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone 
                         attacker, victim, attackerB, victimB,
                         skill.effects[i].parameter, skill.type
                     );
-                    damage = (float) damage * ((float) attacker->weight / victim->weight);
+                    damage = (float) damage * ((float) attacker->weight / (float) victim->weight);
                     if (damage > victim->hp) damage = victim->hp;
                     victim->hp -= damage;
                     sprintf(

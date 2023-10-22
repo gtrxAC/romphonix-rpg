@@ -43,6 +43,7 @@ bool scrBattleMenu(bool canRun) {
     strcpy(MENU.battleTextbox[1], "Battle doesn't have a textbox set!");
     strcpy(MENU.battleTextbox[2], "Battle doesn't have a textbox set!");
 
+    MENU.active = -1;
     MENU.nextActive = active;  // BS_SENDING_OUT animation will set nextActive to active
 
     setUpdateFunc(updateBattleMenu);
@@ -117,6 +118,17 @@ void setBattleState(BattleState bs) {
             addChoice("Switch");
             addChoice("Items");
             if (MENU.canRun) addChoice("Run");
+            break;
+        }
+
+        case BS_ENEMY_SENDING_OUT: {
+            sprintf(
+                MENU.battleTextbox[0], "%s sent out %s %s!",
+                MENU.enemyName, SPECS(ENEMYP.id).brand, SPECS(ENEMYP.id).model
+            );
+            strcpy(MENU.battleTextbox[1], "");
+            strcpy(MENU.battleTextbox[2], "");
+            g.frameCount = 0;  // Start animation
             break;
         }
 

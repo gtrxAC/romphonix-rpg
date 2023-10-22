@@ -80,6 +80,7 @@ typedef struct Menu {
             int battleTextboxTimer;
 
             const char *enemyName;
+            const char *enemySprite;
             int enemyActive;  // active phone index of the enemyParty
             int active;
             int nextActive;  // next active phone (when switching phones), old one needs to be kept for the duration of the BS_RETURNING animation

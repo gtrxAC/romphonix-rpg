@@ -11,6 +11,7 @@
 // Battle state
 typedef enum BattleState {
     BS_STARTING,  // battle is starting (wild X appeared or X wants to fight)
+    BS_ENEMY_SENDING_OUT, // Enemy (NPC) sending out a phone (animation)
     BS_SENDING_OUT,  // Player is sending out a phone (short animation)
     BS_RETURNING, // Player is returning their phone (switching to another one)
     BS_WAITING,     // Waiting for command (menu is shown)

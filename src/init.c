@@ -11,6 +11,16 @@ void initGame() {
     InitWindow(960, 720, "ROMphonix RPG");
     g.rt = LoadRenderTexture(320, 240);
 
+    // Draw a loading text on the window
+    g.fonts.dialogue = LoadFont("assets/fonts/dialogue.png");
+    int scale = GetScreenWidth() / 320;
+    BeginDrawing();
+    DrawTextEx(
+        g.fonts.dialogue, "Loading",
+        (Vector2) {(160 - measureText("Loading")/2)*scale, 113*scale}, 13.0f*scale, 1, WHITE
+    );
+    EndDrawing();
+
     // Load the icon for the window
     Image icon = LoadImage("assets/graphics/icon.png");
     ImageFormat(&icon, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8);
@@ -20,7 +30,6 @@ void initGame() {
     InitAudioDevice();
     initSynth();
 
-    g.fonts.dialogue = LoadFont("assets/fonts/dialogue.png");
     g.fonts.large = LoadFont("assets/fonts/large.png");
     g.fonts.digits = LoadFont("assets/fonts/digits.png");
     g.fonts.thin = LoadFont("assets/fonts/thin.png");

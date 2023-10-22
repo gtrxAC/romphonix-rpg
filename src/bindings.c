@@ -58,7 +58,7 @@ void checkBindings() {
                     }
                 }
 
-                g.s.party[i].skills[0] = 1;
+                g.s.party[i].skills[0] = 8;
                 g.s.party[i].skills[1] = 10;
                 g.s.party[i].skills[2] = 11;
                 g.s.party[i].skills[3] = 12;
@@ -118,6 +118,49 @@ void checkBindings() {
             strcpy(
                 MENU.battleTextbox[0],
                 F("A wild %s %s appeared!", SPECS(id).brand, SPECS(id).model)
+            );
+            MENU.battleTextbox[1][0] = '\0';
+            MENU.battleTextbox[2][0] = '\0';
+        }
+    }
+
+    // N: NPC battle
+    if (IsKeyPressed(KEY_N)) {
+        if (scrBattleMenu(false)) {
+            setSong("assets/sounds/music/jht9392remix.mid");
+            int id = randomPhone();
+            Phone phone1 = {
+                true, id,
+                100, 100, 100,
+                g.s.party[0].level + GetRandomValue(-5, 5), 0, 0, SPECS(id).baseExp,
+                SPECS(id).attack, SPECS(id).defense, SPECS(id).weight,
+                {
+                    GetRandomValue(1, g.skillDB->size - 1), GetRandomValue(1, g.skillDB->size - 1), 
+                    GetRandomValue(1, g.skillDB->size - 1), GetRandomValue(1, g.skillDB->size - 1), 
+                },
+                GetRandomValue(0, 3), GetRandomValue(0, 3),
+                GetRandomValue(0, 3), GetRandomValue(0, 3)
+            };
+            Phone phone2 = {
+                true, id + 1,
+                100, 100, 100,
+                g.s.party[0].level + GetRandomValue(-5, 5), 0, 0, SPECS(id).baseExp,
+                SPECS(id).attack, SPECS(id).defense, SPECS(id).weight,
+                {
+                    GetRandomValue(1, g.skillDB->size - 1), GetRandomValue(1, g.skillDB->size - 1), 
+                    GetRandomValue(1, g.skillDB->size - 1), GetRandomValue(1, g.skillDB->size - 1), 
+                },
+                GetRandomValue(0, 3), GetRandomValue(0, 3),
+                GetRandomValue(0, 3), GetRandomValue(0, 3)
+            };
+            MENU.enemyActive = 0;
+            MENU.enemyParty[0] = phone1;
+            MENU.enemyParty[1] = phone2;
+            MENU.enemyName = "NAME";
+            MENU.enemySprite = "large_player4";
+            strcpy(
+                MENU.battleTextbox[0],
+                F("NAME has challenged you to a battle!", SPECS(id).brand, SPECS(id).model)
             );
             MENU.battleTextbox[1][0] = '\0';
             MENU.battleTextbox[2][0] = '\0';
