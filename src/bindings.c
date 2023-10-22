@@ -115,6 +115,7 @@ void checkBindings() {
             MENU.enemyActive = 0;
             MENU.enemyParty[0] = phone;
             MENU.enemyName = "Enemy";
+            MENU.enemyDefeatMsg[0] = "you won, congrats i guess???";
             strcpy(
                 MENU.battleTextbox[0],
                 F("A wild %s %s appeared!", SPECS(id).brand, SPECS(id).model)
@@ -158,9 +159,12 @@ void checkBindings() {
             MENU.enemyParty[1] = phone2;
             MENU.enemyName = "NAME";
             MENU.enemySprite = "large_player4";
+            MENU.enemyReward = 100;
+            MENU.enemyDefeatMsg[0] = "This is line 1 of my defeat message.";
+            MENU.enemyDefeatMsg[1] = "This is line 2 of my defeat message.";
             strcpy(
                 MENU.battleTextbox[0],
-                F("NAME has challenged you to a battle!", SPECS(id).brand, SPECS(id).model)
+                "NAME has challenged you to a battle!"
             );
             MENU.battleTextbox[1][0] = '\0';
             MENU.battleTextbox[2][0] = '\0';

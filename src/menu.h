@@ -81,6 +81,9 @@ typedef struct Menu {
 
             const char *enemyName;
             const char *enemySprite;
+            const char *enemyDefeatMsg[2];  // Message that the enemy says when they are defeated (2 lines)
+            int enemyReward;  // Money received from defeating the NPC
+
             int enemyActive;  // active phone index of the enemyParty
             int active;
             int nextActive;  // next active phone (when switching phones), old one needs to be kept for the duration of the BS_RETURNING animation

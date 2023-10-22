@@ -57,6 +57,7 @@ bool scrBattleMenu(bool canRun) {
 
     MENU.canRun = canRun;
     if (canRun) addChoice("Run");
+    g.state = ST_BATTLE;
     return true;
 }
 
@@ -229,10 +230,37 @@ void setBattleState(BattleState bs) {
         }
 
         case BS_WON: {
-            setSong("assets/sounds/music/thtune.mid");
-            strcpy(MENU.battleTextbox[0], "you won, congrats i guess???");
-            strcpy(MENU.battleTextbox[1], "");
-            strcpy(MENU.battleTextbox[2], "");
+            // Choose the next phone in line to send out
+            bool havePhones = false;
+            for (int i = 0; i < 6; i++) {
+                if (MENU.enemyParty[i].active && MENU.enemyParty[i].hp > 0) {
+                    MENU.enemyActive = i;
+                    setBattleState(BS_ENEMY_SENDING_OUT);
+                    havePhones = true;
+                    break;
+                }
+            }
+
+            if (!havePhones) {
+                setSong("assets/sounds/music/thtune.mid");
+                int rewardMsgLine = 0;
+                for (int i = 0; i < 2; i++) {
+                    if (MENU.enemyDefeatMsg[i] && strlen(MENU.enemyDefeatMsg[i])) {
+                        strcpy(MENU.battleTextbox[i], MENU.enemyDefeatMsg[i]);
+                        rewardMsgLine++;
+                    }
+                    else {
+                        strcpy(MENU.battleTextbox[i], "");
+                    }
+                }
+                if (MENU.enemyReward > 0) {
+                    sprintf(
+                        MENU.battleTextbox[rewardMsgLine], "%s gave you $%d as a reward!",
+                        MENU.enemyName, MENU.enemyReward
+                    );
+                    g.s.money += MENU.enemyReward;
+                }
+            }
             break;
         }
 

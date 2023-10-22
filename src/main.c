@@ -42,15 +42,27 @@ int main() {
     // _________________________________________________________________________
     //
     while (!g.shouldClose) {
-        // If the close button is pressed, show a menu asking what to do. In the
-        // title or title menu, close without asking.
+        // If the close button is pressed, show a menu asking whether to save. In the
+        // title or title menu, close without asking. In battles, saving is not available,
+        // so ask whether to quit or keep playing.
         if (WindowShouldClose()) {
-            if (g.state == ST_TITLE || g.state == ST_MAINMENU) {
-                g.shouldClose = true;
-            }
-            else {
-                g.shouldClose = tinyfd_messageBox("Exit",
-                    "Are you sure you want to exit? Make sure you have saved the game from the menu.", "yesno", "info", 1);
+            switch (g.state) {
+                case ST_TITLE: case ST_MAINMENU:
+                    g.shouldClose = true;
+                    break;
+
+                case ST_BATTLE:
+                    g.shouldClose = tinyfd_messageBox("Exit",
+                        "Are you sure you want to exit without saving? Saving is not available during battles.", "yesno", "question", 0);
+                    break;
+
+                default: {
+                    g.shouldClose = true;
+                    int wantSave = tinyfd_messageBox("Exit",
+                        "Do you want to save the game before exiting?", "yesno", "question", 1);
+                    if (wantSave) save();
+                    break;
+                }
             }
         }
 

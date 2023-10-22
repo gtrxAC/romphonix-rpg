@@ -39,7 +39,12 @@ void updateBattleMenu() {
     }
     // Same for BS_ENEMY_SENDING_OUT (in NPC battles), go to SENDING_OUT
     if (MENU.battleState == BS_ENEMY_SENDING_OUT && g.frameCount > 60) {
-        setBattleState(BS_SENDING_OUT);
+        if (MENU.active == -1) {
+            setBattleState(BS_SENDING_OUT);
+        }
+        else {
+            setBattleState(BS_WAITING);
+        }
     }
 
     if (MENU.battleState == BS_WAITING || MENU.battleState == BS_WAITING_MOVE) {
@@ -117,6 +122,7 @@ void updateBattleMenu() {
                 case BS_RUN: case BS_WON: case BS_LOST: {
                     popMenu();
                     setSong(g.mapMeta.songName);
+                    g.state = ST_INGAME;
                     break;
                 } 
 

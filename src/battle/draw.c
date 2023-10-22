@@ -81,7 +81,7 @@ void drawBattleMenu() {
     }
 
     // Player status bar (don't show before phone has been sent out)
-    if (MENU.battleState != BS_STARTING && MENU.battleState != BS_SENDING_OUT && MENU.active != -1) {
+    if (MENU.battleState != BS_STARTING && MENU.battleState != BS_SENDING_OUT && MENU.battleState != BS_LOST && MENU.battleState != BS_PLAYER_DIED && MENU.active != -1) {
         drawBox(4, 4, 152, 58);
         drawText(g.s.name, 10, 10, LIGHTGRAY);
         drawTextD(F("$ %d", PLAYERP.level), 120, 10, WHITE);
@@ -98,7 +98,7 @@ void drawBattleMenu() {
     }
 
     // Enemy status bar
-    if (MENU.battleState != BS_STARTING && MENU.battleState != BS_ENEMY_SENDING_OUT) {
+    if ((MENU.battleState != BS_STARTING || MENU.canRun) && MENU.battleState != BS_ENEMY_SENDING_OUT && MENU.battleState != BS_ENEMY_DIED && MENU.battleState != BS_WON) {
         drawBox(164, 4, 152, 58);
         drawText(MENU.enemyName, 170, 10, LIGHTGRAY);
         drawTextD(F("$ %d", ENEMYP.level), 280, 10, WHITE);
@@ -116,6 +116,7 @@ void drawBattleMenu() {
         // Player phone's shadow will expand when sending out, and retract when returning a phone or the phone dies
         switch (MENU.battleState) {
             case BS_STARTING: break;  // don't draw shadow, phone not sent out yet
+            case BS_LOST: break;  // Don't draw shadow, phone is dead
 
             case BS_SENDING_OUT: {
                 float animTime = MIN((float) g.frameCount / 60.0f, 1.0f);
@@ -150,7 +151,7 @@ void drawBattleMenu() {
 
         // Enemy shadow will expand when sending out, retract when phone dies
         switch (MENU.battleState) {
-            case BS_WON: case BS_STARTING: break;  // don't draw
+            case BS_WON: break;  // don't draw
 
             case BS_ENEMY_SENDING_OUT: {
                 float animTime = MIN((float) g.frameCount / 60.0f, 1.0f);
@@ -172,6 +173,12 @@ void drawBattleMenu() {
                 break;
             }
 
+            case BS_STARTING: {
+                // In wild battles, draw like normal (using fallthrough).
+                // In NPC battles, don't draw as the phone isn't sent out yet.
+                if (!MENU.canRun) break;
+            }
+
             default: 
                 drawTexture("shadow", 208, 150, WHITE);
                 break;
@@ -181,6 +188,7 @@ void drawBattleMenu() {
     // Player phone sprite
     switch (MENU.battleState) {
         case BS_STARTING: break; // Don't draw player phone, it hasn't been sent out yet
+        case BS_LOST: break; // Don't draw, it's already dead
 
         case BS_PLAYER_DIED: {
             float animTime = MIN((float) g.frameCount / 30.0f, 1.0f);
@@ -239,6 +247,8 @@ void drawBattleMenu() {
 
     // Enemy phone sprite
     switch (MENU.battleState) {
+        case BS_WON: break; // don't draw, it's dead
+
         case BS_STARTING: {
             // Wild battle: draw phone like normal. NPC battle: draw npc sprite.
             if (MENU.canRun) {
@@ -253,17 +263,20 @@ void drawBattleMenu() {
         case BS_ENEMY_SENDING_OUT: {
             // (NPC battles only) animation (lasts 60 frames)
             float animTime = MIN((float) g.frameCount / 60.0f, 1.0f);
-            float npcAnimTime = MIN(animTime * 2.0f, 1.0f);  // first 30 frames
-            float phoneAnimTime = MIN(MAX((animTime - 0.5f) * 2.0f, 0.0f), 1.0f);  // last 30 frames
 
-            drawTexturePro(
-                MENU.enemySprite, (Rectangle) {0, 0, 40, 64},
-                (Rectangle) {
-                    220.0f + 120.0f*npcAnimTime, 96.0f - 20.0f*npcAnimTime,
-                    40.0f - 10.0f*npcAnimTime, 64.0f - 16.0f*npcAnimTime
-                },
-                0.0f, WHITE
-            );
+            // Draw the NPC only for their first phone in battle
+            if (MENU.active == -1) {
+                float npcAnimTime = MIN(animTime * 2.0f, 1.0f);  // first 30 frames
+                drawTexturePro(
+                    MENU.enemySprite, (Rectangle) {0, 0, 40, 64},
+                    (Rectangle) {
+                        220.0f + 120.0f*npcAnimTime, 96.0f - 20.0f*npcAnimTime,
+                        40.0f - 10.0f*npcAnimTime, 64.0f - 16.0f*npcAnimTime
+                    },
+                    0.0f, WHITE
+                );
+            }
+            float phoneAnimTime = MIN(MAX((animTime - 0.5f) * 2.0f, 0.0f), 1.0f);  // last 30 frames
             drawTexturePro(
                 SPECS(ENEMYP.id).sprite, (Rectangle) {0, 0, 64, 64},
                 (Rectangle) {
