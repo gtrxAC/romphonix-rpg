@@ -48,10 +48,12 @@ void loadSettings() {
 
     // Apply the loaded settings
     // synth.gain is in the range 0-10, default 0.2
-    fluid_settings_setnum(
-        g.syn.settings, "synth.gain",
-        (float) g.settings.musicVolume / 40
-    );
+    #ifndef NO_SYNTH
+        fluid_settings_setnum(
+            g.syn.settings, "synth.gain",
+            (float) g.settings.musicVolume / 40
+        );
+    #endif
     SetMasterVolume((float) g.settings.sfxVolume / 20);
 }
 

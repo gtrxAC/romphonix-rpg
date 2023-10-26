@@ -7,6 +7,7 @@
 // _____________________________________________________________________________
 //
 void initSynth() {
+#ifndef NO_SYNTH
     g.syn.settings = new_fluid_settings();
     if (!g.syn.settings) {
         error("Failed to create FluidSynth settings", false);
@@ -35,6 +36,7 @@ void initSynth() {
     }
 
     g.syn.loaded = true;
+#endif
 }
 
 // _____________________________________________________________________________
@@ -43,6 +45,7 @@ void initSynth() {
 // _____________________________________________________________________________
 //
 void closeSynth() {
+#ifndef NO_SYNTH
     if (g.syn.player) {
         fluid_player_stop(g.syn.player);
         delete_fluid_player(g.syn.player);
@@ -52,6 +55,7 @@ void closeSynth() {
     if (g.syn.sfont_id) fluid_synth_sfunload(g.syn.synth, g.syn.sfont_id, 1);
     if (g.syn.synth) delete_fluid_synth(g.syn.synth);
     if (g.syn.settings) delete_fluid_settings(g.syn.settings);
+#endif
 }
 
 // _____________________________________________________________________________
@@ -60,6 +64,7 @@ void closeSynth() {
 // _____________________________________________________________________________
 //
 void setSong(const char *path) {
+#ifndef NO_SYNTH
     // Ignore music changes if the synth failed to open
     if (!g.syn.loaded) return;
 
@@ -81,4 +86,5 @@ void setSong(const char *path) {
     fluid_player_add(g.syn.player, path);
     fluid_player_set_loop(g.syn.player, -1);
     fluid_player_play(g.syn.player);
+#endif
 }

@@ -32,6 +32,7 @@ endif
 
 BUILD = build/$(PLATFORM)
 LDLIBS += -lraylib
+PYTHON = python3
 
 # Platform specific compiler flags
 ifeq ($(PLATFORM),Linux)
@@ -48,6 +49,13 @@ ifeq ($(PLATFORM),Windows_NT)
 	TARGET := $(TARGET).exe
 	MAKE_FLAGS += PLATFORM=PLATFORM_DESKTOP CC=x86_64-w64-mingw32-gcc \
 		AR=x86_64-w64-mingw32-ar OS=Windows_NT
+endif
+
+ifeq ($(PLATFORM),Darwin)
+	CC = clang
+	LDLIBS += -framework CoreVideo -framework IOKit -framework Cocoa
+	LDLIBS += -framework GLUT -framework OpenGL
+	CFLAGS += -DNO_SYNTH
 endif
 
 ifeq ($(PLATFORM),Web)
@@ -109,10 +117,10 @@ directories:
 	mkdir -p $(patsubst src/%/,$(BUILD)/%/,$(shell find src/*/ -type d)) $(BUILD)/mapeditor
 
 json2tfs: $(wildcard assets/data/*.json)
-	python scripts/json2tfs.py
+	$(PYTHON) scripts/json2tfs.py
 
 src/functions.h: $(SRC)
-	python scripts/funcmap.py
+	$(PYTHON) scripts/funcmap.py
 
 $(BUILD)/%.o: src/%.c
 	$(CC) -c $(CFLAGS) $^ -o $@
@@ -134,6 +142,7 @@ rpxmap: $(patsubst %.c,$(BUILD)/%.o,$(wildcard mapeditor/*.c))
 HAVE_APT = $(shell command -v apt)
 HAVE_DNF = $(shell command -v dnf)
 HAVE_GIT = $(shell command -v git)
+MACOSX_DEPLOYMENT_TARGET = 10.9
 
 .PHONY: setup
 setup: setup_dirs setup_deps setup_emsdk setup_raylib
@@ -142,6 +151,7 @@ setup_dirs:
 	mkdir -p include src assets lib/$(PLATFORM)
 
 setup_deps:
+ifeq ($(PLATFORM),Linux)
 ifneq ($(HAVE_APT),)
 	sudo apt install build-essential git libasound2-dev mesa-common-dev \
 		libx11-dev libxrandr-dev libxi-dev xorg-dev libgl1-mesa-dev \
@@ -150,6 +160,10 @@ endif
 ifneq ($(HAVE_DNF),)
 	sudo dnf install alsa-lib-devel mesa-libGL-devel libX11-devel \
 		libXrandr-devel libXi-devel libXcursor-devel libXinerama-devel
+endif
+endif
+ifeq ($(PLATFORM),Darwin)
+	-xcode-select --install
 endif
 
 emsdk:

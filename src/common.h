@@ -20,7 +20,10 @@
 #include "raylib.h"
 #include "stb_ds.h"
 #include "tinyfiledialogs.h"
+
+#ifndef NO_SYNTH
 #include "fluidsynth.h"
+#endif
 
 typedef struct Game Game;
 
@@ -125,6 +128,7 @@ typedef enum Direction {
 	DIR_RIGHT
 } Direction;
 
+#ifndef NO_SYNTH
 typedef struct Synth {
     fluid_settings_t *settings;
     fluid_synth_t *synth;
@@ -134,6 +138,7 @@ typedef struct Synth {
     int sfont_id;
     bool loaded;
 } Synth;
+#endif
 
 #include "maps.h"
 #include "phones.h"
@@ -195,8 +200,10 @@ typedef struct Game {
     unsigned int frameCount;
 
     // Audio related (synth and sound scheduling - see synth.c and util.c)
-    Synth syn;
-    bool audioStarted;
+    #ifndef NO_SYNTH
+        Synth syn;
+        bool audioStarted;
+    #endif
     Sound schedSound;
     int schedSoundTimer;
 

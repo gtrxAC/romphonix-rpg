@@ -43,10 +43,12 @@ void updateSettingsMenu() {
             ) {
                 g.settings.musicVolume += delta;
             }
-            fluid_settings_setnum(
-                g.syn.settings, "synth.gain",
-                (float) g.settings.musicVolume / 40
-            );
+            #ifndef NO_SYNTH
+                fluid_settings_setnum(
+                    g.syn.settings, "synth.gain",
+                    (float) g.settings.musicVolume / 40
+                );
+            #endif
             break;
         }
 

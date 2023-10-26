@@ -42,3 +42,6 @@ assets/data/phones.tfs
 assets/data/items.tfs
 assets/data/skills.tfs
 src/functions.h
+
+# Mac stuff
+.DS_Store
