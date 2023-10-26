@@ -140,4 +140,28 @@ void drawWorld() {
 		(Rectangle) {((16 - g.playerAnim)/4)*16, 16*g.s.playerDir, 16, 16},
 		(Vector2) {152, 112}, WHITE
 	);
+
+	drawTextureRec(
+		"player3",
+		(Rectangle) {((16 - g.playerAnim)/4)*16, ((g.frameCount / 16) % 4)*16, 16, 16},
+		(Vector2) {152 - playerDestX + 32, 112 - playerDestY}, WHITE
+	);
+
+	drawTextureRec(
+		"player2",
+		(Rectangle) {((16 - g.playerAnim)/4)*16, ((g.frameCount / 16) % 4)*16, 16, 16},
+		(Vector2) {152 - playerDestX + 64, 112 - playerDestY + 16}, WHITE
+	);
+
+	drawTextureRec(
+		"player5",
+		(Rectangle) {((16 - g.playerAnim)/4)*16, ((g.frameCount / 16) % 4)*16, 16, 16},
+		(Vector2) {152 - playerDestX + 96, 112 - playerDestY}, WHITE
+	);
+
+	drawTextureRec(
+		"player7",
+		(Rectangle) {((16 - g.playerAnim)/4)*16, ((g.frameCount / 16) % 4)*16, 16, 16},
+		(Vector2) {152 - playerDestX + 128, 112 - playerDestY + 16}, WHITE
+	);
 }
