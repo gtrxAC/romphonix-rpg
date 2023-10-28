@@ -26,6 +26,28 @@ void load() {
             if (g.s.bag[b][i].count > 0) arrpush(g.bag[b], g.s.bag[b][i]);
         }
     }
+
+    g.mapMeta.npcTable[0] = (Character) {
+        true,
+        "player3",
+        0, 0,
+        10,
+        DIR_RIGHT,
+        16,
+        false,
+        4
+    };
+
+    g.mapMeta.npcTable[1] = (Character) {
+        true,
+        "player4",
+        0, 4,
+        0,
+        DIR_DOWN,
+        0,
+        false,
+        5
+    };
 }
 
 // _____________________________________________________________________________

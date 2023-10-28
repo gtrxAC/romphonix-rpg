@@ -36,6 +36,54 @@ void scrDemoClock() {
     pushTextbox("The time is... I don't know, I don't care", "enough to check.");
 }
 
+void scrDemoNpc() {
+    pushTextbox(F("Hi %s!", g.s.name), "I'm a generic NPC!");
+}
+
+void scrDemoNpc2() {
+    pushTextboxMenu();
+    strcpy(MENU.textbox[0], "You wanted to battle, right?");
+    addChoice("Yes");
+    addChoice("No");
+    MENU.nextFunc = scrDemoNpc3;
+}
+
+void scrDemoNpc3() {
+    int choice = MENU.choice;
+    popMenu();
+    if (choice == 0 && scrBattleMenu(false)) {
+        setSong("assets/sounds/music/jht9392remix.mid");
+        int id = 50;
+        Phone phone1 = {
+            true, id,
+            100, 100, 100,
+            g.s.party[0].level + GetRandomValue(-5, 5), 0, 0, SPECS(id).baseExp,
+            SPECS(id).attack, SPECS(id).defense, SPECS(id).weight,
+            {
+                GetRandomValue(1, g.skillDB->size - 1), GetRandomValue(1, g.skillDB->size - 1), 
+                GetRandomValue(1, g.skillDB->size - 1), GetRandomValue(1, g.skillDB->size - 1), 
+            },
+            GetRandomValue(0, 3), GetRandomValue(0, 3),
+            GetRandomValue(0, 3), GetRandomValue(0, 3)
+        };
+        MENU.enemyActive = 0;
+        MENU.enemyParty[0] = phone1;
+        MENU.enemyName = "Random NPC";
+        MENU.enemySprite = "large_player4";
+        MENU.enemyReward = 1000;
+        MENU.enemyDefeatMsg[0] = "This is line 1 of my defeat message.";
+        MENU.enemyDefeatMsg[1] = "This is line 2 of my defeat message.";
+        strcpy(
+            MENU.battleTextbox[0],
+            "Random NPC challenged you to a battle!"
+        );
+        MENU.battleTextbox[1][0] = '\0';
+        MENU.battleTextbox[2][0] = '\0';
+    } else {
+        pushTextbox("ok", "");
+    }
+}
+
 // _____________________________________________________________________________
 //
 //  Map metadata
@@ -67,7 +115,9 @@ Map mapDemo = {
     {
         scrDemoSign,
         scrDemoMailbox,
-        scrDemoClock
+        scrDemoClock,
+        scrDemoNpc,
+        scrDemoNpc2
     },
 
     // Chance to encounter a wild phone when scrWildEncounter is run in this

@@ -8,8 +8,8 @@ void updateTransition() {
 	}
 	else if (g.frameCount == TRANSITION_TIME) {
 		g.s.curMap = g.nextMap;
-		g.s.playerX = g.nextX;
-		g.s.playerY = g.nextY;
+		g.s.chr.x = g.nextX;
+		g.s.chr.y = g.nextY;
 
         loadMap(g.s.curMap);
 

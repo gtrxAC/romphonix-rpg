@@ -369,6 +369,9 @@ void scrIntroD307_6() {
 
     g.s.id = GetRandomValue(10000, 99999);
 
+    sprintf(g.s.chr.sprite, "player%d", g.s.appearance);
+    g.s.chr.isPlayer = true;
+
     g.s.curMap = 0;
     loadMap(0);
     g.state = ST_INGAME;

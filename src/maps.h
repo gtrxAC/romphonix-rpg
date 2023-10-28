@@ -16,6 +16,7 @@ typedef struct Map {
     void (*interactScripts[64])();
     char encounterChance;
     int encounterTable[16][2];
+    Character npcTable[32];
 } Map;
 
 #endif

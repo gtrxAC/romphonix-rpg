@@ -140,6 +140,7 @@ typedef struct Synth {
 } Synth;
 #endif
 
+#include "character.h"
 #include "maps.h"
 #include "phones.h"
 
@@ -155,7 +156,9 @@ typedef struct Synth {
 // versions' save files working
 typedef struct SaveData {
     // Player location
-    int curMap, playerX, playerY, playerDir;
+    int curMap;
+    // playerX, playerY, playerDir;
+    Character chr;
 
     // Owned phones
     bool phonesSeen[256];
@@ -224,7 +227,6 @@ typedef struct Game {
     // nextMap/X/Y are the location where the player moves after a map change transition
 	int nextMap;
 	int nextX, nextY;
-	int playerAnim;
 
     PhoneDatabase *phoneDB;
     ItemDatabase *itemDB;

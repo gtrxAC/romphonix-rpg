@@ -20,7 +20,6 @@ def find_functions(directory):
                 for declaration in function_declarations:
                     out.write(declaration.group(0) + ';\n')
                 out.write("\n")
-    out.close()
 
 out = open('src/functions.h', 'w')
 out.write("// _____________________________________________________________________________\n")
@@ -32,4 +31,5 @@ out.write("//  This file is updated every time you run 'make'. See scripts/funcm
 out.write("// _____________________________________________________________________________\n")
 out.write("//\n")
 find_functions('src')
+find_functions('assets/maps')
 out.close()

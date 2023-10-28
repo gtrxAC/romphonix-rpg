@@ -45,3 +45,4 @@ src/functions.h
 
 # Mac stuff
 .DS_Store
+*__MACOSX*
