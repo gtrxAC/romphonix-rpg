@@ -11,21 +11,27 @@
 
 #include "common.h"
 
+typedef struct Character Character;
+
 // Used for both the player (SaveData, g.s.chr) and NPCs. These are drawn in world.c.
 // NPC data is stored in map metadata as a Character structure, same for the player location in the save file.
-typedef struct Character {
+struct Character {
     bool active;  // for the NPC table in the map metadata, determines if this slot is in use
     char sprite[32];
     u8 x, y;
     Direction dir;
 
-    // Map interact script that will be executed when interacting with this character (NPC)
-    void (*interactScript)();
+    // NPC update script that is executed once every second. This typically handles movement.
+    void (*updateScript)(Character *npc);
+
+    // NPC interact script that will be executed when interacting with this character
+    void (*interactScript)(Character *npc);
 
     // _____________________________________________________________________________
     //
     //  Do not use the below fields for NPCs! They should be left undefined in
-    //  map header files.
+    //  map header files. The movement related fields can be modified by update
+    //  scripts.
     // _____________________________________________________________________________
     //
     // movement count (how many tiles the character is about to move, used for the movement animation)
@@ -36,6 +42,6 @@ typedef struct Character {
     u8 anim;
     
     bool isPlayer;  // determines whether the movement animation can be sped up by pressing B
-} Character;
+};
 
 #endif

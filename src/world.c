@@ -8,9 +8,9 @@
 //
 #include "common.h"
 
-bool canMove(int dX, int dY) {
-	int newX = g.s.chr.x + dX;
-	int newY = g.s.chr.y + dY;
+bool canMove(Character chr, int dX, int dY) {
+	int newX = chr.x + dX;
+	int newY = chr.y + dY;
 
 	// Check if we would move out of map bounds
 	if (newX < 0 || newY < 0) return false;
@@ -19,11 +19,28 @@ bool canMove(int dX, int dY) {
 	// Check if we're colliding with a solid tile
 	if (MAP(newX, newY, MAP_COLLISION)) return false;
 
-	// Check if colliding with an NPC
 	for (int i = 0; i < 32; i++) {
 		Character npc = g.mapMeta.npcTable[i];
-		if (npc.active && npc.x == newX && npc.y == newY) return false;
+		if (!npc.active) continue;
+
+		// Check if colliding with an NPC
+		if (npc.x == newX && npc.y == newY) return false;
+
+		// Check if colliding with the next location of an NPC (after movement anim)
+		if (!npc.anim) continue;
+		int npcNextX = npc.x;
+		int npcNextY = npc.y;
+		switch (npc.dir) {
+			case DIR_UP: npcNextY--; break;
+			case DIR_DOWN: npcNextY++; break;
+			case DIR_LEFT: npcNextX--; break;
+			case DIR_RIGHT: npcNextX++; break;
+		}
+		if (npcNextX == newX && npcNextY == newY) return false;
 	}
+
+	// For NPCs only: check if colliding with the player
+	if (!chr.isPlayer && newX == g.s.chr.x && newY == g.s.chr.y) return false;
 
 	return true;
 }
@@ -123,7 +140,7 @@ void drawCharacter(Character chr) {
 }
 
 void moveCharacter(Character *chr, Direction dir, int tiles) {
-	g.s.chr.dir = dir;
+	chr->dir = dir;
 	int dx = 0, dy = 0;
 	switch (dir) {
 		case DIR_UP: dy = -1; break;
@@ -131,9 +148,9 @@ void moveCharacter(Character *chr, Direction dir, int tiles) {
 		case DIR_LEFT: dx = -1; break;
 		case DIR_RIGHT: dx = 1; break;
 	}
-	if (canMove(dx, dy)) {
-		g.s.chr.anim = 16;
-		g.s.chr.moveCount = tiles;
+	if (canMove(*chr, dx, dy)) {
+		chr->anim = 16;
+		chr->moveCount = tiles;
 	}
 }
 
@@ -190,7 +207,7 @@ void updateWorld() {
 						npc->dir = opposite;
 
 						// Run the script
-						npc->interactScript();
+						npc->interactScript(npc);
 					} else {
 						scrNoScript();
 					}
@@ -201,10 +218,12 @@ void updateWorld() {
 		else if (K_MENU_PRESS()) scrInGameMenu();
 	}
 
-	// Update NPCs (only movement animation)
+	// Update NPCs (update script and movement animation)
 	for (int i = 0; i < 32; i++) {
 		Character *npc = &g.mapMeta.npcTable[i];
-		if (npc->active && npc->anim != 0) updateCharacter(npc);
+		if (!npc->active) continue;
+		if (npc->updateScript && g.frameCount % 60 == 0) npc->updateScript(npc);
+		if (npc->anim != 0) updateCharacter(npc);
 	}
 }
 

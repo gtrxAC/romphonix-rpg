@@ -36,11 +36,11 @@ void scrDemoClock() {
     pushTextbox("The time is... I don't know, I don't care", "enough to check.");
 }
 
-void scrDemoNpc() {
+void scrDemoNpc(Character *npc) {
     pushTextbox(F("Hi %s!", g.s.name), "I'm a generic NPC!");
 }
 
-void scrDemoNpc2() {
+void scrDemoNpc2(Character *npc) {
     pushTextboxMenu();
     strcpy(MENU.textbox[0], "You wanted to battle, right?");
     addChoice("Yes");
@@ -48,7 +48,7 @@ void scrDemoNpc2() {
     MENU.nextFunc = scrDemoNpc3;
 }
 
-void scrDemoNpc3() {
+void scrDemoNpc3(Character *npc) {
     int choice = MENU.choice;
     popMenu();
     if (choice == 0 && scrBattleMenu(false)) {
@@ -82,6 +82,11 @@ void scrDemoNpc3() {
     } else {
         pushTextbox("ok", "");
     }
+}
+
+void scrDemoNpcUpdateTest(Character *npc) {
+    Direction dir = (Direction) GetRandomValue(0, 3);
+    moveCharacter(npc, dir, 1);
 }
 
 // _____________________________________________________________________________
@@ -140,6 +145,7 @@ Map mapDemo = {
             /* sprite */ "player3",
             /* location */ 0, 0,
             /* direction */ DIR_RIGHT,
+            /* updateScript */ NULL,
             /* interactScript */ scrDemoNpc
         },
         {
@@ -147,6 +153,7 @@ Map mapDemo = {
             /* sprite */ "player4",
             /* location */ 0, 4,
             /* direction */ DIR_DOWN,
+            /* updateScript */ scrDemoNpcUpdateTest,
             /* interactScript */ scrDemoNpc2
         }
     }
