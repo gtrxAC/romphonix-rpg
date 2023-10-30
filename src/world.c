@@ -178,7 +178,7 @@ void updateWorld() {
 			for (int i = 0; i < 32; i++) {
 				Character *npc = &g.mapMeta.npcTable[i];
 				if (npc->active && npc->x == x && npc->y == y && npc->interactScript) {
-					if (g.mapMeta.interactScripts[npc->interactScript - 1]) {
+					if (npc->interactScript) {
 						// Make the NPC look at the player
 						Direction opposite;
 						switch (g.s.chr.dir) {
@@ -190,7 +190,7 @@ void updateWorld() {
 						npc->dir = opposite;
 
 						// Run the script
-						g.mapMeta.interactScripts[npc->interactScript - 1]();
+						npc->interactScript();
 					} else {
 						scrNoScript();
 					}

@@ -112,12 +112,12 @@ Map mapDemo = {
     },
 
     // Same but for interact scripts (executed when player interacts with the tile)
+    // This list doesn't need to include NPC interact scripts, those are defined for
+    // each NPC below (in the NPC table)
     {
         scrDemoSign,
         scrDemoMailbox,
-        scrDemoClock,
-        scrDemoNpc,
-        scrDemoNpc2
+        scrDemoClock
     },
 
     // Chance to encounter a wild phone when scrWildEncounter is run in this
@@ -130,6 +130,25 @@ Map mapDemo = {
     // to other phones.
     {
         {1, 1}, {2, 3}
+    },
+
+    // NPC table used by this map. See character.h for the structure.
+    // 'active' should always be true.
+    {
+        {
+            /* active */ true,
+            /* sprite */ "player3",
+            /* location */ 0, 0,
+            /* direction */ DIR_RIGHT,
+            /* interactScript */ scrDemoNpc
+        },
+        {
+            /* active */ true,
+            /* sprite */ "player4",
+            /* location */ 0, 4,
+            /* direction */ DIR_DOWN,
+            /* interactScript */ scrDemoNpc2
+        }
     }
 };
 
