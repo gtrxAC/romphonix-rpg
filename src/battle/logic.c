@@ -1,13 +1,78 @@
+// _____________________________________________________________________________
+//
+//  battle/logic.c - turn based battle logic and implementations of skills
+// _____________________________________________________________________________
+//
 #include "../common.h"
+
+// _____________________________________________________________________________
+//
+//  Get actual stats of a phone in battle, taking stat changes and condition
+//  multipliers into account (helper function)
+//  These can be used outside of battles by setting bp to NULL
+// _____________________________________________________________________________
+//
+float getAttack(Phone *ph, BattlePhone *bp) {
+    float result = ph->attack;
+    result *= condMultipliers[ph->screenStatus];
+    if (!bp) return result;
+
+    if (bp->atkUpAmount > 0) {
+        for (int i = 0; i < bp->atkUpAmount; i++) result *= 1.2f;
+    }
+    else if (bp->atkUpAmount < 0) {
+        bp->atkUpAmount *= -1;
+        for (int i = 0; i < bp->atkUpAmount; i++) result /= 1.2f;
+        bp->atkUpAmount *= -1;
+    }
+    return result;
+}
+
+float getDefense(Phone *ph, BattlePhone *bp) {
+    float result = ph->defense;
+    result *= condMultipliers[ph->boardStatus];
+    if (!bp) return result;
+
+    if (bp->defUpAmount > 0) {
+        for (int i = 0; i < bp->defUpAmount; i++) result *= 1.2f;
+    }
+    else if (bp->defUpAmount < 0) {
+        bp->defUpAmount *= -1;
+        for (int i = 0; i < bp->defUpAmount; i++) result /= 1.2f;
+        bp->defUpAmount *= -1;
+    }
+    return result;
+}
+
+float getWeight(Phone *ph) {
+    float result = ph->weight;
+    result *= condMultipliers[ph->coverStatus];
+    return result;
+}
+
+// Returns a value 0-100
+int getHitChance(BattlePhone *bp, SkillEffect effect) {
+    float result = effect.chance;
+
+    if (bp->accuracyUpAmount > 0) {
+        for (int i = 0; i < bp->accuracyUpAmount; i++) result *= 1.2f;
+    }
+    else if (bp->accuracyUpAmount < 0) {
+        bp->accuracyUpAmount *= -1;
+        for (int i = 0; i < bp->accuracyUpAmount; i++) result /= 1.2f;
+        bp->accuracyUpAmount *= -1;
+    }
+    return (int) result;
+}
 
 // _____________________________________________________________________________
 //
 //  Battle menu - select who moves first (helper function)
 // _____________________________________________________________________________
 //
-int whoMovesFirst(int weight_1, int weight_2) {
-    float w1 = (float) weight_1;
-    float w2 = (float) weight_2;
+int whoMovesFirst(Phone *ph1, Phone *ph2) {
+    float w1 = (float) getWeight(ph1);
+    float w2 = (float) getWeight(ph2);
 
     float ratio = w1 / w2;
     if (ratio < 1.0f) ratio = powf(ratio, 12.0f);
@@ -23,36 +88,10 @@ int whoMovesFirst(int weight_1, int weight_2) {
 // _____________________________________________________________________________
 //
 int getDamage(Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone *victimB, int damage, SkillType type) {
-    float result = (float) damage * victim->defense / attacker->attack;
+    // Initial calculation based on attack / defense, taking into account stat modifiers
+    float result = (float) damage * getAttack(attacker, attackerB) / getDefense(victim, victimB);
 
-    // Stat changes
-    if (attackerB->atkUpAmount > 0) {
-        for (int i = 0; i < attackerB->atkUpAmount; i++) {
-            result *= 1.2f;
-        }
-    }
-    else if (attackerB->atkUpAmount < 0) {
-        attackerB->atkUpAmount *= -1;
-        for (int i = 0; i < attackerB->atkUpAmount; i++) {
-            result /= 1.2f;
-        }
-        attackerB->atkUpAmount *= -1;
-    }
-
-    if (victimB->defUpAmount > 0) {
-        for (int i = 0; i < victimB->defUpAmount; i++) {
-            result /= 1.2f;
-        }
-    }
-    else if (victimB->defUpAmount < 0) {
-        victimB->defUpAmount *= -1;
-        for (int i = 0; i < victimB->defUpAmount; i++) {
-            result *= 1.2f;
-        }
-        victimB->defUpAmount *= -1;
-    }
-
-    // Skill type and phone condition
+    // Skill type and phone's corresponding condition for that type
     int status;
     switch (type) {
         case SKT_BATTERY: status = attacker->batteryStatus; break;
@@ -86,7 +125,7 @@ void doMove(Phone *attacker, Phone *victim, BattlePhone *attackerB, BattlePhone 
             // Chance to miss
             // If the first/primary effect of the skill misses, the secondary
             // effect is not even processed (returns from function)
-            if (GetRandomValue(1, 100) > skill.effects[i].chance) {
+            if (GetRandomValue(1, 100) > getHitChance(attackerB, skill.effects[i])) {
                 if (i == 0) {
                     strcpy(MENU.battleTextbox[1], "But it missed!");
                     schedSound("miss", 40);

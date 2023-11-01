@@ -1,6 +1,8 @@
 // _____________________________________________________________________________
 //
-//  Introduction
+//  Introduction - a sequence shown when you start a new game. Asks for the
+//  player's name and appearance, and introduces the player to the game and some
+//  of its story.
 // _____________________________________________________________________________
 //
 #include "common.h"

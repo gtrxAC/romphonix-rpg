@@ -331,7 +331,7 @@ void checkBattleMenu() {
             else {
                 // Choose which side moves first, based on the weights of the
                 // phones and a bit of random chance
-                MENU.movedFirst = whoMovesFirst(ENEMYP.weight, PLAYERP.weight);
+                MENU.movedFirst = whoMovesFirst(&ENEMYP, &PLAYERP);
                 MENU.playerMove = MENU.choice;
                 if (MENU.movedFirst) setBattleState(BS_PLAYER_TURN);
                 else setBattleState(BS_ENEMY_TURN);

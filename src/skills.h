@@ -1,3 +1,11 @@
+// _____________________________________________________________________________
+//
+//  ROMphonix RPG - skills.h
+//
+//  Contains data structures relating to skills that phones can use in battle.
+//  Also see assets/data/skills.json and scripts/json2tfs.py
+// _____________________________________________________________________________
+//
 #ifndef SKILLS_H
 #define SKILLS_H
 
@@ -16,9 +24,9 @@ static const char *skillTypes[4] = {
     "Screen", "Board", "Cover", "Battery"
 };
 
-// Skill effects
+// Skill effect types
 // These are implemented in battle/logic.c - doMove()
-typedef enum SkillEffect {
+typedef enum SkillEffectType {
     SE_NONE,  // Does nothing (e.g. the secondary effect if the skill only has one effect)
     SE_DAMAGE,  // Does X damage to the enemy (X being the effect parameter)
     SE_SELF_DAMAGE,  // Does X damage to the user
@@ -33,6 +41,21 @@ typedef enum SkillEffect {
     // Effects exclusive to specific skills
     SE_STOMP,  // Deals damage based on body weight
     SE_FLEX_RIP,  // Deals increased damage to flip/slider phones
+} SkillEffectType;
+
+// Skill effects (unlike skill effect types, these have more info attached to
+// them, and thus are specific to a skill). 
+// Each skill has two of these, with their own chances (accuracies) and 
+// parameters (such as amount of damage). Some skills may only have one effect
+// - in this case, the secondary effect is SE_NONE.
+// If the primary (first) effect's accuracy check fails, then the secondary
+// effect won't be processed at all. If the first succeeds and the second fails,
+// the move will be run as if the second effect didn't exist at all (i.e. no
+// messages related to the secondary effect are shown).
+typedef struct SkillEffect {
+    SkillEffectType effect;
+    int parameter;
+    int chance;
 } SkillEffect;
 
 typedef struct SkillSpecs {
@@ -40,11 +63,7 @@ typedef struct SkillSpecs {
     char description[128];
     SkillType type;
 
-    struct {
-        SkillEffect effect;
-        int parameter;
-        int chance;
-    } effects[2];
+    SkillEffect effects[2];
 
     char learnByPhones[256];
     char animation[64];

@@ -1,3 +1,12 @@
+// _____________________________________________________________________________
+//
+//  ROMphonix RPG - menu.c
+//
+//  Implementation for basic menu types, consisting of logic (update) and
+//  rendering (draw) functions. Also includes utility functions which are
+//  essential for scripting functionality.
+// _____________________________________________________________________________
+//
 #include "common.h"
 
 void updateMenu();

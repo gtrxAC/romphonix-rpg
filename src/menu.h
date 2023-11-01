@@ -1,3 +1,17 @@
+// _____________________________________________________________________________
+//
+//  ROMphonix RPG - menu.h
+//
+//  Contains the structure of the menus. The menus in this game work like a
+//  stack - when a new menu is opened, it is pushed to the top of the stack.
+//  When it is popped (removed from the stack), the previous menu shows again.
+//
+//  Each menu uses the same Menu structure, where data specific to certain menus
+//  (e.g. battle menu, bag menu) is inside an union. The union members use 
+//  overlapping memory, letting us have custom fields for each menu type without 
+//  wasting memory for fields that are not used for that menu type.
+// _____________________________________________________________________________
+//
 #include "common.h"
 
 // Shorthand to access the current menu (top of the stack)

@@ -1,7 +1,8 @@
 // _____________________________________________________________________________
 //
-//  Functionality related to the scripting system.
+//  ROMphonix RPG - script.c
 //
+//  Functionality related to the scripting system.
 //  See also: menu.c
 // _____________________________________________________________________________
 //

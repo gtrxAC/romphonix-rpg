@@ -1,3 +1,11 @@
+// _____________________________________________________________________________
+//
+//  ROMphonix RPG - transition.c
+//
+//  Handles updating and drawing the transition effect between two maps
+//  (ST_TRANSITION state)
+// _____________________________________________________________________________
+//
 #include "common.h"
 
 #define TRANSITION_TIME 30       // in frames, for inwards and outwards transition each, so actual time is ×2

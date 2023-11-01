@@ -7,6 +7,9 @@
 //
 //  These are implemented as a single function that is run as part of the main
 //  loop (see main.c).
+//
+//  For the most part, this is only used for testing during development. A few
+//  keybindings like screen scaling can be included in the final game.
 // _____________________________________________________________________________
 //
 #include "common.h"
@@ -58,10 +61,10 @@ void checkBindings() {
                     }
                 }
                 
-                g.s.party[i].skills[0] = 5;
-                g.s.party[i].skills[1] = 10;
-                g.s.party[i].skills[2] = 11;
-                g.s.party[i].skills[3] = 9;
+                g.s.party[i].skills[0] = 2;
+                g.s.party[i].skills[1] = 3;
+                g.s.party[i].skills[2] = 4;
+                g.s.party[i].skills[3] = 8;
 
                 got = true;
                 return;
