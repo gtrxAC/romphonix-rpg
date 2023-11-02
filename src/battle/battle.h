@@ -15,7 +15,8 @@ typedef enum BattleState {
     BS_SENDING_OUT,  // Player is sending out a phone (short animation)
     BS_RETURNING, // Player is returning their phone (switching to another one)
     BS_WAITING,     // Waiting for command (menu is shown)
-    BS_WAITING_MOVE,  // Waiting for command (in the move selection screen)
+    BS_WAITING_SKILL,  // Waiting for command (in the skill selection screen)
+    BS_WAITING_NO_ENERGY,  // Same as above, but a move was chosen that the phone doesn't have enough energy for
     BS_PLAYER_TURN,
     BS_ENEMY_TURN,
     BS_AFTER_TURN,  // check status effects every turn after both players have moved

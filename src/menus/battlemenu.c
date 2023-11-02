@@ -159,13 +159,19 @@ void setBattleState(BattleState bs) {
             break;
         }
 
-        case BS_WAITING_MOVE: {
-            MENU.battleState = BS_WAITING_MOVE;
+        case BS_WAITING_SKILL: {
             MENU.choice = 0;
             arrfree(MENU.choices);
             for (int i = 0; i < 4; i++) {
                 addChoice(SSPECS(PLAYERP.skills[i]).name);
             }
+            break;
+        }
+
+        case BS_WAITING_NO_ENERGY: {
+            strcpy(MENU.battleTextbox[0], "Not enough energy to use this skill!");
+            strcpy(MENU.battleTextbox[0], "");
+            strcpy(MENU.battleTextbox[0], "");
             break;
         }
 
@@ -298,7 +304,7 @@ void checkBattleMenu() {
                 case -1: break;
 
                 case 0: { // Fight
-                    setBattleState(BS_WAITING_MOVE);
+                    setBattleState(BS_WAITING_SKILL);
                     break;
                 }
 
@@ -324,11 +330,15 @@ void checkBattleMenu() {
             break;
         }
 
-        case BS_WAITING_MOVE: {
+        case BS_WAITING_SKILL: {
             if (MENU.choice == -1) {
                 setBattleState(BS_WAITING); // go back to the start
             }
             else {
+                if (SSPECS(PLAYERP.skills[MENU.choice]).energy > PLAYERP.energy) {
+                    setBattleState(BS_WAITING_NO_ENERGY);
+                    break;
+                }
                 // Choose which side moves first, based on the weights of the
                 // phones and a bit of random chance
                 MENU.movedFirst = whoMovesFirst(&ENEMYP, &PLAYERP);

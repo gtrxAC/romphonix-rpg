@@ -2,7 +2,8 @@
 
 // _____________________________________________________________________________
 //
-//  Battle menu - draw status effects function
+//  Battle menu - draw status effects function (run once for both player and
+//  enemy, with each side having different parameters)
 // _____________________________________________________________________________
 //
 void drawStatusEffects(Phone phone, BattlePhone bPhone, int x) {
@@ -27,13 +28,32 @@ void drawStatusEffects(Phone phone, BattlePhone bPhone, int x) {
 
 // _____________________________________________________________________________
 //
+//  Battle menu - draw status box function (run once for player and enemy)
+// _____________________________________________________________________________
+//
+void drawStatusBox(const char *name, Phone *phone, BattlePhone *bPhone, int x) {
+    drawBox(4 + x, 4, 152, 72);
+    drawText(name, 10 + x, 10, LIGHTGRAY);
+
+    // Note: '$' character in the digits font (drawTextD) says 'Lv.'
+    drawTextD(F("$ %d", phone->level), 120 + x, 10, WHITE);
+
+    drawText(F("%s %s", SPECS(phone->id).brand, SPECS(phone->id).model), 10 + x, 25, WHITE);
+    drawProgressBar(bPhone->shownHP, phone->maxHP, 10 + x, 42, 80, GREEN);
+    drawTextD(F("%d/%d", bPhone->shownHP, phone->maxHP), 98 + x, 42, WHITE);
+    drawProgressBar(phone->energy, 100, 10 + x, 57, 80, BLUE);
+    drawTextD(F("%d/%d", phone->energy, 100), 98 + x, 57, WHITE);
+}
+
+// _____________________________________________________________________________
+//
 //  Battle menu - draw function
 // _____________________________________________________________________________
 //
 void drawBattleMenu() {
     drawTexture(g.mapMeta.battleBackground, 0, 0, WHITE);
 
-    if (MENU.battleState == BS_WAITING || MENU.battleState == BS_WAITING_MOVE) {
+    if (MENU.battleState == BS_WAITING || MENU.battleState == BS_WAITING_SKILL) {
         // Left panel (options)
         drawBox(0, 176, 120, 64);
         for (int i = 0; i < arrlen(MENU.choices); i++) {
@@ -80,38 +100,42 @@ void drawBattleMenu() {
         MENU.battleTextboxTimer++;
     }
 
-    // Player status bar (don't show before phone has been sent out)
-    if (MENU.battleState != BS_STARTING && MENU.battleState != BS_SENDING_OUT && MENU.battleState != BS_LOST && MENU.battleState != BS_PLAYER_DIED && MENU.active != -1) {
-        drawBox(4, 4, 152, 58);
-        drawText(g.s.name, 10, 10, LIGHTGRAY);
-        drawTextD(F("$ %d", PLAYERP.level), 120, 10, WHITE);
-
-        // Note: '$' character in the digits font (drawTextD) says 'Lv.'
-        drawTextD(F("$ %d", PLAYERP.level), 120, 10, WHITE);
-
-        drawText(F("%s %s", SPECS(PLAYERP.id).brand, SPECS(PLAYERP.id).model), 10, 25, WHITE);
-        drawProgressBar(MENU.player.shownHP, PLAYERP.maxHP, 10, 42, 80, GREEN);
-        drawTextD(F("%d/%d", MENU.player.shownHP, PLAYERP.maxHP), 98, 42, WHITE);
-
-        // Player statuses
+    // _________________________________________________________________________
+    //
+    // Player status box and effects (don't show before phone has been sent out)
+    // _________________________________________________________________________
+    //
+    if (
+        MENU.battleState != BS_STARTING &&
+        MENU.battleState != BS_SENDING_OUT &&
+        MENU.battleState != BS_LOST && 
+        MENU.battleState != BS_PLAYER_DIED &&
+        MENU.active != -1
+    ) {
+        drawStatusBox(g.s.name, &PLAYERP, &MENU.player, 0);
         drawStatusEffects(PLAYERP, MENU.player, 2);
     }
 
-    // Enemy status bar
-    if ((MENU.battleState != BS_STARTING || MENU.canRun) && MENU.battleState != BS_ENEMY_SENDING_OUT && MENU.battleState != BS_ENEMY_DIED && MENU.battleState != BS_WON) {
-        drawBox(164, 4, 152, 58);
-        drawText(MENU.enemyName, 170, 10, LIGHTGRAY);
-        drawTextD(F("$ %d", ENEMYP.level), 280, 10, WHITE);
-
-        drawText(F("%s %s", SPECS(ENEMYP.id).brand, SPECS(ENEMYP.id).model), 170, 25, WHITE);
-        drawProgressBar(MENU.enemy.shownHP, ENEMYP.maxHP, 170, 42, 80, GREEN);
-        drawTextD(F("%d/%d", MENU.enemy.shownHP, ENEMYP.maxHP), 258, 42, WHITE);
-
-        // Enemy statuses
+    // _________________________________________________________________________
+    //
+    // Enemy status box and effects
+    // _________________________________________________________________________
+    //
+    if (
+        (MENU.battleState != BS_STARTING || MENU.canRun) &&
+        MENU.battleState != BS_ENEMY_SENDING_OUT &&
+        MENU.battleState != BS_ENEMY_DIED &&
+        MENU.battleState != BS_WON
+    ) {
+        drawStatusBox(MENU.enemyName, &ENEMYP, &MENU.enemy, 160);
         drawStatusEffects(ENEMYP, MENU.enemy, 287);
     }
 
+    // _________________________________________________________________________
+    //
     // Phone shadows (except for cave background)
+    // _________________________________________________________________________
+    //
     if (strcmp(g.mapMeta.battleBackground, "battle/cave")) {
         // Player phone's shadow will expand when sending out, and retract when returning a phone or the phone dies
         switch (MENU.battleState) {
@@ -185,7 +209,11 @@ void drawBattleMenu() {
         }
     }
 
+    // _________________________________________________________________________
+    //
     // Player phone sprite
+    // _________________________________________________________________________
+    //
     switch (MENU.battleState) {
         case BS_STARTING: break; // Don't draw player phone, it hasn't been sent out yet
         case BS_LOST: break; // Don't draw, it's already dead
@@ -245,7 +273,11 @@ void drawBattleMenu() {
             break;
     }
 
+    // _________________________________________________________________________
+    //
     // Enemy phone sprite
+    // _________________________________________________________________________
+    //
     switch (MENU.battleState) {
         case BS_WON: break; // don't draw, it's dead
 
@@ -304,8 +336,12 @@ void drawBattleMenu() {
             break;
     }
 
+    // _________________________________________________________________________
+    //
     // Attack animation (each anim frame lasts 4 frames, frames are 64×64,
     // animation timer is set by doMove function)
+    // _________________________________________________________________________
+    //
     int animLength = shget(g.textures, MENU.attackAnim).width / 64 * 4;
 
     if (MENU.attackAnimTimer >= 0 && MENU.attackAnimTimer < animLength && strlen(MENU.attackAnim)) {

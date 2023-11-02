@@ -62,6 +62,7 @@ typedef struct SkillSpecs {
     char name[16];
     char description[128];
     SkillType type;
+    int energy;
 
     SkillEffect effects[2];
 

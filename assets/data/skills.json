@@ -3,6 +3,7 @@
 		"name": "---",
 		"description": "",
 		"skillType": "battery",
+		"energy": 0,
 		"effects": [],
 		"learnByPhones": "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
 		"animation": "skills/default",
@@ -12,6 +13,7 @@
 		"name": "Siphon",
 		"description": "Drains the battery of the opposing phone.",
 		"skillType": "battery",
+		"energy": 0,
 		"effects": [
 			{
 				"type": "drain",
@@ -26,6 +28,7 @@
 		"name": "Mosaic",
 		"description": "Shows a hallucinating pattern on screen that may confuse.",
 		"skillType": "screen",
+		"energy": 0,
 		"effects": [
 			{
 				"type": "damage",
@@ -44,6 +47,7 @@
 		"name": "Power Save",
 		"description": "Saves battery life to increase defense.",
 		"skillType": "battery",
+		"energy": 0,
 		"effects": [
 			{
 				"type": "def_up",
@@ -58,6 +62,7 @@
 		"name": "Optimise",
 		"description": "Optimises performance to increase attack.",
 		"skillType": "battery",
+		"energy": 0,
 		"effects": [
 			{
 				"type": "atk_up",
@@ -72,6 +77,7 @@
 		"name": "Battery Swap",
 		"description": "Recovers the phone's HP by inserting backup AA batteries.",
 		"skillType": "battery",
+		"energy": 0,
 		"effects": [
 			{
 				"type": "heal",
@@ -86,6 +92,7 @@
 		"name": "Clamshell",
 		"description": "Attacks by shutting the phone's clamshell.",
 		"skillType": "battery",
+		"energy": 15,
 		"effects": [
 			{
 				"type": "damage",
@@ -101,6 +108,7 @@
 		"name": "Buzzer",
 		"description": "Plays a noise through the speaker, deals recoil damage.",
 		"skillType": "battery",
+		"energy": 30,
 		"effects": [
 			{
 				"type": "damage",
@@ -119,6 +127,7 @@
 		"name": "Stomp",
 		"description": "Jumps on the enemy to deal damage based on body weight.",
 		"skillType": "battery",
+		"energy": 30,
 		"effects": [
 			{
 				"type": "stomp",
@@ -134,6 +143,7 @@
 		"name": "Infra Blast",
 		"description": "Blasts an IR signal that does damage and reduces accuracy.",
 		"skillType": "battery",
+		"energy": 0,
 		"effects": [
 			{
 				"type": "damage",
@@ -152,6 +162,7 @@
 		"name": "Flex Rip",
 		"description": "Deals increased damage to flip and slider phones.",
 		"skillType": "battery",
+		"energy": 15,
 		"effects": [
 			{
 				"type": "flex_rip",
@@ -166,6 +177,7 @@
 		"name": "Locate",
 		"description": "Locates the enemy using GPS to increase accuracy.",
 		"skillType": "battery",
+		"energy": 0,
 		"effects": [
 			{
 				"type": "accuracy_up",

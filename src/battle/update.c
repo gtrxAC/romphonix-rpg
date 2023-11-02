@@ -47,10 +47,10 @@ void updateBattleMenu() {
         }
     }
 
-    if (MENU.battleState == BS_WAITING || MENU.battleState == BS_WAITING_MOVE) {
+    if (MENU.battleState == BS_WAITING || MENU.battleState == BS_WAITING_SKILL) {
         // Command menu is just a standard menu
         updateMenu();
-        if (K_B_PRESS() && MENU.battleState == BS_WAITING_MOVE) {
+        if (K_B_PRESS() && MENU.battleState == BS_WAITING_SKILL) {
             setBattleState(BS_WAITING);
         }   
     }
@@ -71,6 +71,11 @@ void updateBattleMenu() {
                     break;
                 }
                 case BS_SENDING_OUT: case BS_ENEMY_SENDING_OUT: case BS_RETURNING: break;
+
+                case BS_WAITING_NO_ENERGY: {
+                    setBattleState(BS_WAITING_SKILL);
+                    break;
+                }
 
                 case BS_PLAYER_TURN: {
                     if (PLAYERP.hp <= 0) {

@@ -115,6 +115,7 @@ with open('assets/data/skills.json') as file:
         appendStr(s['name'], 16)
         appendStr(s['description'], 128)
         append32(skillTypes[s['skillType']])
+        append32(s['energy'])
         
         if len(s['effects']):
             appendEffect(s['effects'][0])
